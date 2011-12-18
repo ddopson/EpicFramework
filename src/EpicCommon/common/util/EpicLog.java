@@ -1,6 +1,6 @@
 package com.epic.framework.common.util;
 
-import com.epic.framework.implementation.util.EpicLogImplementation;
+import com.epic.framework.implementation.EpicLogImplementation;
 
 public class EpicLog {
 	public static final int LEVEL_DBG = -1;

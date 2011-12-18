@@ -2,7 +2,7 @@ package com.epic.framework.common.Ui;
 
 import java.io.InputStream;
 import com.epic.framework.common.util.EpicBufferedReader;
-import com.epic.framework.implementation.util.EpicFileImplementation;
+import com.epic.framework.implementation.EpicFileImplementation;
 
 public class EpicFile {
 	private final String filename;

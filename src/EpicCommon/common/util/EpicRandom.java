@@ -1,7 +1,7 @@
 package com.epic.framework.common.util;
 
 import com.epic.framework.cfg.EpicProjectConfig;
-import com.epic.framework.implementation.util.EpicRandomImplementation;
+import com.epic.framework.implementation.EpicRandomImplementation;
 
 
 public class EpicRandom {

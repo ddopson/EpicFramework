@@ -3,7 +3,7 @@ package com.epic.framework.common.util;
 import com.epic.framework.cfg.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.Ui.EpicSound;
-import com.epic.framework.implementation.util.EpicSoundManagerImplementation;
+import com.epic.framework.implementation.EpicSoundManagerImplementation;
 
 public class EpicSoundManager {
 	

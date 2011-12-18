@@ -4,8 +4,8 @@ package com.epic.framework.common.Ui;
 import java.util.HashMap;
 
 import com.epic.framework.common.util.EpicFail;
-import com.epic.framework.implementation.Ui.EpicFontImplementation;
-import com.epic.framework.implementation.Ui.EpicPlatformConfig;
+import com.epic.framework.implementation.EpicFontImplementation;
+import com.epic.framework.implementation.EpicPlatformConfig;
 
 public class EpicFont {
 	private static final HashMap<Integer, EpicFont> sizedFonts = new HashMap<Integer, EpicFont>();

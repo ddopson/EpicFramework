@@ -1,7 +1,7 @@
 package com.epic.framework.common.Ui;
 
 import com.epic.framework.common.util.EpicLog;
-import com.epic.framework.implementation.Ui.EpicTimerImplementation;
+import com.epic.framework.implementation.EpicTimerImplementation;
 
 public abstract class EpicTimer {
 	private int expectedMillis = -1;

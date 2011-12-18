@@ -1,5 +1,6 @@
 package com.epic.framework.cfg;
 
+import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.Ui.EpicSound;
 import com.epic.framework.common.types.Dimension;
@@ -19,7 +20,9 @@ import com.epic.framework.common.types.Dimension;
 		return true;
 	}
 	
-	public static boolean isReleaseMode = true;
+	public static final boolean isReleaseMode = true;
+	public static final EpicSound screenTransitionSound = null; // EpicSounds.transition
+	public static final EpicBitmap toastBackground = null; // EpicImages.toast_bg_dark
 
 	public static final Dimension designDimensions = new Dimension(800, 480);
 	public static Dimension getDesignDimensions() {

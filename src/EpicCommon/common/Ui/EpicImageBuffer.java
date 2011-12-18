@@ -2,7 +2,7 @@ package com.epic.framework.common.Ui;
 
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicStopwatch;
-import com.epic.framework.implementation.Ui.EpicBitmapImplementation;
+import com.epic.framework.implementation.EpicBitmapImplementation;
 
 public class EpicImageBuffer extends EpicBitmap {
 	private final EpicCanvas canvas = new EpicCanvas();

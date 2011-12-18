@@ -1,6 +1,6 @@
 package com.epic.framework.common.util;
 
-import com.epic.framework.implementation.util.EpicDebugImplementation;
+import com.epic.framework.implementation.EpicDebugImplementation;
 
 public class EpicDebug {
 	public static void startMethodTracing(String filename, int size) {

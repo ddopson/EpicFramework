@@ -3,7 +3,7 @@ package com.epic.framework.common.util;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.epic.framework.implementation.util.EpicSocialImplementation;
+import com.epic.framework.implementation.EpicSocialImplementation;
 
 public class EpicSocial {
 	public static String getIdentity() {

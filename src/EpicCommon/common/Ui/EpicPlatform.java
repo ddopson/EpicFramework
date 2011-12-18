@@ -11,9 +11,9 @@ import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
-import com.epic.framework.implementation.Ui.EpicPlatformImplementation;
-import com.epic.framework.implementation.util.ArchPlatform;
-import com.epic.framework.implementation.util.EpicSocialImplementation;
+import com.epic.framework.implementation.ArchPlatform;
+import com.epic.framework.implementation.EpicPlatformImplementation;
+import com.epic.framework.implementation.EpicSocialImplementation;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 
@@ -127,7 +127,9 @@ public class EpicPlatform {
 		EpicFail.assertNotNull(screen);
 
 		EpicPlatformImplementation.dismissNotifications();
-		EpicSoundManager.playSound(EpicSounds.transition);
+		if(EpicProjectConfig.screenTransitionSound != null) {
+			EpicSoundManager.playSound(EpicProjectConfig.screenTransitionSound);
+		}
 
 		// Destroy old Ui
 		currentScreen.onHide();
@@ -336,8 +338,10 @@ public class EpicPlatform {
 						alpha = EpicCanvas.calculateTranslationAnimation(0, 255, 0, TIMER_HZ / 2, timeNotificationDisplayed);
 					}
 					
-					epicCanvas.drawBitmapWithGlobalAlpha(EpicImages.toast_bg_dark, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, alpha);
-//					epicCanvas.applyFill(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.BLACK));
+					if(EpicProjectConfig.toastBackground != null) {
+						epicCanvas.drawBitmapWithGlobalAlpha(EpicProjectConfig.toastBackground, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, alpha);
+					}
+					//					epicCanvas.applyFill(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.BLACK));
 //					epicCanvas.drawBorder(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.GREEN), 4);
 					
 					int textWidth = n.icon == null ? 640 : 510;

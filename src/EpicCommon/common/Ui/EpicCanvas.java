@@ -2,7 +2,7 @@ package com.epic.framework.common.Ui;
 
 import com.epic.framework.cfg.EpicProjectConfig;
 import com.epic.framework.common.util.*;
-import com.epic.framework.implementation.Ui.EpicCanvasImplementation;
+import com.epic.framework.implementation.EpicCanvasImplementation;
 
 public class EpicCanvas {
 

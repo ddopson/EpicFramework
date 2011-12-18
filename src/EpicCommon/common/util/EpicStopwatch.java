@@ -3,7 +3,7 @@ package com.epic.framework.common.util;
 import com.epic.framework.cfg.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicClickListener;
-import com.epic.framework.implementation.util.EpicTimeImplementation;
+import com.epic.framework.implementation.EpicTimeImplementation;
 
 public class EpicStopwatch {
 	public static final boolean ENABLED = EpicProjectConfig.isReleaseMode ? false : true;

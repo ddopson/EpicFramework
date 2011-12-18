@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.epic.framework.implementation.Ui.EpicPlatformImplementation;
-import com.epic.framework.implementation.util.EpicHttpImplementation;
+import com.epic.framework.implementation.EpicHttpImplementation;
+import com.epic.framework.implementation.EpicPlatformImplementation;
 import com.epic.framework.common.util.exceptions.EpicInvalidArgumentException;
 
 public class EpicHttpRequest {
