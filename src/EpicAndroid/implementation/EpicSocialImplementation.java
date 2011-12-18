@@ -35,10 +35,10 @@ import com.epic.framework.common.util.EpicSocial;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
 import com.epic.framework.common.util.StringHelper;
 import com.epic.framework.common.util.exceptions.EpicUnexpectedDataException;
-import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.Facebook.DialogListener;
-import com.facebook.android.FacebookError;
+import com.epic.framework.implementation.facebook.DialogError;
+import com.epic.framework.implementation.facebook.Facebook;
+import com.epic.framework.implementation.facebook.FacebookError;
+import com.epic.framework.implementation.facebook.Facebook.DialogListener;
 
 public class EpicSocialImplementation {
 	public static void beginLogin(final EpicSocialSignInCompletionHandler doAfter) {

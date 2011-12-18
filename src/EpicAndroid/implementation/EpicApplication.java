@@ -13,7 +13,7 @@ import android.net.Uri;
 import android.provider.Settings;
 
 import com.epic.framework.common.util.EpicLog;
-import com.tapjoy.TapjoyNotifier;
+import com.epic.framework.implementation.tapjoy.TapjoyNotifier;
 
 public class EpicApplication extends Application {
 	static Application theApplication;

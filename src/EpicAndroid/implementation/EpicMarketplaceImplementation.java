@@ -19,9 +19,9 @@ import com.epic.framework.common.util.Product;
 import com.epic.framework.implementation.billing.EpicBillingResponseHandler;
 import com.epic.framework.implementation.billing.EpicInAppService;
 import com.epic.framework.implementation.billing.WordsPurchaseObserver;
-import com.tapjoy.TapjoyConnect;
-import com.tapjoy.TapjoyFeaturedAppNotifier;
-import com.tapjoy.TapjoyFeaturedAppObject;
+import com.epic.framework.implementation.tapjoy.TapjoyConnect;
+import com.epic.framework.implementation.tapjoy.TapjoyFeaturedAppNotifier;
+import com.epic.framework.implementation.tapjoy.TapjoyFeaturedAppObject;
 
 public class EpicMarketplaceImplementation {
 	public static final boolean DEBUG = true;

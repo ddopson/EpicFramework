@@ -27,10 +27,10 @@ import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicSocial;
-import com.facebook.android.Facebook;
-import com.tapjoy.TapjoyConnect;
-import com.tapjoy.TapjoyEarnedPointsNotifier;
-import com.tapjoy.TapjoyLog;
+import com.epic.framework.implementation.facebook.Facebook;
+import com.epic.framework.implementation.tapjoy.TapjoyConnect;
+import com.epic.framework.implementation.tapjoy.TapjoyEarnedPointsNotifier;
+import com.epic.framework.implementation.tapjoy.TapjoyLog;
 
 public class EpicAndroidActivity extends Activity {
 	public static final int CONTACT_PICK = 5;
