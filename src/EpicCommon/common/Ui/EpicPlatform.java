@@ -35,10 +35,10 @@ public class EpicPlatform {
 	public static EpicScreen currentScreen;
 	private static EpicPercentLayout epicPercentLayout;
 	private static EpicPlatformInterface epicPlatformInterface;
-	static int renderWidth = -1;
-	static int renderHeight = -1;
-	static int truePlatformWidth = -1;
-	static int truePlatformHeight = -1;
+	static int renderWidth = 480;
+	static int renderHeight = 320;
+	static int truePlatformWidth = 480;
+	static int truePlatformHeight = 320;
 	public static MouseTrail mouseTrail = new MouseTrail();
 	static final int designWidth = EpicProjectConfig.designDimensions.width;
 	static final int designHeight = EpicProjectConfig.designDimensions.height;

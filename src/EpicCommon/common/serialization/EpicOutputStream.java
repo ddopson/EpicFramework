@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 import com.epic.framework.common.util.exceptions.EpicSerializationException;
 
-public class EpicOutputStream extends EpicSerializationStream{
+public class EpicOutputStream implements EpicSerializationStream {
 	OutputStream outputStream;
 	public EpicOutputStream(OutputStream outputStream) {
 		this.outputStream = outputStream;
@@ -129,5 +129,31 @@ public class EpicOutputStream extends EpicSerializationStream{
 	public String serializeString(String string) throws EpicSerializationException {
 		writeString(string);
 		return string;
+	}
+	
+	public EpicInputStream getInputStream() {
+		return null;
+	}
+
+	public boolean serializeBool(boolean value) throws EpicSerializationException {
+		return serializeInt8(value ? 1 : 0) == 0 ? false : true;
+	}
+	
+	public boolean isOutput() {
+		return !isInput();
+	}
+
+	public EpicSerializableClass serializeObject(EpicSerializableClass object, EpicSerializableClassType type) {
+		return type.serialize(this, object);
+	}
+
+	public EpicSerializableClass serializeNullableObject(EpicSerializableClass object, EpicSerializableClassType type) {
+		boolean isNull = serializeBool(object == null);
+		if(isNull) {
+			return null;
+		}
+		else {
+			return serializeObject(object, type);
+		}
 	}
 }

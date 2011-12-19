@@ -15,7 +15,7 @@ import com.epic.framework.common.util.exceptions.EpicUnhandledCaseException;
 
 public class EpicFail {
 	private static EpicRuntimeException log_exception(EpicRuntimeException e) {
-		EpicLog.e("EpicFail: Throwing " + e);
+		EpicLog.e("EpicFail: Throwing " + e.className + ": " + e.message);
 		return e;
 	}
 
