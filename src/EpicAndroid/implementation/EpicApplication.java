@@ -7,7 +7,6 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.Settings;
@@ -100,23 +99,5 @@ public class EpicApplication extends Application {
 		return device;
 	}
 
-	public static String getApplicationVersion() {
-		String mVersionNumber = "Unknown";
-
-		try {
-            String pkg = theApplication.getPackageName();
-            mVersionNumber = theApplication.getPackageManager().getPackageInfo(pkg, 0).versionName;
-        } catch (NameNotFoundException e) {}
-
-        EpicLog.i("Detected version " + mVersionNumber);
-        return mVersionNumber;
-	}
 	
-	public static String getListingId() {
-		return "15";
-	}
-
-	public static boolean isTouchEnabledDevice() {
-		return true;  // ALWAYS touch-enabled on Android ...
-	}
 }

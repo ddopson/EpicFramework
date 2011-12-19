@@ -37,7 +37,6 @@ public class EpicAndroidActivity extends Activity {
 	public static final int CONTACT_PICK = 5;
 	private static EpicAndroidActivity currentActivity = null;
 	public Facebook facebook = new Facebook("172905469435543");
-	public static boolean initialized;
 
 	public static TapjoyEarnedPointsNotifier tepn = new TapjoyEarnedPointsNotifier() {
 		public void earnedTapPoints(int amount) {
@@ -123,7 +122,7 @@ public class EpicAndroidActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		EpicLog.i("EpicAndroidActivity.onCreate() this=" + this);
 		super.onCreate(savedInstanceState);
-		if(!initialized) {
+		if(!EpicPlatform.initialized) {
 			EpicLog.w("Starting init");
 			String screenName = null;
 			Intent n = getIntent();
@@ -150,7 +149,6 @@ public class EpicAndroidActivity extends Activity {
 			intent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
 			intent.putExtra("sender", "android@realcasualgames.com");
 			startService(intent);
-			initialized = true;
 		} else {
 			EpicLog.w("Skipping re-init");
 		}

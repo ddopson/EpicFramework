@@ -105,4 +105,18 @@ public class EpicSocial {
 	public static void togglePush(boolean pushEnabled) {
 		EpicSocialImplementation.togglePush(pushEnabled);
 	}
+
+	public static void getFacebookFriendList() {
+		EpicSocialImplementation.getFacebookFriendList();
+	}
+
+	public static void promptForFbConnect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void promptForFbConnectScores() {
+		// TODO Auto-generated method stub
+		
+	}
 }

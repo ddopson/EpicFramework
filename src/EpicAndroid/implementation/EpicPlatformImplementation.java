@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -17,15 +18,12 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.epic.framework.cfg.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.Ui.EpicPlatformInterface;
-import com.epic.framework.common.Ui.EpicTimer.PlatformTimerInterface;
-import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicLog;
 import com.realcasualgames.words.PlayerState;
 
@@ -140,12 +138,33 @@ public class EpicPlatformImplementation extends ViewGroup implements EpicPlatfor
 	public static void scheduleGlobalTimer(int period) {
 		globalTimer.schedule(globalTimerTask, 0, period);
 	}
+	
 	public static void dismissNotifications() {
 		String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager mNotificationManager = (NotificationManager) EpicApplication.getAndroidContext().getSystemService(ns);
         mNotificationManager.cancelAll();		
         
         PlayerState.resetClicked();
+	}
+	
+	public static boolean isTouchEnabledDevice() {
+		return true;  // Always true on Android
+	}
+	
+	public static String getListingId() {
+		return "15";
+	}
+
+	public static String getApplicationVersion() {
+		String mVersionNumber = "Unknown";
+
+		try {
+            String pkg = EpicApplication.theApplication.getPackageName();
+            mVersionNumber = EpicApplication.theApplication.getPackageManager().getPackageInfo(pkg, 0).versionName;
+        } catch (NameNotFoundException e) {}
+
+        EpicLog.i("Detected version " + mVersionNumber);
+        return mVersionNumber;
 	}
 
 }

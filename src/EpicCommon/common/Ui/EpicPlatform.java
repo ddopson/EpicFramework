@@ -2,20 +2,14 @@ package com.epic.framework.common.Ui;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
-
 import com.epic.framework.cfg.EpicProjectConfig;
-import com.epic.framework.common.Ui.EpicAnimationSequence.EpicAnimationFrame;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
-import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.implementation.ArchPlatform;
-import com.epic.framework.implementation.EpicApplication;
 import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.framework.implementation.EpicPlatformImplementation;
-import com.epic.framework.implementation.EpicSocialImplementation;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 
@@ -37,7 +31,7 @@ public class EpicPlatform {
 	
 	private static final boolean DEBUG = EpicProjectConfig.isReleaseMode ? false : false;
 	private static final int NOT_DISPLAYED = -1;
-	private static boolean initialized = false;
+	public static boolean initialized = false;
 	public static EpicScreen currentScreen;
 	private static EpicPercentLayout epicPercentLayout;
 	private static EpicPlatformInterface epicPlatformInterface;
@@ -531,6 +525,24 @@ public class EpicPlatform {
 	}
 
 	public static boolean isTouchEnabledDevice() {
-		return EpicApplication.isTouchEnabledDevice();
+		return EpicPlatformImplementation.isTouchEnabledDevice();
+	}
+
+	public static boolean isFunkySmallNonTouchDevice() {
+		// wtf?  - some strange hacks Derek uses
+		return getPlatformWidth() < 800 && !EpicPlatform.isTouchEnabledDevice();
+	}
+
+	public static void androidLaunchMarketplace(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static String getApplicationVersion() {
+		return EpicPlatformImplementation.getApplicationVersion();
+	}
+
+	public static String getListingId() {
+		return EpicPlatformImplementation.getListingId();
 	}
 }
