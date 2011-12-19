@@ -31,6 +31,7 @@ import com.epic.framework.implementation.facebook.Facebook;
 import com.epic.framework.implementation.tapjoy.TapjoyConnect;
 import com.epic.framework.implementation.tapjoy.TapjoyEarnedPointsNotifier;
 import com.epic.framework.implementation.tapjoy.TapjoyLog;
+import com.realcasualgames.words.PlayerState;
 
 public class EpicAndroidActivity extends Activity {
 	public static final int CONTACT_PICK = 5;

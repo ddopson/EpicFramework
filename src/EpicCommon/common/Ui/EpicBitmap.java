@@ -236,4 +236,7 @@ public class EpicBitmap {
 	public boolean isLoaded() {
 		return platformObject != null || (resizeCache != null && resizeCache.size() > 0);
 	}
+	public static EpicBitmap loadBitmapFromUrl(String url) {
+		return EpicBitmapImplementation.loadBitmapFromUrl(url);
+	}
 }

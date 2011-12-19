@@ -27,6 +27,7 @@ import com.epic.framework.common.Ui.EpicPlatformInterface;
 import com.epic.framework.common.Ui.EpicTimer.PlatformTimerInterface;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicLog;
+import com.realcasualgames.words.PlayerState;
 
 public class EpicPlatformImplementation extends ViewGroup implements EpicPlatformInterface {
 	private static EpicPlatformImplementation thePercentLayout = new EpicPlatformImplementation();

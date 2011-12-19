@@ -26,6 +26,9 @@ public class EpicFail {
 	public static EpicRuntimeException unhandled_case() {
 		return log_exception( new EpicUnhandledCaseException());
 	}
+	public static EpicRuntimeException unhandled_case(String msg) {
+		return log_exception( new EpicUnhandledCaseException(msg));
+	}
 
 	public static EpicRuntimeException missing_image(String imageName) {
 		return log_exception( new EpicMissingImageException(imageName));

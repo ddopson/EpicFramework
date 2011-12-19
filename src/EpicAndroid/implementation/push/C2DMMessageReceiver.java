@@ -12,6 +12,9 @@ import android.content.Intent;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.StringHelper;
 import com.epic.framework.implementation.EpicApplication;
+import com.epic.resources.EpicImages;
+import com.realcasualgames.words.PlayerState;
+import com.realcasualgames.words.PushResponder;
 
 public class C2DMMessageReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {

@@ -3,6 +3,8 @@ package com.epic.framework.implementation;
 import com.epic.framework.common.Ui.EpicDialogBuilder;
 import com.epic.framework.common.Ui.EpicDialogBuilder.EpicDialogButton;
 import com.epic.framework.common.Ui.EpicPlatform;
+import com.realcasualgames.words.Challenge;
+import com.realcasualgames.words.ScreenTrophyRoomDetails;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

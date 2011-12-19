@@ -12,12 +12,20 @@ import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.implementation.ArchPlatform;
+import com.epic.framework.implementation.EpicApplication;
+import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.framework.implementation.EpicPlatformImplementation;
 import com.epic.framework.implementation.EpicSocialImplementation;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 
 public class EpicPlatform {
+	public static final int PLATFORM_ANDROID = 0;
+	public static final int PLATFORM_BLACKBERRY = 1;
+	public static final int PLATFORM_IOS = 2;
+
+
+	
 	public static final int TIMER_HZ = 20;
 	public static final boolean RMODE_FULLSCREEN = true;
 	public static final boolean RMODE_STRETCH = false;
@@ -121,6 +129,17 @@ public class EpicPlatform {
 		initialized = true;
 	}
 
+	public static boolean isBlackberry() {
+		return EpicPlatformConfig.platform == PLATFORM_BLACKBERRY;
+	}
+	public static boolean isAndroid() {
+		return EpicPlatformConfig.platform == PLATFORM_ANDROID;
+	}
+	public static boolean isIos() {
+		return EpicPlatformConfig.platform == PLATFORM_IOS;
+
+	}
+	
 	public static void changeScreen(EpicScreen screen) {
 		if(DEBUG) EpicLog.d("EpicPlatform.changeScreen(" + screen + ")");
 		EpicFail.assertNotNull(currentScreen);
@@ -509,5 +528,9 @@ public class EpicPlatform {
 	public static void clearNotifications() {
 		timeNotificationDisplayed = NOT_DISPLAYED;
 		notifications.clear();
+	}
+
+	public static boolean isTouchEnabledDevice() {
+		return EpicApplication.isTouchEnabledDevice();
 	}
 }

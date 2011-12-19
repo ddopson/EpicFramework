@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.implementation.EpicFontImplementation;
 import com.epic.framework.implementation.EpicPlatformConfig;
+import com.epic.resources.EpicFiles;
 
 public class EpicFont {
 	private static final HashMap<Integer, EpicFont> sizedFonts = new HashMap<Integer, EpicFont>();
@@ -17,7 +18,7 @@ public class EpicFont {
 	public static final int HALIGN_LEFT = 12;
 	public static final int HALIGN_CENTER = 13;
 	
-	public static final EpicFont FONT_MAIN = EpicPlatformConfig.platform == EpicPlatformConfig.PLATFORM_BLACKBERRY ? new EpicFont("BBAlpha Sans") : new EpicFont(EpicFiles.Nunito);
+	public static final EpicFont FONT_MAIN = EpicPlatform.isBlackberry() ? new EpicFont("BBAlpha Sans") : new EpicFont(EpicFiles.Nunito);
 	public static final EpicFont FONT_GAME = new EpicFont(EpicFiles.LuckiestGuy);
 	
 	public final Object fontObject;

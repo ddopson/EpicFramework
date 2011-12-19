@@ -1,9 +1,8 @@
 package com.epic.framework.common.util;
 
-import com.epic.framework.cfg.EpicProjectConfig;
-import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.Ui.EpicSound;
 import com.epic.framework.implementation.EpicSoundManagerImplementation;
+import com.realcasualgames.words.PlayerState;
 
 public class EpicSoundManager {
 	
@@ -19,16 +18,6 @@ public class EpicSoundManager {
 
 	public static void preload(EpicSound[] soundsToPreload) {
 		EpicSoundManagerImplementation.preload(soundsToPreload);
-	}
-
-	public static void toggleSounds() {
-		PlayerState.toggleSounds();
-		if(!PlayerState.soundsEnabled()) {
-			EpicSoundManagerImplementation.stopMusic();
-		} else {
-			EpicSound bg = EpicProjectConfig.getBackgroundMusic();
-			if(bg != null) EpicSoundManager.playMusic(bg);
-		}
 	}
 	
 	public static void stopMusic() {

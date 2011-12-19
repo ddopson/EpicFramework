@@ -4,6 +4,8 @@ import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.implementation.EpicSocialImplementation;
+import com.epic.resources.EpicImages;
+import com.realcasualgames.words.PlayerState;
 
 public class EpicSocial {
 	public static String getIdentity() {
@@ -98,5 +100,9 @@ public class EpicSocial {
 		} else {
 			EpicPlatform.doToastNotification(new EpicNotification("Problem Logging Out", new String[] { "You cannot log out until you sync your latest scores.", "Please complete a game and try again." }, EpicImages.icon, 5));
 		}
+	}
+
+	public static void togglePush(boolean pushEnabled) {
+		EpicSocialImplementation.togglePush(pushEnabled);
 	}
 }

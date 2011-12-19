@@ -179,7 +179,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 		{
 			new Thread(new Runnable()
 				{
-					@Override
 					public void run()
 					{
 						URL fileURL;
@@ -561,7 +560,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 		replayButton.setId(1113);
 		replayButton.setOnClickListener(new OnClickListener()
 		{
-			@Override
 			public void onClick(View v)
 			{
 				initVideoView();
@@ -580,7 +578,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 		closeButton.setLayoutParams(closeParams);
 		closeButton.setOnClickListener(new OnClickListener()
 		{
-			@Override
 			public void onClick(View v)
 			{
 				finish();
@@ -613,7 +610,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 			linkButton.setLayoutParams(linkParams);
 			linkButton.setOnClickListener(new OnClickListener()
 			{
-				@Override
 				public void onClick(View v)
 				{
 					// OPEN URL.
@@ -643,7 +639,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 				linkAltButton.setLayoutParams(linkParams);
 				linkAltButton.setOnClickListener(new OnClickListener()
 				{
-					@Override
 					public void onClick(View v)
 					{
 						// OPEN URL.
@@ -771,7 +766,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 		
 		new Thread(new Runnable()
 		{
-			@Override
 			public void run()
 			{
 				String response = new TapjoyURLConnection().connectToURL(videoData.clickURL);
@@ -834,14 +828,12 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 	//--------------------------------------------------------------------------------
 	// VIDEO LISTENERS
 	//--------------------------------------------------------------------------------
-	@Override
 	public void onPrepared(MediaPlayer mp)
 	{
 		TapjoyLog.i(TAPJOY_VIDEO, "onPrepared");
 	}
 
 
-	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra)
 	{
 		TapjoyLog.i(TAPJOY_VIDEO, "onError");
@@ -856,7 +848,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 	}
 
 
-	@Override
 	public void onCompletion(MediaPlayer mp)
 	{
 		TapjoyLog.i(TAPJOY_VIDEO, "onCompletion");
@@ -872,7 +863,6 @@ public class TapjoyVideoView extends Activity implements OnCompletionListener, O
 		
 		new Thread(new Runnable()
 		{
-			@Override
 			public void run()
 			{
 				if (clickRequestSuccess)

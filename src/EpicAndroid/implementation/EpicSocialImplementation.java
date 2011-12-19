@@ -39,6 +39,15 @@ import com.epic.framework.implementation.facebook.DialogError;
 import com.epic.framework.implementation.facebook.Facebook;
 import com.epic.framework.implementation.facebook.FacebookError;
 import com.epic.framework.implementation.facebook.Facebook.DialogListener;
+import com.epic.resources.EpicImages;
+import com.realcasualgames.words.OnlineChallenge;
+import com.realcasualgames.words.PlayerState;
+import com.realcasualgames.words.ScreenBuyTokens;
+import com.realcasualgames.words.ScreenMainMenu;
+import com.realcasualgames.words.ScreenNursery;
+import com.realcasualgames.words.ScreenOnlineChallengeDetails;
+import com.realcasualgames.words.ScreenScores;
+import com.realcasualgames.words.WordsHttp;
 
 public class EpicSocialImplementation {
 	public static void beginLogin(final EpicSocialSignInCompletionHandler doAfter) {
