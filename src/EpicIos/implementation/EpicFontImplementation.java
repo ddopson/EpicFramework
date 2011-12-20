@@ -37,13 +37,15 @@ public class EpicFontImplementation {
 	}
 
 	public static Object getFontObjectFromName(String systemName) {
-		UIFont font = UIFont.fontWithNameSize(systemName, 24);
+		// TODO: return fake font
+		UIFont font = UIFont.fontWithNameSize("Courier-Bold", 24);
 		return font;
 	}
 
 	public static Object getFontObjectFromFile(EpicFile file) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO: return fake font
+		UIFont font = UIFont.fontWithNameSize("Courier-Bold", 24);
+		return font;
 	}
 
 }
