@@ -15,7 +15,7 @@ public class EpicCanvasImplementation {
 		EpicLog.v("EpicCanvasImplementation.drawBitmap");
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
-		c.setAlpha((float) alpha / 256.0f);
+		c.setAlpha(1.0f);
 		uiimg.drawInRect(new CGRect(x, y, sw, sh));
 		EpicLog.v("EpicCanvasImplementation.drawBitmap - done");
 	}	
@@ -23,7 +23,7 @@ public class EpicCanvasImplementation {
 	public static void drawCircle(Object graphicsObject, int color, int alpha, int x_center, int y_center, int radius) {
 		EpicLog.v("EpicCanvasImplementation.drawCircle");
 		CGContext c = (CGContext) graphicsObject;
-		c.setAlpha(alpha);
+		c.setAlpha(1.0f);
 		c.setFillColor(getColorFloatsFromInt(color));
 		c.fillEllipseInRect(new CGRect(x_center - radius, y_center - radius, radius * 2, radius * 2));
 		EpicLog.v("EpicCanvasImplementation.drawCircle - done");
@@ -40,6 +40,7 @@ public class EpicCanvasImplementation {
 		CGContext c = (CGContext) graphicsObject;
 		float[] values = getColorFloatsFromInt(color);
 		c.setFillColor(values);
+		c.setAlpha(1.0f);
 		c.fillRect(new CGRect(left, top, right - left, bottom - top));
 		EpicLog.v("EpicCanvasImplementation.applyFill - done");
 	}
