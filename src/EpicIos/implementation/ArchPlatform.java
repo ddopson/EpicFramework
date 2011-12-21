@@ -17,11 +17,11 @@ public class ArchPlatform {
 	}
 
 	public static String getMemstatsString() {
-		return "";
+		return "memstatsString";
 	}
 
 	public static String randomUUID() {
-		return null;
+		return "randomUUID";
 	}
 
 	public static void logMemoryStats() {
