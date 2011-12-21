@@ -19,8 +19,8 @@ public class EpicFontImplementation {
 	}
 
 	public static int measureHeight(Object fontObject) {
-		UIFont font = (UIFont) fontObject;
-		return (int) font.pointSize();
+		EpicFontImplementation font = (EpicFontImplementation)fontObject;
+		return font.size;
 	}
 
 	public static int measureAscent(Object fontObject) {
