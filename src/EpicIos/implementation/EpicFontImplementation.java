@@ -1,15 +1,21 @@
 package com.epic.framework.implementation;
 
-import org.xmlvm.iphone.CGFont;
 import org.xmlvm.iphone.UIFont;
 
 import com.epic.framework.common.Ui.EpicFile;
 
 public class EpicFontImplementation {
-
-	public static Object getFontObjectFromSize(Object fontObject, int i) {
-		UIFont font = (UIFont) fontObject;
-		return font.fontWithSize(i);
+	String name;
+	int size;
+	private static final int defaultSize = 88; // heh, make sure no one uses the default
+	private EpicFontImplementation(String name, int size) {
+		this.name = name;
+		this.size = size;
+	}
+	
+	public static Object getFontObjectFromSize(Object fontObject, int size) {
+		EpicFontImplementation font = (EpicFontImplementation)fontObject;
+		return new EpicFontImplementation(font.name, size);
 	}
 
 	public static int measureHeight(Object fontObject) {
@@ -33,20 +39,16 @@ public class EpicFontImplementation {
 	}
 
 	public static int getSize(Object fontObject) {
-		UIFont font = (UIFont) fontObject;
-		return (int) font.pointSize();
+		EpicFontImplementation font = (EpicFontImplementation)fontObject;
+		return font.size;
 	}
 
 	public static Object getFontObjectFromName(String systemName) {
-		// TODO: return fake font
-		UIFont font = UIFont.systemFontOfSize(20);
-		return font;
+		return new EpicFontImplementation(systemName, defaultSize);
 	}
 
 	public static Object getFontObjectFromFile(EpicFile file) {
-		// TODO: return fake font
-		UIFont font = UIFont.systemFontOfSize(20);
-		return font;
+		return getFontObjectFromName("Arial");
 	}
 
 }
