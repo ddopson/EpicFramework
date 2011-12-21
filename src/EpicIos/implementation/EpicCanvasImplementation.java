@@ -2,8 +2,10 @@ package com.epic.framework.implementation;
 
 
 import org.xmlvm.iphone.CGContext;
+import org.xmlvm.iphone.CGFont;
 import org.xmlvm.iphone.CGRect;
 import org.xmlvm.iphone.UIImage;
+import org.xmlvm.iphone.internal.renderer.UITextRenderer;
 
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;
@@ -15,7 +17,7 @@ public class EpicCanvasImplementation {
 		EpicLog.v("EpicCanvasImplementation.drawBitmap");
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
-		c.setAlpha(1.0f);
+		c.setAlpha((float) alpha / 256.0f);
 		uiimg.drawInRect(new CGRect(x, y, sw, sh));
 		EpicLog.v("EpicCanvasImplementation.drawBitmap - done");
 	}	
@@ -57,6 +59,8 @@ public class EpicCanvasImplementation {
 	public static void drawText(Object graphicsObject, String chars, int left, int top, int color) {
 		EpicLog.v("EpicCanvasImplementation.drawText");
 		CGContext c = (CGContext) graphicsObject;
+		c.setAlpha(0.5f);
+//		c.setFont((CGFont)EpicFont.FONT_GAME.fontObject);
 		c.showTextAtPoint(left, top, chars);
 		EpicLog.v("EpicCanvasImplementation.drawText - done");
 	}
@@ -69,11 +73,11 @@ public class EpicCanvasImplementation {
 
 	public static void drawText(Object graphicsObject, String text, int text_left, int text_top, EpicFont font, int color, int rotateBy) {
 		// TODO Auto-generated method stub
-		
+		drawText(graphicsObject, text, text_left, text_top, color);
 	}
 
 	public static void drawText(Object graphicsObject, char[] buffer, int lineStart, int i, int left, int text_top, EpicFont font, int color, int rotateBy) {
 		// TODO Auto-generated method stub
-		
+		drawText(graphicsObject, buffer.toString(), left, text_top, color);
 	}
 }

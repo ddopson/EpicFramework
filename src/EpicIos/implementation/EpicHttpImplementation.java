@@ -12,7 +12,8 @@ import com.epic.framework.common.util.exceptions.EpicNotImlementedException;
 public class EpicHttpImplementation {
 
 	public static EpicHttpResponse get(EpicHttpRequest epicHttpRequest) {
-		throw EpicFail.not_implemented();
+		EpicHttpResponse r = new EpicHttpResponse(500, "empty", null);
+		return r;
 	}
 
 	public static long downloadFileTo(String url, String path) {

@@ -1,5 +1,6 @@
 package com.epic.framework.implementation;
 
+import org.xmlvm.iphone.CGFont;
 import org.xmlvm.iphone.UIFont;
 
 import com.epic.framework.common.Ui.EpicFile;
@@ -38,13 +39,13 @@ public class EpicFontImplementation {
 
 	public static Object getFontObjectFromName(String systemName) {
 		// TODO: return fake font
-		UIFont font = UIFont.fontWithNameSize("Courier-Bold", 24);
+		UIFont font = UIFont.systemFontOfSize(20);
 		return font;
 	}
 
 	public static Object getFontObjectFromFile(EpicFile file) {
 		// TODO: return fake font
-		UIFont font = UIFont.fontWithNameSize("Courier-Bold", 24);
+		UIFont font = UIFont.systemFontOfSize(20);
 		return font;
 	}
 
