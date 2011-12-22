@@ -38,7 +38,7 @@ public class Main extends UIApplicationDelegate {
         window.addSubview(gameController.getView());
         window.makeKeyAndVisible();
         
-        t.scheduleAtFixedRate(33);
+        t.scheduleAtFixedRate(1000 / EpicPlatform.TIMER_HZ);
         
         EpicLog.i("Main.applicationDidFinishLaunching() complete");
     }

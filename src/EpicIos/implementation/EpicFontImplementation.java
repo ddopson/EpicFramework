@@ -34,8 +34,10 @@ public class EpicFontImplementation {
 		CGContext c = UIGraphics.getCurrentContext();
 		c.selectFont(font.name, font.size);
 		c.setTextDrawingMode(CGContext.kCGTextInvisible);
+		c.setAlpha(0.0f);
 		c.showTextAtPoint(0, 0, text);
 		c.setTextDrawingMode(CGContext.kCGTextFill);
+		c.setAlpha(1.0f);
 		return (int) c.getTextPosition().x;
 //		return text.length() * 9;
 	}
