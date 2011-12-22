@@ -24,9 +24,13 @@ public class EpicPlatform {
 	public static final boolean RMODE_FULLSCREEN = true;
 	public static final boolean RMODE_STRETCH = false;
 	public static final boolean RMODE_LETTERBOX = false;
-	public static final int letterboxWidth = 800;
-	public static final int letterboxHeight = 480;
-	
+	public static final int letterboxWidth = -99;
+	public static final int letterboxHeight = -99;
+	static int renderWidth = -99;
+	static int renderHeight = -99;
+	static int truePlatformWidth = -99;
+	static int truePlatformHeight = -99;
+
 	
 	
 	private static final boolean DEBUG = EpicProjectConfig.isReleaseMode ? false : false;
@@ -35,10 +39,6 @@ public class EpicPlatform {
 	public static EpicScreen currentScreen;
 	private static EpicPercentLayout epicPercentLayout;
 	private static EpicPlatformInterface epicPlatformInterface;
-	static int renderWidth = 1024;
-	static int renderHeight = 768;
-	static int truePlatformWidth = 1024;
-	static int truePlatformHeight = 768;
 	public static MouseTrail mouseTrail = new MouseTrail();
 	static final int designWidth = EpicProjectConfig.designDimensions.width;
 	static final int designHeight = EpicProjectConfig.designDimensions.height;

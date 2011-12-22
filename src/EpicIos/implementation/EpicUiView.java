@@ -22,85 +22,99 @@ import com.epic.framework.common.util.EpicLog;
 
 public class EpicUiView extends UIView implements EpicPlatformInterface {
 	public EpicUiView(CGRect rect) {
-	    super(rect);
-	    
-	    EpicPlatform.initialize(this, null, null);
-	  }
-	
-	  @Override
-	  public void drawRect(CGRect rect) { 
-		  EpicLog.v("EpicUiView.drawRect");
-		  EpicCanvas c = EpicCanvas.get(UIGraphics.getCurrentContext());
-		  EpicLog.v("EpicUiView.drawRect - about to draw currentScreen");
-		  EpicPlatform.onPlatformPaint(c);
-		  EpicLog.v("EpicUiView.drawRect - done");
+		super(rect);
+
+		EpicPlatform.initialize(this, null, null);
+	}
+
+
+	private boolean _haveBeenLaid = false;
+	private void ensureLaidOut() {
+		// DDOPSON-2011-12-22 - This is needed to communicate window size with EpicPlatform.  It's a bit of a hack.
+		// We don't yet have any native widgets on ios, so we do very little with native layout.  
+		// EpicPlatform gets the window size from onPlatformLayoutRequest, so we make sure to simulate that occurring at least once.
+		if(!_haveBeenLaid) {
+			CGRect frame = this.getWindow().getFrame();
+			EpicPlatform.onPlatformLayoutRequest((int)frame.size.width, (int)frame.size.height, false);
+			EpicLog.v("WINDOW_RECT: " + frame.origin.x + ", " + frame.origin.y + " - " + frame.size.width + "x" + frame.size.height);
+			_haveBeenLaid = true;
+		}
+	}
+
+	@Override
+	public void drawRect(CGRect rect) { 
+		EpicLog.v("EpicUiView.drawRect");
+		EpicCanvas c = EpicCanvas.get(UIGraphics.getCurrentContext());
+		ensureLaidOut();
+		EpicLog.v("EpicUiView.drawRect - about to draw currentScreen");
+		EpicPlatform.onPlatformPaint(c);
+		EpicLog.v("EpicUiView.drawRect - done");
 	} 
-	  
-	  /**
-       * List of points that represents the locations of fingers on the
-       * screen.
-       */
-      private List<CGPoint> points = new ArrayList<CGPoint>();
 
-      /**
-       * This method converts the events encapsulated by an UIEvent into a
-       * list of CGPoints. The list is stored in 'points'.
-       */
-      private void getTouches(UIEvent event) {
-    	  EpicLog.i("Getting touches...");
-          /**
-           * Erase previous list of points.
-           */
-          points.clear();
-          /**
-           * Iterate over all UITouches that are associated with this
-           * UIEvent
-           */
-          for (UITouch touch : event.allTouches()) {
-              /**
-               * If a UITouch has the phase UITouchPhaseEnded (finger
-               * lifted from screen) it is not included.
-               */
-              if (touch.getPhase() != UITouchPhase.Ended) {
-                  /**
-                   * The locationInView() method retrieves the coordinates
-                   * of the UITouch relative to a specific view (which is
-                   * the custom view in this case).
-                   */
-                  points.add(touch.locationInView(this));
-              }
-          }
-          
-          for(CGPoint p : points) {
-        	  EpicPlatform.onPlatformTouchFinished((int)p.x, (int)p.y);
-//        	  currentScreen.onClick((int) p.x, (int) p.y);
-          }
-      }
+	/**
+	 * List of points that represents the locations of fingers on the
+	 * screen.
+	 */
+	private List<CGPoint> points = new ArrayList<CGPoint>();
 
-      /**
-       * Called whenever a finger touches the screen.
-       */
-      @Override
-      public void touchesBegan(Set<UITouch> touches, UIEvent event) {
-          getTouches(event);
-      }
+	/**
+	 * This method converts the events encapsulated by an UIEvent into a
+	 * list of CGPoints. The list is stored in 'points'.
+	 */
+	private void getTouches(UIEvent event) {
+		EpicLog.i("Getting touches...");
+		/**
+		 * Erase previous list of points.
+		 */
+		points.clear();
+		/**
+		 * Iterate over all UITouches that are associated with this
+		 * UIEvent
+		 */
+		for (UITouch touch : event.allTouches()) {
+			/**
+			 * If a UITouch has the phase UITouchPhaseEnded (finger
+			 * lifted from screen) it is not included.
+			 */
+			if (touch.getPhase() != UITouchPhase.Ended) {
+				/**
+				 * The locationInView() method retrieves the coordinates
+				 * of the UITouch relative to a specific view (which is
+				 * the custom view in this case).
+				 */
+				points.add(touch.locationInView(this));
+			}
+		}
 
-      /**
-       * Called whenever a finger is lifted from the screen.
-       */
-      @Override
-      public void touchesEnded(Set<UITouch> touches, UIEvent event) {
-          getTouches(event);
-      }
+		for(CGPoint p : points) {
+			EpicPlatform.onPlatformTouchFinished((int)p.x, (int)p.y);
+		}
+	}
 
-      /**
-       * Called whenever a finger that is already touching the screen is
-       * moved across the screen.
-       */
-      @Override
-      public void touchesMoved(Set<UITouch> touches, UIEvent event) {
-          getTouches(event);
-      }
+	/**
+	 * Called whenever a finger touches the screen.
+	 */
+	@Override
+	public void touchesBegan(Set<UITouch> touches, UIEvent event) {
+		getTouches(event);
+	}
+
+	/**
+	 * Called whenever a finger is lifted from the screen.
+	 */
+	@Override
+	public void touchesEnded(Set<UITouch> touches, UIEvent event) {
+		getTouches(event);
+	}
+
+	/**
+	 * Called whenever a finger that is already touching the screen is
+	 * moved across the screen.
+	 */
+	@Override
+	public void touchesMoved(Set<UITouch> touches, UIEvent event) {
+		getTouches(event);
+	}
 
 	@Override
 	public void requestRepaint() {
@@ -115,12 +129,12 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
