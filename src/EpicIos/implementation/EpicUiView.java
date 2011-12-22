@@ -104,12 +104,12 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 
 	@Override
 	public void requestRepaint() {
-		Main.window.getSubviews().get(0).setNeedsDisplay();
+		this.setNeedsDisplay();
 	}
 
 	@Override
 	public void requestRelayout() {
-		Main.window.getSubviews().get(0).setNeedsDisplay();
+		this.setNeedsDisplay();
 	}
 
 	@Override

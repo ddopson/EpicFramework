@@ -247,7 +247,7 @@ public class EpicPlatform {
 	public static void repaintScreen() {
 		synchronized (singleThreadingLock) {
 			//			if(DEBUG) EpicLog.d("EpicPlatform.repaintScreen()");
-			epicPlatformInterface.requestRepaint();
+			 epicPlatformInterface.requestRepaint();
 		}
 	}
 

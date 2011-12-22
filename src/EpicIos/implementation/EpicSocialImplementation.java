@@ -1,7 +1,9 @@
 package com.epic.framework.implementation;
 
 import com.epic.framework.common.Ui.EpicClickListener;
+import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
+import com.realcasualgames.words.ScreenOnlineChallengeDetails;
 
 public class EpicSocialImplementation {
 
@@ -26,7 +28,7 @@ public class EpicSocialImplementation {
 	}
 
 	public static String chooseContact() {
-		return "chosen_contact";
+		return "derekj212@gmail.com";
 	}
 	
 	public static void selectFromEmailList(String[] strings) {
@@ -54,6 +56,11 @@ public class EpicSocialImplementation {
 	}
 	
 	public static void viewChallenges(int amount) {
+		EpicSocialTabbedView s = new EpicSocialTabbedView();
+//		Main.window.setRootViewController(s);
+//		Main.window.makeKeyAndVisible();
+		Main.navc.pushViewController(s, true);
+		Main.navc.setNavigationBarHidden(false, true);
 	}
 	
 	public static void processResponse(final String response) {
@@ -82,6 +89,11 @@ public class EpicSocialImplementation {
 	}
 
 	public static void postToFacebook(String title, String url, String caption, String imageUrl, EpicClickListener callback) {
+	}
+
+	public static void showChallengeDetails(String challenge_id) {
+		Main.navc.popToRootViewControllerAnimated(true);
+		EpicPlatform.changeScreen(new ScreenOnlineChallengeDetails(challenge_id, null));
 	}
 
 }

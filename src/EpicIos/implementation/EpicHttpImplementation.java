@@ -24,7 +24,8 @@ public class EpicHttpImplementation {
 				c.getOutputStream().write(epicHttpRequest.body.getBytes());
 			}
 			
-			InputStream in = new BufferedInputStream(c.getInputStream());
+			InputStream in = c.getInputStream();
+			EpicLog.i("Bytes available in stream: " + in.available());
 			byte[] buf = new byte[BUF_SIZE];
 			int read = in.read(buf);
 			EpicLog.i("Read " + read + " bytes from connection body.");

@@ -30,13 +30,14 @@ public class EpicFontImplementation {
 	}
 
 	public static int measureAdvance(Object fontObject, String text) {
-//		CGContext c = UIGraphics.getCurrentContext();
-//		
-//		c.setTextDrawingMode(CGContext.kCGTextInvisible);
-//		c.showTextAtPoint(0, 0, text);
-//		c.setTextDrawingMode(CGContext.kCGTextFill);
-//		return (int) c.getTextPosition().x;
-		return text.length() * 9;
+		EpicFontImplementation font = (EpicFontImplementation)fontObject;
+		CGContext c = UIGraphics.getCurrentContext();
+		c.selectFont(font.name, font.size);
+		c.setTextDrawingMode(CGContext.kCGTextInvisible);
+		c.showTextAtPoint(0, 0, text);
+		c.setTextDrawingMode(CGContext.kCGTextFill);
+		return (int) c.getTextPosition().x;
+//		return text.length() * 9;
 	}
 
 	public static int measureAdvance(Object fontObject, char[] chars, int offset, int length) {

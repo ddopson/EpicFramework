@@ -100,7 +100,7 @@ public class EpicCanvasImplementation {
 		c.setStrokeColor(getColorFloatsFromInt(color));
 		c.setTextDrawingMode(0);
 		c.selectFont(fi.name, (float)fi.size);
-		c.showTextAtPoint((float)left, (float)top, text);
+		c.showTextAtPoint((float)left, (float)top + fi.size, text);
 		CGPoint p = c.getTextPosition();
 
 		EpicLog.v("EpicCanvasImplementation.drawText - done.  p=" + p.x + ", " + p.y);
