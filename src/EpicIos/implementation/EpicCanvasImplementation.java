@@ -2,19 +2,13 @@ package com.epic.framework.implementation;
 
 
 import org.xmlvm.iphone.CGContext;
-import org.xmlvm.iphone.CGFont;
-import org.xmlvm.iphone.CGImage;
-import org.xmlvm.iphone.CGPoint;
 import org.xmlvm.iphone.CGRect;
 import org.xmlvm.iphone.UIFont;
 import org.xmlvm.iphone.UIImage;
-import org.xmlvm.iphone.internal.renderer.UITextRenderer;
 
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;
-import com.epic.framework.common.util.EpicLog;
-import com.epic.framework.common.util.StringHelper;
 
 public class EpicCanvasImplementation {
 	static {
@@ -68,9 +62,9 @@ public class EpicCanvasImplementation {
 	}
 
 	public static void drawBorder(Object graphicsObject, int left, int top, int width, int height, int color, int size) {
-		// CGContext c = (CGContext) graphicsObject;
-		// c.setStrokeColor(color);
-		// TODO: draw border ;)
+		CGContext c = (CGContext) graphicsObject;
+		c.setStrokeColor(getColorFloatsFromInt(color));
+		c.strokeRect(getDstRect(left, top, width, height));
 	}
 
 	public static void applyFill(Object graphicsObject, int left, int top, int right, int bottom, int color) {
@@ -81,9 +75,12 @@ public class EpicCanvasImplementation {
 	}
 
 	public static void drawLine(Object graphicsObject, int x, int y, int x2, int y2, int strokeWidth, int color) {
-		// CGContext c = (CGContext) graphicsObject;
-		// c.setStrokeColor(color);
-		// TODO: draw line
+		CGContext c = (CGContext) graphicsObject;
+		c.setStrokeColor(getColorFloatsFromInt(color));
+		c.beginPath();
+		c.moveToPoint(x, y);
+		c.addLineToPoint(x2, y2);
+		c.strokePath();
 	}
 
 	public static void drawText(Object graphicsObject, String text, int left, int top, EpicFont font, int color, int rotateBy) {
