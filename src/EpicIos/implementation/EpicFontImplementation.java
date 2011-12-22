@@ -1,7 +1,6 @@
 package com.epic.framework.implementation;
 
 import org.xmlvm.iphone.CGContext;
-import org.xmlvm.iphone.UIFont;
 import org.xmlvm.iphone.UIGraphics;
 
 import com.epic.framework.common.Ui.EpicFile;
@@ -29,17 +28,29 @@ public class EpicFontImplementation {
 		return getSize(fontObject);
 	}
 
+	private static void setInvisibleTextMode(CGContext c) {
+		// DDOPSON-2011-12-22 - Native code wrapper is a bit busted here ...
+		//		- (void) setTextDrawingModexMw :(int)mode
+		//		{
+		//		  if (mode == 1) {
+		//		    CGContextSetTextDrawingMode(context, kCGTextInvisible);
+		//		  } else {
+		//		    CGContextSetTextDrawingMode(context, kCGTextFill);
+		//		  }
+		//		}
+		// YET .....
+		// CGContext.kCGTextInvisible == 3 !!!!!
+		// So we do what works...
+		c.setTextDrawingMode(3);
+	}
+	
 	public static int measureAdvance(Object fontObject, String text) {
 		EpicFontImplementation font = (EpicFontImplementation)fontObject;
 		CGContext c = UIGraphics.getCurrentContext();
 		c.selectFont(font.name, font.size);
-		c.setTextDrawingMode(CGContext.kCGTextInvisible);
-		c.setAlpha(0.0f);
+		setInvisibleTextMode(c);
 		c.showTextAtPoint(0, 0, text);
-		c.setTextDrawingMode(CGContext.kCGTextFill);
-		c.setAlpha(1.0f);
 		return (int) c.getTextPosition().x;
-//		return text.length() * 9;
 	}
 
 	public static int measureAdvance(Object fontObject, char[] chars, int offset, int length) {
