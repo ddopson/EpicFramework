@@ -248,15 +248,14 @@ public class EpicCanvas {
 	final void _drawTextBox(String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
 		EpicFail.assertTrue(text.length() < BUFFER_SIZE, "text.length() is bigger than BUFFER_SIZE.  length=" + text.length());
 
-//		text.getChars(0, text.length(), buffer, 0);
-		
-		for(int i = 0; i < buffer.length; ++i) {
-			buffer[i] = '\0';
-		}
-		
-		for(int i = 0; i < text.length(); ++i) {
+
+		// DDOPSON-2011-12-22 - this is Derek's hack because String.getChars seems broken on ios.  This should probably live in StringHelper
+		//		text.getChars(0, text.length(), buffer, 0);
+		int i = 0;
+		for(; i < text.length(); ++i) {
 			buffer[i] = text.charAt(i);
 		}
+		buffer[i] = 0;
 		
 		int textSize = font.getSize();
 
