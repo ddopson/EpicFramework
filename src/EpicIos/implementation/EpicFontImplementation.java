@@ -1,6 +1,8 @@
 package com.epic.framework.implementation;
 
+import org.xmlvm.iphone.CGContext;
 import org.xmlvm.iphone.UIFont;
+import org.xmlvm.iphone.UIGraphics;
 
 import com.epic.framework.common.Ui.EpicFile;
 
@@ -24,18 +26,21 @@ public class EpicFontImplementation {
 	}
 
 	public static int measureAscent(Object fontObject) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getSize(fontObject);
 	}
 
 	public static int measureAdvance(Object fontObject, String text) {
-		// TODO Auto-generated method stub
-		return 0;
+//		CGContext c = UIGraphics.getCurrentContext();
+//		
+//		c.setTextDrawingMode(CGContext.kCGTextInvisible);
+//		c.showTextAtPoint(0, 0, text);
+//		c.setTextDrawingMode(CGContext.kCGTextFill);
+//		return (int) c.getTextPosition().x;
+		return text.length() * 9;
 	}
 
 	public static int measureAdvance(Object fontObject, char[] chars, int offset, int length) {
-		// TODO Auto-generated method stub
-		return 0;
+		return measureAdvance(fontObject, new String(chars));
 	}
 
 	public static int getSize(Object fontObject) {

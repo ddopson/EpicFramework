@@ -50,7 +50,7 @@ public class EpicCanvasImplementation {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh) {
-		EpicLog.v("EpicCanvasImplementation.drawBitmap");
+//		EpicLog.v("EpicCanvasImplementation.drawBitmap");
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
 		if(alpha == EpicCanvas.NO_ALPHA) {
@@ -60,7 +60,7 @@ public class EpicCanvasImplementation {
 		}
 		//		c.drawImage(getDstRect(x, y, sw, sh), uiimg.getCGImage());
 		uiimg.drawInRect(getDstRect(x, y, sw, sh));
-		EpicLog.v("EpicCanvasImplementation.drawBitmap - done");
+//		EpicLog.v("EpicCanvasImplementation.drawBitmap - done");
 	}	
 
 	public static void drawCircle(Object graphicsObject, int color, int alpha, int x_center, int y_center, int radius) {
@@ -107,6 +107,6 @@ public class EpicCanvasImplementation {
 	}
 
 	public static void drawText(Object graphicsObject, char[] buffer, int lineStart, int i, int left, int top, EpicFont font, int color, int rotateBy) {
-		drawText(graphicsObject, buffer.toString(), left, top, font, color, rotateBy);
+		drawText(graphicsObject, new String(buffer), left, top, font, color, rotateBy);
 	}
 }

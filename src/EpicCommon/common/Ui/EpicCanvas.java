@@ -248,7 +248,16 @@ public class EpicCanvas {
 	final void _drawTextBox(String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
 		EpicFail.assertTrue(text.length() < BUFFER_SIZE, "text.length() is bigger than BUFFER_SIZE.  length=" + text.length());
 
-		text.getChars(0, text.length(), buffer, 0);
+//		text.getChars(0, text.length(), buffer, 0);
+		
+		for(int i = 0; i < buffer.length; ++i) {
+			buffer[i] = '\0';
+		}
+		
+		for(int i = 0; i < text.length(); ++i) {
+			buffer[i] = text.charAt(i);
+		}
+		
 		int textSize = font.getSize();
 
 		while(height < __drawTextBox(buffer, 0, text.length(), left, top, width, height, font, color, true, rotateBy)) {
