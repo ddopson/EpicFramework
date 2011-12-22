@@ -35,6 +35,7 @@ typedef UIImage MyUIImage;
 - (MyUIImage*) stretchableImagexMwMw :(int)leftCapWidth :(int)topCapHeight;
 - (MyCGSize*) getSizex;
 - (void) drawInRectx_MyCGRect: (MyCGRect*) rect;
+- (void) drawAtPointx_MyCGPoint: (MyCGPoint*) point;
 - (void) drawAtPointxMwMw :(int)x :(int)y;
 - (MyCGImage*) getCGImagex;
 - (void) cropImage: (id) dataPtr;

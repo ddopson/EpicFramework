@@ -73,6 +73,13 @@
     [self drawInRect: r];
 }
 
+
+- (void) drawAtPointx_MyCGPoint: (MyCGPoint*) point;
+{
+  CGPoint p = [point getCGPoint];
+	[self drawAtPoint: p];
+}
+
 - (void) drawAtPointxMwMw :(int)x :(int)y
 {
 	CGPoint p = CGPointMake(x,y);
