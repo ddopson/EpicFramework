@@ -11,7 +11,8 @@ public class EpicBitmapImplementation {
 	}
 
 	public static Object loadBitmap(EpicBitmap epicBitmap, int neededInternalWidth, int neededInternalHeight) {
-		return UIImage.imageNamed(epicBitmap.name + "." + epicBitmap.extension);	
+		UIImage src = UIImage.imageNamed(epicBitmap.name + "." + epicBitmap.extension);	
+		return EpicImplementationNative.resizeImage(src, neededInternalWidth, neededInternalHeight);
 	}
 
 	public static void recycle(Object platformObject) {

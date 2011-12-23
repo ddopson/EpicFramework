@@ -1,6 +1,7 @@
 package com.epic.framework.implementation;
 
 
+import org.xmlvm.iphone.CGPoint;
 import org.xmlvm.iphone.CGContext;
 import org.xmlvm.iphone.CGRect;
 import org.xmlvm.iphone.UIFont;
@@ -29,7 +30,14 @@ public class EpicCanvasImplementation {
 		dst.size.height = (float)h;
 		return dst;
 	}
-
+	
+	private static CGPoint dstp = new CGPoint(0,0);
+	private static CGPoint getDstPoint(int x, int y) {
+		dstp.x = (float)x;
+		dstp.y = (float)y;
+		return dstp;
+	}
+	
 	private static float[] colorFloats = new float[4];
 	private static float[] getColorFloatsFromInt(int color) {
 		colorFloats[0] = (float) EpicColor.getRed(color) / 255.0f;
@@ -52,7 +60,7 @@ public class EpicCanvasImplementation {
 			c.setAlpha(alpha / 255.0f);
 		}
 		//		c.drawImage(getDstRect(x, y, sw, sh), uiimg.getCGImage());
-		uiimg.drawInRect(getDstRect(x, y, sw, sh));
+		uiimg.drawAtPoint(getDstPoint(x, y));
 	}	
 
 	public static void drawCircle(Object graphicsObject, int color, int alpha, int x_center, int y_center, int radius) {
