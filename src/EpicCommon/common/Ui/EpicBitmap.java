@@ -25,49 +25,50 @@ public class EpicBitmap {
 	public final int bpad;
 
 
-	//	public class EpicBitmapInstance {
-	//		public final int iwidth;
-	//		public final int iheight;
-	//		Object platformObject;
-	//		public EpicBitmapInstance(int width, int height, Object platformObject) {
-	//			this.iwidth = width;
-	//			this.iheight = height;
-	//			
-	//		}
-	//	}
-
+	public class EpicBitmapInstance {
+		public final int iwidth;
+		public final int iheight;
+		Object platformObject;
+		public EpicBitmapInstance(int width, int height, Object platformObject) {
+			this.iwidth = width;
+			this.iheight = height;
+			this.platformObject = platformObject;
+		}
+	}
+	EpicBitmapInstance[] instances;
+	
 	public Object platformObject = null;
 	public boolean defaultSizeTouched = false;
 	public int lastRender = -1;
 
 	private static final HashMap<String, EpicBitmap> allBitmaps = new HashMap<String, EpicBitmap>();
-	HashMap<Integer, Object> resizeCache = null;
+//	HashMap<String, Object> resizeCache = null;
 
 	private static int globalPixelsInUse = 0;
 	private static int globalPixelsInUseScaled = 0;
 
 	public EpicBitmap(String name, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad) {
-		  this(name, extension, android_id, width, height, lpad, tpad, rpad, bpad, true);
-		 }
-		 public EpicBitmap(String name, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad, boolean register) {
-		  this.name = name;
-		  this.extension = extension;
-		  this.android_id = android_id;
-		  this.width = width;
-		  this.height = height;
-		  this.lpad = lpad;
-		  this.tpad = tpad;
-		  this.rpad = rpad;
-		  this.bpad = bpad;
-		  this.internal_height = height - tpad - bpad;
-		  this.internal_width = width - lpad - rpad;
-		  if(register) {
-		   if(allBitmaps.containsKey(name)) {
-		    throw EpicFail.framework("Two bitmaps, same name. name=" + name);
-		   }
-		   allBitmaps.put(name, this);
-		  }
-		 }
+		this(name, extension, android_id, width, height, lpad, tpad, rpad, bpad, true);
+	}
+	public EpicBitmap(String name, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad, boolean register) {
+		this.name = name;
+		this.extension = extension;
+		this.android_id = android_id;
+		this.width = width;
+		this.height = height;
+		this.lpad = lpad;
+		this.tpad = tpad;
+		this.rpad = rpad;
+		this.bpad = bpad;
+		this.internal_height = height - tpad - bpad;
+		this.internal_width = width - lpad - rpad;
+		if(register) {
+			if(allBitmaps.containsKey(name)) {
+				throw EpicFail.framework("Two bitmaps, same name. name=" + name);
+			}
+			allBitmaps.put(name, this);
+		}
+	}
 
 	public static EpicBitmap lookupByName(String name) {
 		return allBitmaps.get(name);
@@ -139,6 +140,7 @@ public class EpicBitmap {
 		synchronized(loadingLock) {
 			this.lastRender = EpicStopwatch.getMonotonicN();
 			if(this.height == desiredHeight && this.width == desiredWidth) {
+				EpicLog.v("Perfect size for " + name + " = " + width + "x" + height);
 				defaultSizeTouched = true;
 				if(platformObject == null) {
 					EpicBitmapImplementation.loadBitmap(this);
@@ -151,26 +153,34 @@ public class EpicBitmap {
 			}
 			else {
 				// resize logic
-				if(this.resizeCache == null) {
-					this.resizeCache = new HashMap<Integer, Object>();
-				}
 				int neededInternalWidth = this.getInternalWidth() * desiredWidth / this.width;
 				int neededInternalHeight = this.getInternalHeight() * desiredHeight / this.height;
-				int key = make_key(neededInternalWidth, neededInternalHeight);
-				if(!this.resizeCache.containsKey(key)) {
-					EpicLog.w("EpicBitmap - Scaling '" + this.getFilename() + "'" 
-							+ " from " + this.getWidth() + "x" + this.getHeight() 
-							+ " to " + desiredWidth + "x" + desiredHeight
-					);
-					Object scaledPlatformObject = EpicBitmapImplementation.loadBitmap(this, neededInternalWidth, neededInternalHeight);
-					globalPixelsInUse += neededInternalWidth * neededInternalHeight;
-					globalPixelsInUseScaled += neededInternalWidth * neededInternalHeight;
-					EpicFail.assertNotNull(scaledPlatformObject);
-					resizeCache.put(key, scaledPlatformObject);
+				EpicLog.v("Checking for " + name + " at " + neededInternalWidth + "x" + neededInternalHeight);
+				if(this.instances != null) {
+					for(EpicBitmapInstance instance : instances) {
+						if(instance.iwidth == neededInternalWidth && instance.iheight == neededInternalHeight) {
+							EpicLog.v("Cache HIT for " + name + " at " + neededInternalWidth + "x" + neededInternalHeight);
+							return instance.platformObject;
+						}
+					}
 				}
-				Object bitmapObj = this.resizeCache.get(key);
-				EpicFail.assertNotNull(bitmapObj);
-				return bitmapObj;
+				EpicLog.w("EpicBitmap - Scaling '" + this.getFilename() + "'" 
+						+ " from " + this.getWidth() + "x" + this.getHeight() 
+						+ " to " + desiredWidth + "x" + desiredHeight
+				);
+				Object scaledPlatformObject = EpicBitmapImplementation.loadBitmap(this, neededInternalWidth, neededInternalHeight);
+				globalPixelsInUse += neededInternalWidth * neededInternalHeight;
+				globalPixelsInUseScaled += neededInternalWidth * neededInternalHeight;
+				EpicFail.assertNotNull(scaledPlatformObject);
+
+				int l = this.instances == null ? 0 : this.instances.length;
+				EpicBitmapInstance[] inext = new EpicBitmapInstance[l+1];
+				for(int i = 0; i < l; i++) {
+					inext[i] = this.instances[i];
+				}
+				inext[l] = new EpicBitmapInstance(neededInternalWidth, neededInternalHeight, scaledPlatformObject);
+				EpicLog.v("About to check if the bitmap is null");
+				return scaledPlatformObject;
 			}
 		}
 	}
@@ -196,15 +206,15 @@ public class EpicBitmap {
 
 	}
 
-	private int width_from_key(int key) {
-		return key & 0x3FFF;
-	}
-	private int height_from_key(int key) {
-		return key >> 15;
-	}
-	private int make_key(int w, int h) {
-		return (h << 15) + w;
-	}
+//	private int width_from_key(int key) {
+//		return key & 0x3FFF;
+//	}
+//	private int height_from_key(int key) {
+//		return key >> 15;
+//	}
+//	private Integer make_key(int w, int h) {
+//		return Integer.valueOf((h << 15) + w);
+//	}
 	public int recycle() {
 		synchronized(loadingLock) {
 			EpicLog.w("Recycling bitmap '" + name + "'");
@@ -213,28 +223,27 @@ public class EpicBitmap {
 				EpicBitmapImplementation.recycle(platformObject);
 				globalPixelsInUse -= internal_width * internal_height;
 				reclaimed += internal_width * internal_height;
-//				EpicLog.w("Recycling " + name + " which is : " + internal_width + " x " + internal_height);
+				//				EpicLog.w("Recycling " + name + " which is : " + internal_width + " x " + internal_height);
 				platformObject = null;
 			}
-			if(resizeCache != null) {
-				for(Integer key : resizeCache.keySet()) {
-					Object value = resizeCache.get(key);
-					EpicBitmapImplementation.recycle(value);
-					int w = width_from_key(key);
-					int h = height_from_key(key);
+			if(this.instances != null) {
+				for(EpicBitmapInstance instance : this.instances) {
+					EpicBitmapImplementation.recycle(instance.platformObject);
+					int w = instance.iwidth;
+					int h = instance.iheight;
 					globalPixelsInUse -= w * h;
 					globalPixelsInUseScaled -= w * h;
-//					EpicLog.w("Recycling " + name + " resized to : " + w + " x " + h);
+					//					EpicLog.w("Recycling " + name + " resized to : " + w + " x " + h);
 					reclaimed += w * h;
 				}
-				resizeCache.clear();
+				this.instances = null;
 			}
 			return reclaimed;
 		}
 	}
 
 	public boolean isLoaded() {
-		return platformObject != null || (resizeCache != null && resizeCache.size() > 0);
+		return this.platformObject != null || this.instances != null;
 	}
 	public static EpicBitmap loadBitmapFromUrl(String url) {
 		return EpicBitmapImplementation.loadBitmapFromUrl(url);
