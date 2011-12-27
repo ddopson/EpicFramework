@@ -86,7 +86,7 @@ static void segfault_handler(int sig, siginfo_t *si, void *unused) {
   CGContextRelease(destContext);
   CGImageRelease(newImageRef);
   CGColorSpaceRelease(colorSpace);
-  return MYLIB_NIL2NULL(newImage);
+  return [MYLIB_NIL2NULL(newImage) retain];
 }
 
 @end
