@@ -11,7 +11,7 @@ public class EpicCanvas {
 	public static final int defaultHAlign = EpicFont.HALIGN_LEFT;
 	public static final int defaultVAlign = EpicFont.VALIGN_TOP;
 
-	public static final int NO_ALPHA = -1;
+	public static final int NO_ALPHA = 255;
 	private static boolean debugRendering = false;
 
 	Object graphicsObject;
@@ -131,12 +131,14 @@ public class EpicCanvas {
 		if(alpha == 0) {
 			return; // invisible
 		}
+		EpicFail.assertNotNull(image);
 		if((tcrop + bcrop) == height || (lcrop + rcrop) == width) {
 			return;
 		}
 		if((tcrop + bcrop) > height || (lcrop + rcrop) > width) {
-			throw EpicFail.invalid_argument(StringHelper.namedArgList("left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop));
+			throw EpicFail.invalid_argument(StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop));
 		}
+		EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
 		int lpad = image.lpad;
 		int tpad = image.tpad;
 		int rpad = image.rpad;
