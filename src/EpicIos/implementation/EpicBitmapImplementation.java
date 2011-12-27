@@ -13,9 +13,7 @@ public class EpicBitmapImplementation {
 
 	public static Object loadBitmap(EpicBitmap epicBitmap, int neededInternalWidth, int neededInternalHeight) {
 		UIImage src = UIImage.imageNamed(epicBitmap.name + "." + epicBitmap.extension);	
-		EpicLog.d("Scaling " + epicBitmap.name + " to " + neededInternalWidth + "x" + neededInternalHeight);
 		UIImage scaled = EpicImplementationNative.resizeImage(src, neededInternalWidth, neededInternalHeight);
-		EpicLog.d("done scaling " + epicBitmap.name);
 		return scaled;
 	}
 

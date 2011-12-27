@@ -138,7 +138,7 @@ public class EpicCanvas {
 		if((tcrop + bcrop) > height || (lcrop + rcrop) > width) {
 			throw EpicFail.invalid_argument(StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop));
 		}
-		EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
+//		EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
 		int lpad = image.lpad;
 		int tpad = image.tpad;
 		int rpad = image.rpad;

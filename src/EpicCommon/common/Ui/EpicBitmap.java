@@ -140,7 +140,7 @@ public class EpicBitmap {
 		synchronized(loadingLock) {
 			this.lastRender = EpicStopwatch.getMonotonicN();
 			if(this.height == desiredHeight && this.width == desiredWidth) {
-				EpicLog.v("Perfect size for " + name + " = " + width + "x" + height);
+//				EpicLog.v("Perfect size for " + name + " = " + width + "x" + height);
 				defaultSizeTouched = true;
 				if(platformObject == null) {
 					EpicBitmapImplementation.loadBitmap(this);
@@ -155,11 +155,11 @@ public class EpicBitmap {
 				// resize logic
 				int neededInternalWidth = this.getInternalWidth() * desiredWidth / this.width;
 				int neededInternalHeight = this.getInternalHeight() * desiredHeight / this.height;
-				EpicLog.v("Checking for " + name + " at " + neededInternalWidth + "x" + neededInternalHeight);
+//				EpicLog.v("Checking for " + name + " at " + neededInternalWidth + "x" + neededInternalHeight);
 				if(this.instances != null) {
 					for(EpicBitmapInstance instance : instances) {
 						if(instance.iwidth == neededInternalWidth && instance.iheight == neededInternalHeight) {
-							EpicLog.v("Cache HIT for " + name + " at " + neededInternalWidth + "x" + neededInternalHeight);
+//							EpicLog.v("Cache HIT for " + name + " at " + neededInternalWidth + "x" + neededInternalHeight);
 							return instance.platformObject;
 						}
 					}
@@ -179,7 +179,7 @@ public class EpicBitmap {
 					inext[i] = this.instances[i];
 				}
 				inext[l] = new EpicBitmapInstance(neededInternalWidth, neededInternalHeight, scaledPlatformObject);
-				EpicLog.v("About to check if the bitmap is null");
+				this.instances = inext;
 				return scaledPlatformObject;
 			}
 		}
