@@ -12,6 +12,7 @@
 	
 @interface com_epic_framework_implementation_EpicImplementationNative
 
++ (void) setupDebugHandlersx;
 + (MyUIImage*) resizeImagex_MyUIImageMwMw :(MyUIImage*)n1 :(int)n2 :(int)n3;
 
 @end
