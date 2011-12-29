@@ -11,35 +11,34 @@
 
 #define STDERR_FD 2
 
-static void segfault_handler(int sig, siginfo_t *si, void *unused) {
+static void segfault_handler(int sig, siginfo_t *si, void *signame) {
   void    *array[32]; // Array to store backtrace symbols
   size_t  size;       // To store the size of the stack backtrace
   char    sbuff[128];
   int     n;          // chars written to buffer
-  int     fd;
-  time_t  now;
   int     pid;
 
-  // Construct a filename
-  time(&now);
-  pid = getpid();
-  snprintf(sbuff, sizeof(sbuff), "stacktrace-%d-%d.log", (int)now, pid );
-
-  // Open the File
-  fd = open(sbuff, O_CREAT | O_APPEND | O_WRONLY, S_IRUSR | S_IRGRP | S_IROTH);
   // Write the header line
-  n = snprintf(sbuff, sizeof(sbuff), "PID %d received SIG %d for address: 0x%lx\n", pid, sig, (long) si->si_addr);
-  if(fd > 0) write(fd, sbuff, n);
+  pid = getpid();
+  n = snprintf(sbuff, sizeof(sbuff), "PID %d received %s (%d) for address: 0x%lx\n", pid, (const char *)signame, sig, (long) si->si_addr);
   write(STDERR_FD, sbuff, n);
 
   // Write the Backtrace
   size = backtrace(array, 32);
-  if(fd > 0) backtrace_symbols_fd(array, size, fd);
   backtrace_symbols_fd(array, size, STDERR_FD);
 
   // Exit violently
-  close(fd);
   exit(-1);
+}
+
+void uncaught_exception_handler(NSException *exception) {
+  NSLog(@"Unhandled Exception: %@: %@", [exception name], [exception reason]);
+  NSArray *myArray = [exception callStackSymbols];
+  NSEnumerator *enumerator = [myArray objectEnumerator];
+  id anObject;
+  while (anObject = [enumerator nextObject]) {
+    NSLog(@"%@", anObject);
+  }
 }
 
 @implementation com_epic_framework_implementation_EpicImplementationNative;
@@ -51,16 +50,19 @@ static void segfault_handler(int sig, siginfo_t *si, void *unused) {
   sigemptyset(&sa.sa_mask);
   sa.sa_sigaction = segfault_handler;
   sa.sa_flags   = SA_SIGINFO;
-  sigaction(SIGSEGV, &sa, NULL);
-  sigaction(SIGTRAP, &sa, NULL);
-  sigaction(SIGSTOP, &sa, NULL);
-  sigaction(SIGQUIT, &sa, NULL);
-  sigaction(SIGHUP, &sa, NULL);
-  sigaction(SIGINT, &sa, NULL);
-  sigaction(SIGFPE, &sa, NULL);
-  sigaction(SIGTERM, &sa, NULL);
-  sigaction(SIGILL, &sa, NULL);
-  sigaction(SIGBUS, &sa, NULL);
+  sigaction(SIGSEGV, &sa, (void *)"SIGSEGV");
+  sigaction(SIGABRT, &sa, (void *)"SIGABRT");
+  sigaction(SIGTRAP, &sa, (void *)"SIGTRAP");
+  sigaction(SIGSTOP, &sa, (void *)"SIGSTOP");
+  sigaction(SIGQUIT, &sa, (void *)"SIGQUIT");
+  sigaction(SIGHUP, &sa, (void *)"SIGHUP");
+  sigaction(SIGINT, &sa, (void *)"SIGINT");
+  sigaction(SIGFPE, &sa, (void *)"SIGFPE");
+  sigaction(SIGTERM, &sa, (void *)"SIGTERM");
+  sigaction(SIGILL, &sa, (void *)"SIGILL");
+  sigaction(SIGBUS, &sa, (void *)"SIGBUS");
+
+  NSSetUncaughtExceptionHandler(uncaught_exception_handler);
 }
 
 + (MyUIImage*) resizeImagex_MyUIImageMwMw :(MyUIImage*)src :(int)width :(int)height
