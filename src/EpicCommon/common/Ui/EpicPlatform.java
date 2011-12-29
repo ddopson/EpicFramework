@@ -2,7 +2,7 @@ package com.epic.framework.common.Ui;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import com.epic.framework.cfg.EpicProjectConfig;
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
@@ -48,6 +48,7 @@ public class EpicPlatform {
 	private static int timer_slow_factor = 1;
 	
 	public static LinkedList<EpicNotification> notifications = new LinkedList<EpicNotification>();
+	public static LinkedList<EpicScreen> dialogs = new LinkedList<EpicScreen>();
 	public static int timeNotificationDisplayed = -1;
 
 	// DDOPSON-2011-09-03 - this timer does NOT run on the ui thread.  thus when ui thread is hung, we still run
@@ -191,7 +192,11 @@ public class EpicPlatform {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformKeyPress(" + c + " '" + (char)c + "')");
-			return currentScreen.onKeyPress(c);
+			if(dialogs.isEmpty()) {
+				return currentScreen.onKeyPress(c);
+			} else {
+				return dialogs.getLast().onKeyPress(c);
+			}
 		}
 	}
 
@@ -199,7 +204,11 @@ public class EpicPlatform {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformNavigationClick()");
-			return currentScreen.onKeyPress(EpicKeys.ENTER);
+			if(dialogs.isEmpty()) {
+				return currentScreen.onKeyPress(EpicKeys.ENTER);
+			} else {
+				return dialogs.getLast().onKeyPress(EpicKeys.ENTER);
+			}
 		}
 	}
 
@@ -207,7 +216,11 @@ public class EpicPlatform {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformNavigationMovement(" + x + ", " + y + ")");
-			return currentScreen.onNavigationMovement(x, y);
+			if(dialogs.isEmpty()) {
+				return currentScreen.onNavigationMovement(x, y);
+			} else {
+				return dialogs.getLast().onNavigationMovement(x, y);
+			}
 		}
 	}
 
@@ -215,8 +228,11 @@ public class EpicPlatform {
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformShow()");
 			EpicSoundManager.resumeMusic();
-
-			currentScreen.onShow();
+			if(dialogs.isEmpty()) {
+				currentScreen.onShow();
+			} else {
+				dialogs.getLast().onShow();
+			}
 		}
 	}
 
@@ -226,7 +242,11 @@ public class EpicPlatform {
 
 			EpicSoundManager.pauseMusic();
 
-			currentScreen.onHide();
+			if(dialogs.isEmpty()) {
+				currentScreen.onHide();
+			} else {
+				dialogs.getLast().onHide();
+			}
 		}
 	}
 
@@ -240,7 +260,11 @@ public class EpicPlatform {
 	public static boolean onPlatformBackKey() {
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformBackKey()");
-			return currentScreen.onBackKey();
+			if(dialogs.isEmpty()) {
+				return currentScreen.onBackKey();
+			} else {
+				return dialogs.getLast().onBackKey();
+			}
 		}
 	}
 
@@ -252,6 +276,11 @@ public class EpicPlatform {
 	}
 
 	public static Collection<EpicMenuItem> getMenuItems(int menuType) {
+		if(!dialogs.isEmpty()) {
+			// dont support menus in dialogs
+			return null;
+		}
+		
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("Platform.getMenuItems(" + menuType + ")");
 			EpicMenu menu = new EpicMenu();
@@ -334,6 +363,11 @@ public class EpicPlatform {
 			//			if(DEBUG) EpicLog.d("Platform.paint()");
 			EpicStopwatch.paintStart();
 			currentScreen.onPaint(epicCanvas, renderWidth, renderHeight, mouseTrail);
+			
+			if(!dialogs.isEmpty()) {
+				dialogs.getLast().onPaint(epicCanvas, renderWidth, renderHeight, mouseTrail);
+			}
+			
 			EpicPlatformImplementation.dismissNotifications();
 			if(!notifications.isEmpty()) {
 				EpicNotification n = notifications.peek();
@@ -400,6 +434,17 @@ public class EpicPlatform {
 			}
 		}
 	}
+	
+	public static void showDialog(EpicScreen dialog) {
+		dialogs.add(dialog);
+		repaintScreen();
+	}
+	
+	public static void dismissDialog() {
+		// Dismiss current dialog
+		dialogs.removeLast();
+		repaintScreen();
+	}
 
 	public static void onPlatformTouchFinished(int _x, int _y) {
 		lastInputTime = System.currentTimeMillis();
@@ -421,11 +466,19 @@ public class EpicPlatform {
 			if(DEBUG) EpicLog.d("Platform.onPlatformTouchFinished(" + x + ", " + y + ")");
 			if(mouseTrail.size() > 5) {
 				if(userDragInputEnabled) {
-					currentScreen.onDragFinished(mouseTrail);
+					if(dialogs.isEmpty()) {
+						currentScreen.onDragFinished(mouseTrail);
+					} else {
+						dialogs.getLast().onDragFinished(mouseTrail);
+					}
 				}
 			}
 			else {
-				currentScreen.onClick(x, y);
+				if(dialogs.isEmpty()) {
+					currentScreen.onClick(x, y);
+				} else {
+					dialogs.getLast().onClick(x, y);
+				}
 			}
 			if(userDragInputEnabled) {
 				mouseTrail.clear();
@@ -435,7 +488,11 @@ public class EpicPlatform {
 
 	public static void onPlatformTimerTick() {
 		synchronized (singleThreadingLock) {
-			currentScreen.onTimerTick();
+			if(dialogs.isEmpty()) {
+				currentScreen.onTimerTick();
+			} else {
+				dialogs.getLast().onTimerTick();
+			}
 			if(!notifications.isEmpty()) {
 				timeNotificationDisplayed++;
 				repaintScreen();
