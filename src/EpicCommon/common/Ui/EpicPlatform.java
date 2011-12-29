@@ -2,7 +2,8 @@ package com.epic.framework.common.Ui;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import com.epic.framework.cfg.EpicProjectConfig;
+
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
@@ -91,7 +92,7 @@ public class EpicPlatform {
 			}
 		}
 	};
-	static long timeAtScreenChange = -1;
+	public static long timeAtScreenChange = -1;
 
 	public interface EpicTestHook {
 		public void onPaintFinished();
@@ -203,7 +204,7 @@ public class EpicPlatform {
 		}
 	}
 
-	static boolean onPlatformNavigationMovement(int x, int y) {
+	public static boolean onPlatformNavigationMovement(int x, int y) {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformNavigationMovement(" + x + ", " + y + ")");
