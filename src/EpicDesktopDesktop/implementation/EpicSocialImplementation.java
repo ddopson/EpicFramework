@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/EpicSocialImplementation.java
+../../EpicDesktopCommon/implementation/EpicSocialImplementation.java

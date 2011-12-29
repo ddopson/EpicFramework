@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/EpicDialogImplementation.java
+../../EpicDesktopCommon/implementation/EpicDialogImplementation.java

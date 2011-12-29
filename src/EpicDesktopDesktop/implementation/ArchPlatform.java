@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/ArchPlatform.java
+../../EpicDesktopCommon/implementation/ArchPlatform.java

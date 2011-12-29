@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/EpicLogImplementation.java
+../../EpicDesktopCommon/implementation/EpicLogImplementation.java

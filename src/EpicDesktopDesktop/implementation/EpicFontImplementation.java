@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/EpicFontImplementation.java
+../../EpicDesktopCommon/implementation/EpicFontImplementation.java

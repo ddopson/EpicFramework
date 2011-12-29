@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/EpicPlatformImplementation.java
+../../EpicDesktopCommon/implementation/EpicPlatformImplementation.java

@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/EpicTextEntryWidget.java
+../../EpicDesktopCommon/implementation/EpicTextEntryWidget.java

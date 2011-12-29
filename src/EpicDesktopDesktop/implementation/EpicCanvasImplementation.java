@@ -1,1 +1,1 @@
-../EpicDesktopCommon/implementation/EpicCanvasImplementation.java
+../../EpicDesktopCommon/implementation/EpicCanvasImplementation.java
