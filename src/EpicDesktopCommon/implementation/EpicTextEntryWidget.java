@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;

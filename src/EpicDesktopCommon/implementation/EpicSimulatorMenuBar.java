@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -10,8 +10,10 @@ import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import com.epic.framework.Ui.EpicMenu.EpicMenuItem;
-import com.epic.framework.util.EpicLog;
+import com.epic.framework.common.Ui.EpicMenu;
+import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
+import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.util.EpicLog;
 
 @SuppressWarnings("serial")
 public class EpicSimulatorMenuBar extends JMenuBar {

@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
-import com.epic.framework.types.Direction;
+import com.epic.framework.common.types.Direction;
 
 public abstract class EpicNativeWidget {
 	abstract JComponent getDesktopComponent();

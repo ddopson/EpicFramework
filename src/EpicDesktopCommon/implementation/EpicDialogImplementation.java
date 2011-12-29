@@ -1,8 +1,9 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import javax.swing.JOptionPane;
 
-import com.epic.framework.util.EpicLog;
+import com.epic.framework.common.Ui.EpicDialogBuilder;
+import com.epic.framework.common.util.EpicLog;
 
 
 public class EpicDialogImplementation {

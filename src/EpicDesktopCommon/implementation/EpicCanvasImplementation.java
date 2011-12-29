@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -15,7 +15,10 @@ import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import com.epic.framework.util.EpicLog;
+
+import com.epic.framework.common.Ui.EpicColor;
+import com.epic.framework.common.Ui.EpicFont;
+import com.epic.framework.common.util.EpicLog;
 import com.epic.resources.EpicFiles;
 
 

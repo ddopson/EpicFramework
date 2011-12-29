@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -11,9 +11,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
-import com.epic.framework.Ui.EpicPercentLayout.LayoutChild;
-import com.epic.framework.Ui.EpicPlatform.EpicPlatformInterface;
-import com.epic.framework.util.EpicLog;
+import com.epic.framework.common.Ui.EpicCanvas;
+import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
+import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.Ui.EpicPlatformInterface;
+import com.epic.framework.common.util.EpicLog;
 
 @SuppressWarnings("serial")
 public class EpicNativeGameFrame extends JPanel implements MouseListener, MouseMotionListener, EpicPlatformInterface {

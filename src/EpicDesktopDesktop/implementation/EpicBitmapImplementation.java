@@ -12,8 +12,8 @@ import com.epic.framework.common.util.EpicFail;
 
 
 public class EpicBitmapImplementation {
-	static String magicBaseDirectory = "./resources";
-
+	static String magicBaseDirectory = null; // will be set during Main()
+	
 	public static void loadBitmap(EpicBitmap epicBitmap) {
 		String path = epicBitmap.getFilename(magicBaseDirectory);
 		File file = new File(path);

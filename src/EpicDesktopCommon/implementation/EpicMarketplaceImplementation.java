@@ -1,6 +1,8 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
-import com.realcasualgames.words.EpicFeaturedAppCallback;
+import com.epic.framework.common.util.EpicFeaturedAppCallback;
+import com.epic.framework.common.util.EpicFeaturedOffer;
+import com.epic.framework.common.util.Product;
 
 public class EpicMarketplaceImplementation {
 	public static boolean doPurchase(Product p) {

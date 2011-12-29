@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -7,7 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import com.epic.framework.util.EpicFail;
+import com.epic.framework.common.Ui.EpicFile;
+import com.epic.framework.common.util.EpicFail;
 import com.epic.resources.EpicFiles;
 
 public class EpicFontImplementation {

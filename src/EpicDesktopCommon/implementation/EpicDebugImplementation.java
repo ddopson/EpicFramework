@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 public class EpicDebugImplementation {
 	public static void startMethodTracing(String filename, int size) {

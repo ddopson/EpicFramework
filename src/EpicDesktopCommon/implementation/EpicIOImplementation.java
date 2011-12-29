@@ -2,9 +2,9 @@ package com.epic.framework.implementation;
 
 import java.io.IOException;
 
-import com.epic.framework.serialization.EpicSerializableClass;
-import com.epic.framework.serialization.EpicSerializableClassType;
-import com.epic.framework.util.exceptions.EpicSerializationException;
+import com.epic.framework.common.serialization.EpicSerializableClass;
+import com.epic.framework.common.serialization.EpicSerializableClassType;
+import com.epic.framework.common.util.exceptions.EpicSerializationException;
 
 public class EpicIOImplementation {
 

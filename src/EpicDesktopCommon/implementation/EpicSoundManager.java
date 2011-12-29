@@ -1,4 +1,6 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
+
+import com.epic.framework.common.Ui.EpicSound;
 
 public class EpicSoundManager {
 

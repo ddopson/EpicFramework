@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -10,7 +10,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.epic.framework.util.EpicLog;
+import com.epic.framework.common.Ui.EpicCanvas;
+import com.epic.framework.common.util.EpicLog;
 
 
 @SuppressWarnings("serial")

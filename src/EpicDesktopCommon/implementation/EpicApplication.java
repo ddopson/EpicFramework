@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 public class EpicApplication {
 	public static void blackberryMain(Object whoGivesACrap) {

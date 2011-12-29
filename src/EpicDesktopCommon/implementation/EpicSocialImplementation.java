@@ -1,9 +1,11 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import com.epic.framework.util.EpicSocial.EpicSocialSignInCompletionHandler;
+import com.epic.framework.common.Ui.EpicClickListener;
+import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
 
 public class EpicSocialImplementation {
 	private static String hostname = null;
@@ -64,10 +66,26 @@ public class EpicSocialImplementation {
 		epicSocialSignInCompletionHandler.onSignedIn(getUniqueUserId());
 	}
 	public static void postToFacebook(String title, String url, String caption,
-			String imageUrl) {
+			String imageUrl, EpicClickListener callback) {
 		
 	}
 	public static boolean supportsFacebookPost() {
 		return false;
+	}
+	public static void getFacebookFriendList() {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void togglePush(boolean pushEnabled) {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void viewChallenges(int defaultListLength) {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void promptForTokens() {
+		// TODO Auto-generated method stub
+		
 	}
 }

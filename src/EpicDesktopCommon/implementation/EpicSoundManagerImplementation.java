@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,8 +7,10 @@ import java.io.InputStream;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
-import com.epic.framework.Ui.EpicPlatform;
-import com.epic.framework.implementation.EpicSound;
+import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.Ui.EpicSound;
+import com.epic.framework.common.util.EpicFail;
+import com.epic.framework.common.util.EpicLog;
 import com.epic.resources.EpicFiles;
 
 public class EpicSoundManagerImplementation {
@@ -27,7 +29,7 @@ public class EpicSoundManagerImplementation {
 				// TODO Auto-generated method stub
 
 				EpicLog.i("Playing Sound: '" + sound.name + "'");
-				String filename = "./sounds/" + sound.getFilename();
+				String filename = "./resources/" + sound.getFilename();
 				javazoom.jl.player.Player p;
 				try {
 					p = new Player(new FileInputStream(filename));

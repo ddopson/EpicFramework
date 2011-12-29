@@ -1,4 +1,4 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 
 import java.awt.Graphics;
@@ -8,8 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
-import com.epic.framework.util.EpicLog;
-import com.epic.framework.util.StringHelper;
+import com.epic.framework.common.Ui.EpicCanvas;
+import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.StringHelper;
 
 public abstract class EpicAbstractButton extends EpicNativeWidget {
 	private EpicDesktopButton realButton = new EpicDesktopButton();

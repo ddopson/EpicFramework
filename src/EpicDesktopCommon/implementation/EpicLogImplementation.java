@@ -1,4 +1,8 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
+
+import com.epic.framework.common.util.EpicFail;
+import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.StringHelper;
 
 public class EpicLogImplementation {
 	private static final int LOGGING_STACK_DEPTH = 4;

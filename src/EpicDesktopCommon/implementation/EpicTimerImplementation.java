@@ -1,11 +1,12 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.SwingUtilities;
 
-import com.epic.framework.Ui.EpicTimer.PlatformTimerInterface;
+import com.epic.framework.common.Ui.EpicTimer;
+import com.epic.framework.common.Ui.EpicTimer.PlatformTimerInterface;
 
 public abstract class EpicTimerImplementation {
 

@@ -1,6 +1,8 @@
-package com.epic.framework.implementation
+package com.epic.framework.implementation;
 
 import java.util.UUID;
+
+import com.epic.framework.common.util.EpicLog;
 
 
 
