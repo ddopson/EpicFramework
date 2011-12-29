@@ -3,6 +3,7 @@ package com.epic.framework.implementation;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
+import com.realcasualgames.words.ScreenConnect;
 import com.realcasualgames.words.ScreenOnlineChallengeDetails;
 
 public class EpicSocialImplementation {
@@ -46,7 +47,7 @@ public class EpicSocialImplementation {
 	}
 
 	public static void beginLogin(EpicSocialSignInCompletionHandler epicSocialSignInCompletionHandler) {
-		epicSocialSignInCompletionHandler.onSignedIn(chooseContact());
+		EpicPlatform.changeScreen(new ScreenConnect(epicSocialSignInCompletionHandler));
 	}
 	
 	public static void viewChallenges() {
