@@ -9,6 +9,7 @@ import java.util.HashMap;
 import com.epic.framework.common.util.EpicHttpRequest;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 
 public class EpicHttpImplementation {
 
@@ -50,7 +51,7 @@ public class EpicHttpImplementation {
 			EpicLog.e("Problem with connection: " + e.toString());
 		}
 		
-		throw new EpicRuntimeException("Failed to complete connection.");
+		throw new EpicFrameworkException("Failed to complete connection.");
 	}
 
 	public static long downloadFileTo(String url, String path) {
