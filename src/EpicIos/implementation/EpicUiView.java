@@ -44,12 +44,12 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 
 	@Override
 	public void drawRect(CGRect rect) { 
-		EpicLog.v("EpicUiView.drawRect");
+		// EpicLog.v("EpicUiView.drawRect");
 		EpicCanvas c = EpicCanvas.get(UIGraphics.getCurrentContext());
 		ensureLaidOut();
-		EpicLog.v("EpicUiView.drawRect - about to draw currentScreen");
+		// EpicLog.v("EpicUiView.drawRect - about to draw currentScreen");
 		EpicPlatform.onPlatformPaint(c);
-		EpicLog.v("EpicUiView.drawRect - done");
+		// EpicLog.v("EpicUiView.drawRect - done");
 	} 
 
 	/**
@@ -57,6 +57,7 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 	 * screen.
 	 */
 	private List<CGPoint> points = new ArrayList<CGPoint>();
+	private List<CGPoint> completed = new ArrayList<CGPoint>();
 
 	/**
 	 * This method converts the events encapsulated by an UIEvent into a
@@ -68,6 +69,7 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 		 * Erase previous list of points.
 		 */
 		points.clear();
+		completed.clear();
 		/**
 		 * Iterate over all UITouches that are associated with this
 		 * UIEvent
@@ -84,10 +86,16 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 				 * the custom view in this case).
 				 */
 				points.add(touch.locationInView(this));
+			} else {
+				completed.add(touch.locationInView(this));
 			}
 		}
 
 		for(CGPoint p : points) {
+			EpicPlatform.onPlatformTouchEvent((int)p.x, (int)p.y);
+		}
+		
+		for(CGPoint p : completed) {
 			EpicPlatform.onPlatformTouchFinished((int)p.x, (int)p.y);
 		}
 	}
