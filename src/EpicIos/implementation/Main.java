@@ -12,6 +12,7 @@ import org.xmlvm.iphone.UIScreen;
 import org.xmlvm.iphone.UIViewController;
 import org.xmlvm.iphone.UIWindow;
 
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.Ui.EpicTimer;
 import com.epic.framework.common.util.EpicLog;
@@ -37,6 +38,8 @@ public class Main extends UIApplicationDelegate {
         window.setRootViewController(navc);
         window.addSubview(gameController.getView());
         window.makeKeyAndVisible();
+        
+        EpicProjectConfig.onApplicationStart();
         
         t.scheduleAtFixedRate(1000 / EpicPlatform.TIMER_HZ);
         
