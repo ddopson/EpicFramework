@@ -75,11 +75,11 @@ public class EpicCanvasImplementation {
 		c.strokeRect(getDstRect(left, top, width, height));
 	}
 
-	public static void applyFill(Object graphicsObject, int left, int top, int right, int bottom, int color) {
+	public static void applyFill(Object graphicsObject, int left, int top, int width, int height, int color) {
 		CGContext c = (CGContext) graphicsObject;
 		c.setFillColor(getColorFloatsFromInt(color));
 		c.setAlpha(1.0f);
-		c.fillRect(new CGRect(left, top, right - left, bottom - top));
+		c.fillRect(new CGRect(left, top, width, height));
 	}
 
 	public static void drawLine(Object graphicsObject, int x, int y, int x2, int y2, int strokeWidth, int color) {
