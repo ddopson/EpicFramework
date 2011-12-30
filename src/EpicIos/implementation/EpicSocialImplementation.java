@@ -47,7 +47,8 @@ public class EpicSocialImplementation {
 	}
 
 	public static void beginLogin(EpicSocialSignInCompletionHandler epicSocialSignInCompletionHandler) {
-		EpicPlatform.changeScreen(new ScreenConnect(epicSocialSignInCompletionHandler));
+		epicSocialSignInCompletionHandler.onSignedIn(chooseContact());
+		// EpicPlatform.changeScreen(new ScreenConnect(epicSocialSignInCompletionHandler));
 	}
 	
 	public static void viewChallenges() {
