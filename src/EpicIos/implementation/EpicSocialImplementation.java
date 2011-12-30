@@ -29,7 +29,7 @@ public class EpicSocialImplementation {
 	}
 
 	public static String chooseContact() {
-		return "derekj212@gmail.com";
+		return "testing@wordfarmgame.com";
 	}
 	
 	public static void selectFromEmailList(String[] strings) {
@@ -47,8 +47,8 @@ public class EpicSocialImplementation {
 	}
 
 	public static void beginLogin(EpicSocialSignInCompletionHandler epicSocialSignInCompletionHandler) {
-		epicSocialSignInCompletionHandler.onSignedIn(chooseContact());
-		// EpicPlatform.changeScreen(new ScreenConnect(epicSocialSignInCompletionHandler));
+		// epicSocialSignInCompletionHandler.onSignedIn(chooseContact());
+		EpicPlatform.changeScreen(new ScreenConnect(epicSocialSignInCompletionHandler));
 	}
 	
 	public static void viewChallenges() {
