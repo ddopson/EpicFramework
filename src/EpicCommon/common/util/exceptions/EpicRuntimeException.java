@@ -1,5 +1,6 @@
 package com.epic.framework.common.util.exceptions;
 
+import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.implementation.EpicRuntimeExceptionImplementation;
 
 public class EpicRuntimeException extends EpicRuntimeExceptionImplementation {
@@ -10,5 +11,7 @@ public class EpicRuntimeException extends EpicRuntimeExceptionImplementation {
 		super(className, msg, cause);
 		this.className = className;
 		this.message = msg;
+		EpicLog.e("EpicFail: new " + className + ": " + message);
+		EpicLog.logStack();
 	}
 }

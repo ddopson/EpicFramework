@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import org.xmlvm.iphone.NSBundle;
 
+import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.exceptions.EpicInvalidArgumentException;
 
 public class EpicFileImplementation {
 
@@ -20,7 +22,7 @@ public class EpicFileImplementation {
         int lastpath = filename.lastIndexOf('/');
         String directory = "", resource = "", type = "";
         if (lastdot < 0) {
-            throw new RuntimeException("File name should be in the form PATH/FILENAME.EXT");
+        	throw EpicFail.invalid_argument("File name should be in the form PATH/FILENAME.EXT");
         }
         if (lastpath >= 0) {
             directory = filename.substring(0, lastpath);
