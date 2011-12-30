@@ -19,6 +19,15 @@ public class EpicBufferedReader extends BufferedReader {
 	public EpicBufferedReader(InputStream in) {
 		super(new InputStreamReader(in));
 	}
+
+	public String readEntireStreamAsString() throws IOException {
+		StringBuilder stringBuilder = new StringBuilder();
+		int c;
+		while(-1 != (c = this.read())) {
+			stringBuilder.append(c);
+		}
+		return stringBuilder.toString();
+	}
 	
 }
 

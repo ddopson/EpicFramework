@@ -92,7 +92,7 @@ public class EpicPlatform {
 			}
 		}
 	};
-	static long timeAtScreenChange = -1;
+	public static long timeAtScreenChange = -1;
 
 	public interface EpicTestHook {
 		public void onPaintFinished();
@@ -212,7 +212,7 @@ public class EpicPlatform {
 		}
 	}
 
-	static boolean onPlatformNavigationMovement(int x, int y) {
+	public static boolean onPlatformNavigationMovement(int x, int y) {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
 			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformNavigationMovement(" + x + ", " + y + ")");
