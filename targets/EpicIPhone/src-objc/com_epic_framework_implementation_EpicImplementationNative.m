@@ -84,7 +84,7 @@ void uncaught_exception_handler(NSException *exception) {
   CGContextSetInterpolationQuality(destContext, quality);
   CGContextDrawImage(destContext, destRect, imageRef);
   CGImageRef newImageRef = CGBitmapContextCreateImage(destContext);
-  UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+  MyUIImage *newImage = [UIImage imageWithCGImage:newImageRef];
   CGContextRelease(destContext);
   CGImageRelease(newImageRef);
   CGColorSpaceRelease(colorSpace);
