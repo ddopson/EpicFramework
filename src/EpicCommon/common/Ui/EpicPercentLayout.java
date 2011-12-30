@@ -7,8 +7,8 @@ import java.util.List;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.exceptions.EpicRuntimeException;
 import com.epic.framework.implementation.EpicNativeWidget;
-import com.epic.framework.implementation.EpicRuntimeException;
 
 public class EpicPercentLayout {
 	ArrayList<LayoutChild> children = new ArrayList<LayoutChild>();

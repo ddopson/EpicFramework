@@ -17,6 +17,8 @@ import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.exceptions.EpicFrameworkException;
+import com.epic.framework.common.util.exceptions.EpicRuntimeException;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.OnlineChallenge;
 import com.realcasualgames.words.PlayerState;
@@ -364,7 +366,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 									EpicPlatform.doToastNotification(n);
 								} else {
 									EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
-									handleFailure(new EpicRuntimeException("Got response: " + response.body));
+									handleFailure(new EpicFrameworkException("Got response: " + response.body));
 								}
 							}
 							

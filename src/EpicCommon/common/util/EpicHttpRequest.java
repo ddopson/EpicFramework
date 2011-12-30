@@ -3,11 +3,9 @@ package com.epic.framework.common.util;
 import java.io.IOException;
 import java.util.HashMap;
 
-import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.implementation.EpicHttpImplementation;
-import com.epic.framework.implementation.EpicPlatformImplementation;
-import com.epic.framework.implementation.EpicRuntimeException;
 import com.epic.framework.common.util.exceptions.EpicInvalidArgumentException;
+import com.epic.framework.common.util.exceptions.EpicNotImlementedException;
 
 public class EpicHttpRequest {
 	public String url;
@@ -26,7 +24,7 @@ public class EpicHttpRequest {
 	}
 
 	public void beginGet(final EpicHttpResponseHandler handler) {
-		handler.handleFailure(new EpicRuntimeException("Network calls not yet implemented."));
+		handler.handleFailure(new EpicNotImlementedException("Network calls not yet implemented."));
 //		new Thread(new Runnable() {
 //			Exception exception;
 //			EpicHttpResponse response;		
