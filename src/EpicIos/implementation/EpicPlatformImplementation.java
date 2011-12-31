@@ -8,6 +8,7 @@ public class EpicPlatformImplementation {
 	}
 
 	public static void runInBackground(Runnable runnable) {
+		// new Thread(runnable).start();
 	}
 
 	public static void dismissNotifications() {
