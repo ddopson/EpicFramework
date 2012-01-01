@@ -1,6 +1,6 @@
-/* Copyright (c) 2002-2011 by MYLIB.org
+/* Copyright (c) 2002-2011 by XMLVM.org
  *
- * Project Info:  http://www.mylib.org
+ * Project Info:  http://www.xmlvm.org
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,25 +18,24 @@
  * USA.
  */
 
-#import "MyNSLog.h"
+#import "xmlvm.h"
+#import "java_lang_Object.h"
+#import "java_lang_String.h"
+#import "java_io_File.h"
+#import "java_io_FileDescriptor.h"
+#import "java_io_InputStream.h"
 
+@interface java_io_FileInputStream : java_io_InputStream {
 
-@implementation MyNSLog;
-
-+ (void) logx_Iq :(Iq*)message	
-{
-	NSLog(@"%@", message);
+	java_io_FileDescriptor* fd;
+	unsigned long int marked;
 }
 
-+ (void) logx_MyObject :(MyObject*)message
-{
-	NSLog(@"%@", [message toStringx]);
-}
-
-+ (void) logStackx
-{
-  NSLog(@"%@", [NSThread callStackSymbols]);
-}
+- (void) __init_java_io_FileInputStream___java_io_File: (java_io_File*) f;
+- (void) __init_java_io_FileInputStream___java_lang_String :(java_lang_String*) path;
+- (void) dealloc;
+- (void) __init_java_io_FileInputStream___java_io_FileDescriptor: (java_io_FileDescriptor*) fd;
+- (int) available__;
+- (java_io_FileDescriptor*) getFD__;
 
 @end
-

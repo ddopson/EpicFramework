@@ -1,6 +1,6 @@
-/* Copyright (c) 2002-2011 by MYLIB.org
+/* Copyright (c) 2002-2011 by XMLVM.org
  *
- * Project Info:  http://www.mylib.org
+ * Project Info:  http://www.xmlvm.org
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,16 +18,16 @@
  * USA.
  */
 
-#import "mylib.h"
-#import "MyNSObject.h"
-#import "Iq.h"
+#import "xmlvm.h"
+#import "org_xmlvm_iphone_NSObject.h"
+#import "java_lang_String.h"
 
 
 
-@interface MyNSLog : MyObject
+@interface org_xmlvm_iphone_NSLog : java_lang_Object
 
-+ (void) logx_Iq :(Iq*)message;
-+ (void) logx_MyObject :(MyObject*)message;
-+ (void) logStackx;
++ (void) log___java_lang_String :(java_lang_String*)message;
++ (void) log___java_lang_Object :(java_lang_Object*)message;
++ (void) logStack__;
 @end
 

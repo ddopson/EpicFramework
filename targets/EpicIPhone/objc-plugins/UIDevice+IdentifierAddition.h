@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "xmlvm.h"
 
 @interface UIDevice (IdentifierAddition)
 

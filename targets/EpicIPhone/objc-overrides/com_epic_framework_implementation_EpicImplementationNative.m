@@ -1,5 +1,8 @@
-#import "MyUIImage.h"
+#import "com_epic_framework_common_util_EpicFail.h"
+#import "com_epic_framework_common_util_exceptions_EpicRuntimeException.h"
+#import "org_xmlvm_iphone_UIImage.h"
 #import "com_epic_framework_implementation_EpicImplementationNative.h"
+#import "org_xmlvm_iphone_NSObject.h"
 #import "CoreGraphics/CGBitmapContext.h"
 #include <fcntl.h>
 #include <sys/types.h>
@@ -43,9 +46,10 @@ void uncaught_exception_handler(NSException *exception) {
 
 @implementation com_epic_framework_implementation_EpicImplementationNative;
 
-+ (void) setupDebugHandlersx {
++ (void) setupDebugHandlers__
+{
   NSLog(@"Initializing Debug Handlers to cat SIGSEGV / SIGTRAP");
-  struct sigaction sa;
+  struct sigaction sa; 
   memset(&sa, 0, sizeof(struct sigaction));
   sigemptyset(&sa.sa_mask);
   sa.sa_sigaction = segfault_handler;
@@ -65,7 +69,10 @@ void uncaught_exception_handler(NSException *exception) {
   NSSetUncaughtExceptionHandler(uncaught_exception_handler);
 }
 
-+ (MyUIImage*) resizeImagex_MyUIImageMwMw :(MyUIImage*)src :(int)width :(int)height
++ (org_xmlvm_iphone_UIImage*) resizeImage___org_xmlvm_iphone_UIImage_int_int
+  : (org_xmlvm_iphone_UIImage*) src 
+  : (int) width 
+  : (int) height
 {
   CGInterpolationQuality quality =  kCGInterpolationHigh;
   CGImageRef imageRef = src.CGImage;
@@ -84,12 +91,13 @@ void uncaught_exception_handler(NSException *exception) {
   CGContextSetInterpolationQuality(destContext, quality);
   CGContextDrawImage(destContext, destRect, imageRef);
   CGImageRef newImageRef = CGBitmapContextCreateImage(destContext);
-  MyUIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+  org_xmlvm_iphone_UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
   CGContextRelease(destContext);
   CGImageRelease(newImageRef);
   CGColorSpaceRelease(colorSpace);
-  return [MYLIB_NIL2NULL(newImage) retain];
+  return [XMLVM_NIL2NULL(newImage) retain];
 }
+
 
 @end
 

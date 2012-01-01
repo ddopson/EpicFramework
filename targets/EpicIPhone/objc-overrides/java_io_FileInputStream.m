@@ -1,6 +1,6 @@
-/* Copyright (c) 2002-2011 by MYLIB.org
+/* Copyright (c) 2002-2011 by XMLVM.org
  *
- * Project Info:  http://www.mylib.org
+ * Project Info:  http://www.xmlvm.org
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,39 +18,39 @@
  * USA.
  */
 
-#import "MyFileInputStream.h"
-#import "MyFileNotFoundException.h"
+#import "java_io_FileInputStream.h"
+#import "java_io_FileNotFoundException.h"
 
 
-@implementation MyFileInputStream
+@implementation java_io_FileInputStream
 
-- (void) initMyWith_MyFileInputStreamx_Iq :(Iq*) path
+- (void) __init_java_io_FileInputStream___java_lang_String :(java_lang_String*) path
 {
-	MyFile *fi = [[MyFile alloc] init];
-	[fi initMyWith_MyFilex_Iq: path];
-	[self initMyWith_MyFileInputStreamx_MyFile: fi];
+	java_io_File *fi = [[java_io_File alloc] init];
+	[fi __init_java_io_File___java_lang_String: path];
+	[self __init_java_io_FileInputStream___java_io_File: fi];
 	[fi release];
 }
 
-- (void) initMyWith_MyFileInputStreamx_MyFileDescriptor :(MyFileDescriptor*) fdpar
+- (void) __init_java_io_FileInputStream___java_io_FileDescriptor :(java_io_FileDescriptor*) fdpar
 {
 	self->fd = [fdpar retain];
 }
 
-- (void) initMyWith_MyFileInputStreamx_MyFile: (MyFile*) f 
+- (void) __init_java_io_FileInputStream___java_io_File: (java_io_File*) f 
 {
 	NSFileHandle *fdImpl;
-	Iq* path = [f getCanonicalPathx];
+	java_lang_String* path = [f getCanonicalPath__];
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	fdImpl = [NSFileHandle fileHandleForReadingAtPath: path];
 	[path release];
 	if (fdImpl == nil) {
 		[pool release];
-		MyFileNotFoundException* ex = [[MyFileNotFoundException alloc] init];
+		java_io_FileNotFoundException* ex = [[java_io_FileNotFoundException alloc] init];
 		@throw ex;
 	}
-	self->fd = [[MyFileDescriptor alloc] init];
-	[fd initMyWith_MyFileDescriptorx_NSFileHandle: fdImpl];
+	self->fd = [[java_io_FileDescriptor alloc] init];
+	[fd __init_java_io_FileDescriptor___NSFileHandle: fdImpl];
 	[pool release];
 }
 
@@ -60,7 +60,7 @@
 	[super dealloc];
 }
 
-- (int) availablex
+- (int) available__
 {
     NSFileHandle* fh = [self->fd getFileHandle];
     unsigned long long offset = [fh offsetInFile];
@@ -69,7 +69,7 @@
     return [data length];
 }
 
-- (int) readx
+- (int) read__
 {
 	NSFileHandle* fh = [self->fd getFileHandle];
 	NSData *data = [fh readDataOfLength: 1];
@@ -84,7 +84,7 @@
 	return i;
 }
 
-- (JAVA_LONG) skipxXu: (JAVA_LONG) n
+- (JAVA_LONG) skip___long: (JAVA_LONG) n
 {
 	NSFileHandle* fh = [self->fd getFileHandle];
 	long initialPos = [fh offsetInFile];
@@ -94,7 +94,7 @@
 }
 
 
-- (void) closex
+- (void) close__
 {
 	if (self->fd == JAVA_NULL) {
 		return;
@@ -104,35 +104,35 @@
 	[fh closeFile];
 }
 
-- (MyFileDescriptor*) getFDx
+- (java_io_FileDescriptor*) getFD__
 {
 	return [self->fd retain];
 }
 
-- (bool) markSupportedx
+- (bool) markSupported__
 {
 	return true;
 }
 
-- (void) markxMw: (int) max
+- (void) mark___int: (int) max
 {
 	NSFileHandle* fh = [self->fd getFileHandle];
 	marked = [fh offsetInFile];
 }
 
-- (void) markxXu: (JAVA_LONG) max
+- (void) mark___long: (JAVA_LONG) max
 {
 	NSFileHandle* fh = [self->fd getFileHandle];
 	marked = [fh offsetInFile];
 }
 
-- (void) resetx
+- (void) reset__
 {
 	NSFileHandle* fh = [self->fd getFileHandle];
 	[fh seekToFileOffset: marked];
 }
 
-- (int) readxBr_BxWd :(MYLIBArray*)buf
+- (int) read___byte_ARRAYTYPE :(XMLVMArray*)buf
 {
 	NSFileHandle* fh = [self->fd getFileHandle];
 	int len = [buf count];
@@ -140,7 +140,7 @@
 	if (data == nil) {
 		return -1;
 	}
-	char * ptr = (char *) [data bytes];
+	unsigned char * ptr = (unsigned char *) [data bytes];
 	if (ptr == NULL) {
 		return -1;
 	} else {
@@ -151,14 +151,14 @@
 	}
 }	
 
-- (int) readxBr_BxWdMwMw :(MYLIBArray*)buf :(int)offs :(int)len
+- (int) read___byte_ARRAYTYPE_int_int :(XMLVMArray*)buf :(int)offs :(int)len
 {
 	NSFileHandle* fh = [self->fd getFileHandle];
 	NSData *data = [fh readDataOfLength: len];
 	if (data == nil) {
 		return -1;
 	}
-	char * ptr = (char *) [data bytes];
+	unsigned char * ptr = (unsigned char *) [data bytes];
 	if (ptr == NULL) {
 		return -1;
 	}	else {

@@ -1,6 +1,6 @@
-/* Copyright (c) 2002-2011 by MYLIB.org
+/* Copyright (c) 2002-2011 by XMLVM.org
  *
- * Project Info:  http://www.mylib.org
+ * Project Info:  http://www.xmlvm.org
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
  * USA.
  */
 
-#import "MyUIImage.h"
+#import "org_xmlvm_iphone_UIImage.h"
 
 @interface CroppedImageArgs : NSObject {
 @public	CGRect cropRect;
@@ -32,55 +32,54 @@
 
 // UIImage
 //----------------------------------------------------------------------------
-@implementation UIImage(cat_MyUIImage);
+@implementation UIImage(cat_org_xmlvm_iphone_UIImage);
 
-+ (MyUIImage*)imageNamedx_Iq:(Iq*)path
++ (org_xmlvm_iphone_UIImage*)imageNamed___java_lang_String:(java_lang_String*)path
 {
-    path=MYLIB_NULL2NIL(path);
-	return_MYLIB_SELECTOR(UIImage imageNamed:path)
+    path=XMLVM_NULL2NIL(path);
+	return_XMLVM_SELECTOR(UIImage imageNamed:path)
 }
 
-+ (MyUIImage*) imageWithContentsOfFilex_Iq :(Iq*)path
++ (org_xmlvm_iphone_UIImage*) imageWithContentsOfFile___java_lang_String :(java_lang_String*)path
 {
-    path=MYLIB_NULL2NIL(path);
+    path=XMLVM_NULL2NIL(path);
     UIImage * img = [[UIImage alloc] initWithContentsOfFile:path];
-    img=MYLIB_NIL2NULL(img);
+    img=XMLVM_NIL2NULL(img);
     return img;
 }
 
-+ (MyUIImage*) imageWithDatax_MyNSData: (MyNSData*) data
++ (org_xmlvm_iphone_UIImage*) imageWithData___org_xmlvm_iphone_NSData: (org_xmlvm_iphone_NSData*) data
 {
 	return [[UIImage alloc] initWithData:data];
-	//return_MYLIB_SELECTOR(UIImage imageWithData:data)
+	//return_XMLVM_SELECTOR(UIImage imageWithData:data)
 }
 
-- (MyUIImage*) stretchableImagexMwMw :(int)leftCapWidth :(int)topCapHeight
+- (org_xmlvm_iphone_UIImage*) stretchableImage___int_int :(int)leftCapWidth :(int)topCapHeight
 {
-	return_MYLIB(stretchableImageWithLeftCapWidth:leftCapWidth topCapHeight:topCapHeight)
+	return_XMLVM(stretchableImageWithLeftCapWidth:leftCapWidth topCapHeight:topCapHeight)
 }
 
-- (MyCGSize*) getSizex
+- (org_xmlvm_iphone_CGSize*) getSize__
 {
-    MyCGSize* s = [[MyCGSize alloc] init];
-    s->widthIh = [self size].width;
-    s->heightIh = [self size].height;
+    org_xmlvm_iphone_CGSize* s = [[org_xmlvm_iphone_CGSize alloc] init];
+    s->width_float = [self size].width;
+    s->height_float = [self size].height;
     return s;
 }
 
-- (void) drawInRectx_MyCGRect: (MyCGRect*) rect
+- (void) drawInRect___org_xmlvm_iphone_CGRect: (org_xmlvm_iphone_CGRect*) rect
 {
     CGRect r = [rect getCGRect];
     [self drawInRect: r];
 }
 
-
-- (void) drawAtPointx_MyCGPoint: (MyCGPoint*) point;
+- (void) drawAtPoint___org_xmlvm_iphone_CGPoint: (org_xmlvm_iphone_CGPoint*) point;
 {
   CGPoint p = [point getCGPoint];
-	[self drawAtPoint: p];
+  [self drawAtPoint: p];
 }
 
-- (void) drawAtPointxMwMw :(int)x :(int)y
+- (void) drawAtPoint___int_int :(int)x :(int)y
 {
 	CGPoint p = CGPointMake(x,y);
 	p.x = x;
@@ -88,9 +87,9 @@
 	[self drawAtPoint: p];
 }
 
-- (MyCGImage*) getCGImagex
+- (org_xmlvm_iphone_CGImage*) getCGImage__
 {
-	MyCGImage* retval = [[MyCGImage alloc] init];
+	org_xmlvm_iphone_CGImage* retval = [[org_xmlvm_iphone_CGImage alloc] init];
 	retval->image = [self CGImage];
 
 	return retval;
@@ -120,7 +119,7 @@
 	((CroppedImageArgs *) args)->croppedImage = croppedImage;
 }
 
-- (MyUIImage *) cropImagexMwMwMwMw: (int) x :(int) y :(int) width :(int) height
+- (org_xmlvm_iphone_UIImage *) cropImage___int_int_int_int: (int) x :(int) y :(int) width :(int) height
 {
 	CroppedImageArgs* args = [[CroppedImageArgs alloc] init];
 	args->cropRect = CGRectMake(x, y, width, height);
@@ -130,13 +129,13 @@
 	return croppedImage;
 }
 
-- (MyNSData*) PNGRepresentationx
+- (org_xmlvm_iphone_NSData*) PNGRepresentation__
 {
 	NSData * data = UIImagePNGRepresentation(self);
 	return [data retain];
 }
 
-- (MyNSData*) JPEGRepresentationxIh:(float) compression
+- (org_xmlvm_iphone_NSData*) JPEGRepresentation___float:(float) compression
 {
 	NSData * data = UIImageJPEGRepresentation(self, compression);
 	return [data retain];
