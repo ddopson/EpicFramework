@@ -7,6 +7,7 @@ CLASSES="
   EpicMissingSoundException
   EpicMissingFileException
   EpicNoSuchElementException
+  EpicNativeMethodMissingImplementation
   EpicNotImplementedException
   EpicNullPointerException
   EpicNotSupportedException

@@ -1,7 +1,9 @@
 package com.epic.framework.implementation;
 
+import com.epic.framework.common.util.exceptions.EpicNativeMethodMissingImplementation;
+
 public class UniqueIdGenerator {
 	public static String getUniqueDeviceId() {
-		return null;
+		throw new EpicNativeMethodMissingImplementation("UniqueIdGenerator");
 	}
 }
