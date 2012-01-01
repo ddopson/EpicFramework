@@ -25,7 +25,7 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 		super(rect);
 
 		EpicPlatform.initialize(this, null, null);
-		EpicImplementationNative.setupDebugHandlers();
+		EpicPlatformImplementationNative.setupDebugHandlers();
 	}
 
 

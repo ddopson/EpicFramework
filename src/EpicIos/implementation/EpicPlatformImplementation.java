@@ -27,4 +27,8 @@ public class EpicPlatformImplementation {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public static String getUniqueDeviceId() {
+		return EpicPlatformImplementationNative.getUniqueDeviceId();
+	}
 }

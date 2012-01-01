@@ -4,7 +4,6 @@ import org.xmlvm.iphone.UIImage;
 
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.util.EpicFail;
-import com.epic.framework.common.util.EpicLog;
 
 public class EpicBitmapImplementation {
 
@@ -17,7 +16,7 @@ public class EpicBitmapImplementation {
 	public static Object loadBitmap(EpicBitmap epicBitmap, int neededInternalWidth, int neededInternalHeight) {
 		UIImage src = UIImage.imageNamed(epicBitmap.name + "." + epicBitmap.extension);	
 		EpicFail.assertNotNull(src, "src");
-		UIImage scaled = EpicImplementationNative.resizeImage(src, neededInternalWidth, neededInternalHeight);
+		UIImage scaled = EpicBitmapImplementationNative.resizeImage(src, neededInternalWidth, neededInternalHeight);
 		EpicFail.assertNotNull(scaled, "scaled");
 		return scaled;
 	}

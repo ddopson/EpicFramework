@@ -1,7 +1,7 @@
 #import "com_epic_framework_common_util_EpicFail.h"
 #import "com_epic_framework_common_util_exceptions_EpicRuntimeException.h"
 #import "org_xmlvm_iphone_UIImage.h"
-#import "com_epic_framework_implementation_EpicImplementationNative.h"
+#import "com_epic_framework_implementation_EpicPlatformImplementationNative.h"
 #import "org_xmlvm_iphone_NSObject.h"
 #import "CoreGraphics/CGBitmapContext.h"
 #include <fcntl.h>
@@ -44,7 +44,7 @@ void uncaught_exception_handler(NSException *exception) {
   }
 }
 
-@implementation com_epic_framework_implementation_EpicImplementationNative;
+@implementation com_epic_framework_implementation_EpicPlatformImplementationNative;
 
 + (void) setupDebugHandlers__
 {
@@ -69,35 +69,10 @@ void uncaught_exception_handler(NSException *exception) {
   NSSetUncaughtExceptionHandler(uncaught_exception_handler);
 }
 
-+ (org_xmlvm_iphone_UIImage*) resizeImage___org_xmlvm_iphone_UIImage_int_int
-  : (org_xmlvm_iphone_UIImage*) src 
-  : (int) width 
-  : (int) height
++ (java_lang_String*) getUniqueDeviceId__
 {
-  CGInterpolationQuality quality =  kCGInterpolationHigh;
-  CGImageRef imageRef = src.CGImage;
-  CGRect destRect = CGRectMake(0, 0, width, height);
-  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-  void *bitmapData = 0; //malloc( 4 * width * height );
-  CGContextRef destContext = CGBitmapContextCreate(
-    bitmapData,                     // image byte array
-    width,                          // width
-    height,                         // height
-    8,                              // bits-per-component
-    4*width,                        // bytes-per-row (is 0 ok?)
-    colorSpace,                     // colorSpace
-    kCGImageAlphaPremultipliedFirst // bitmapFormat
-  );
-  CGContextSetInterpolationQuality(destContext, quality);
-  CGContextDrawImage(destContext, destRect, imageRef);
-  CGImageRef newImageRef = CGBitmapContextCreateImage(destContext);
-  org_xmlvm_iphone_UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
-  CGContextRelease(destContext);
-  CGImageRelease(newImageRef);
-  CGColorSpaceRelease(colorSpace);
-  return [XMLVM_NIL2NULL(newImage) retain];
+  return [[UIDevice currentDevice] uniqueDeviceIdentifier];
 }
-
 
 @end
 

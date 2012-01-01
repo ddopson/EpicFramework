@@ -602,4 +602,8 @@ public class EpicPlatform {
 	public static String getListingId() {
 		return EpicPlatformImplementation.getListingId();
 	}
+
+	public static String getUniqueDeviceId() {
+		return EpicPlatformImplementation.getUniqueDeviceId();
+	}
 }
