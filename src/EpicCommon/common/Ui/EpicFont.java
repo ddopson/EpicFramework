@@ -1,84 +1,88 @@
 
 package com.epic.framework.common.Ui;
 
-import java.util.HashMap;
-
 import com.epic.framework.common.util.EpicFail;
+import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.StringHelper;
 import com.epic.framework.implementation.EpicFontImplementation;
-import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.resources.EpicFiles;
 
 public class EpicFont {
-	private static final HashMap<Integer, EpicFont> sizedFonts = new HashMap<Integer, EpicFont>();
+	//	private static final HashMap<Integer, EpicFont> sizedFonts = new HashMap<Integer, EpicFont>();
 	public static final int VALIGN_CENTER = 1;
 	public static final int VALIGN_TOP = 2;
 	public static final int VALIGN_BOTTOM = 3;
-	
+
 	public static final int HALIGN_RIGHT = 11;
 	public static final int HALIGN_LEFT = 12;
 	public static final int HALIGN_CENTER = 13;
-	
-	public static final EpicFont FONT_MAIN = EpicPlatform.isBlackberry() ? new EpicFont("BBAlpha Sans") : new EpicFont(EpicFiles.Nunito);
-	public static final EpicFont FONT_GAME = new EpicFont(EpicFiles.LuckiestGuy);
-	
+
+	public static final int MAX_SIZE = 120;
+
+	public static final EpicFont FONT_MAIN = EpicPlatform.isBlackberry() ? EpicFont.fromName("BBAlpha Sans", 12) : EpicFont.fromFile(EpicFiles.Nunito, 12);
+	public static final EpicFont FONT_GAME = EpicFont.fromFile(EpicFiles.LuckiestGuy, 12);
+
+	public final String name;
+	public final int size_absolute, size_relative, height, ascent, descent;
 	public final Object fontObject;
-	public EpicFont(Object platformObject) {
-		this.fontObject = platformObject;
+	private final EpicFont[] sizes;
+
+	private EpicFont(EpicFont base, String name, Object fontObject, int size) {
+		this.name = name;
+		this.fontObject = fontObject;
+		this.size_absolute = size;
+		this.size_relative = relsize(size);
+		this.height = EpicFontImplementation.measureHeight(this);
+		this.ascent = EpicFontImplementation.measureAscent(this);
+		this.descent = EpicFontImplementation.measureDescent(this);
+		this.sizes = base == null ? new EpicFont[MAX_SIZE + 1] : base.sizes;
+		if(base == null) {
+			EpicLog.i("Creating a new Font Class: " + name);
+		}
+		this.sizes[size] = this;
 		EpicFail.assertNotNull(fontObject);
+		EpicLog.i("Creating new Font Object of size " + size + " (" + StringHelper.namedArgList("size_relative", size_relative, "height", height, "ascent", ascent, "descent", descent) + ")");
 	}
-	
-	private EpicFont(EpicFile file) {
-		this(EpicFontImplementation.getFontObjectFromFile(file));
-	}
-	
-	private EpicFont(String systemName) {
-		this(EpicFontImplementation.getFontObjectFromName(systemName));
-	}
-	
-	public static EpicFont fromSize(EpicFont baseFont, int size) {
+
+	private static int relsize(int size) {
 		int width_ratio = size * EpicPlatform.getPlatformWidth() / EpicPlatform.designWidth;
 		int height_ratio = size * EpicPlatform.getPlatformHeight() / EpicPlatform.designHeight;
-		
-		return new EpicFont(EpicFontImplementation.getFontObjectFromSize(baseFont.fontObject, ((width_ratio + height_ratio) / 2)));
-//		if(!sizedFonts.containsKey(size)) {
-//			EpicFont epicFont = new EpicFont(EpicFontImplementation.getFontObjectFromSize(baseFont, size));
-//			sizedFonts.put(size, epicFont);
-//		}
-//		return sizedFonts.get(size);
-	}
-	
-	public EpicFont withSize(int size) {
-		return fromSize(this, size);
+		int relsize = (width_ratio + height_ratio) / 2;
+		return relsize;
 	}
 
-	public int measureHeight() {
-		return EpicFontImplementation.measureHeight(fontObject);
-	}
-	
-	public int measureAscent() {
-		return EpicFontImplementation.measureAscent(fontObject);
-	}
-	
-	public int measureAdvance(String text) {
-		return EpicFontImplementation.measureAdvance(fontObject, text);
+	public static EpicFont fromFile(EpicFile file, int size) {
+		Object platformObject = EpicFontImplementation.getFontObjectFromFile(file);
+		return new EpicFont(null, file.getFilename(), platformObject, size);
 	}
 
-	public int measureAdvance(char[] chars, int offset, int length) {
-		return EpicFontImplementation.measureAdvance(fontObject, chars, offset, length);
+	public static EpicFont fromName(String name, int size) {
+		Object platformObject = EpicFontImplementation.getFontObjectFromName(name);
+		return new EpicFont(null, name, platformObject, size);
 	}
 
 	public EpicFont findBestFittingFont(String text, int width, int height) {
+		EpicLog.i("EpicFont.findBestFittingFont(" + StringHelper.namedArgList("text", text, "width", width, "height", height) + ")");
 		int size = height;
-		while(fromSize(this, size).measureHeight() < EpicPlatform.scaleLogicalToRealY(height)) {
+		while(size < MAX_SIZE && this.withSize(size).height < EpicPlatform.scaleLogicalToRealY(height)) {
 			size++;
 		}
-		while(fromSize(this, size).measureAdvance(text) > EpicPlatform.scaleLogicalToRealX(width)) {
+		while(size > 1 && this.withSize(size).measureAdvance(text) > EpicPlatform.scaleLogicalToRealX(width)) {
 			size--;
 		}
-		return fromSize(this, size);
+		return this.withSize(size);
 	}
 
-	public int getSize() {
-		return EpicFontImplementation.getSize(fontObject);
+	public EpicFont withSize(int size) {
+		EpicFail.assertBounds(1, size, MAX_SIZE, "Font size must be 1 to MAX_SIZE");
+		if(this.sizes[size] == null) {
+			Object platformObject = EpicFontImplementation.getFontObjectFromSize(this, relsize(size));
+			this.sizes[size] = new EpicFont(this, this.name, platformObject, size);
+		}
+		return this.sizes[size];
+	}
+
+	public int measureAdvance(String text) {
+		return EpicFontImplementation.measureAdvance(this, text);
 	}
 }

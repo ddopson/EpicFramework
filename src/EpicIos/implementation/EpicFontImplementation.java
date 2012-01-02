@@ -2,30 +2,41 @@ package com.epic.framework.implementation;
 
 import org.xmlvm.iphone.CGContext;
 import org.xmlvm.iphone.UIGraphics;
-
 import com.epic.framework.common.Ui.EpicFile;
+import com.epic.framework.common.Ui.EpicFont;
+import com.epic.framework.common.util.EpicLog;
 
 public class EpicFontImplementation {
-	String name;
-	int size;
-	private static final int defaultSize = 88; // heh, make sure no one uses the default
-	private EpicFontImplementation(String name, int size) {
-		this.name = name;
-		this.size = size;
+	public static Object getFontObjectFromFile(EpicFile file) {
+		return getFontObjectFromName("Arial");
+	}
+
+	public static Object getFontObjectFromName(String systemName) {
+		return EpicFontImplementationNative.CGFontCreateFromName(systemName);
 	}
 	
-	public static Object getFontObjectFromSize(Object fontObject, int size) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		return new EpicFontImplementation(font.name, size);
+	public static Object getFontObjectFromSize(EpicFont font, int size) {
+		return font.fontObject;
 	}
 
-	public static int measureHeight(Object fontObject) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		return font.size;
+	public static int measureHeight(EpicFont font) {
+		int ascent = EpicFontImplementationNative.CGFontGetAscent(font.fontObject);
+		int descent = EpicFontImplementationNative.CGFontGetDescent(font.fontObject);
+		int unitsPerEm = EpicFontImplementationNative.CGFontGetUnitsPerEm(font.fontObject);
+		int height = (ascent - descent) * font.size_relative / unitsPerEm;
+		return (int)height;
 	}
 
-	public static int measureAscent(Object fontObject) {
-		return getSize(fontObject);
+	public static int measureAscent(EpicFont font) {
+		int ascent = EpicFontImplementationNative.CGFontGetAscent(font.fontObject);
+		int unitsPerEm = EpicFontImplementationNative.CGFontGetUnitsPerEm(font.fontObject);
+		return ascent * font.size_relative / unitsPerEm;
+	}
+
+	public static int measureDescent(EpicFont font) {
+		int descent = EpicFontImplementationNative.CGFontGetDescent(font.fontObject);
+		int unitsPerEm = EpicFontImplementationNative.CGFontGetUnitsPerEm(font.fontObject);
+		return descent * font.size_relative / unitsPerEm;
 	}
 
 	private static void setInvisibleTextMode(CGContext c) {
@@ -41,33 +52,30 @@ public class EpicFontImplementation {
 		// YET .....
 		// CGContext.kCGTextInvisible == 3 !!!!!
 		// So we do what works...
-		c.setTextDrawingMode(3);
+		c.setTextDrawingMode(1);
 	}
 	
-	public static int measureAdvance(Object fontObject, String text) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		CGContext c = UIGraphics.getCurrentContext();
-		c.selectFont(font.name, font.size);
-		setInvisibleTextMode(c);
-		c.showTextAtPoint(0, 0, text);
-		return (int) c.getTextPosition().x;
+	public static int measureAdvance(EpicFont font, String text) {
+		return measureAdvance(UIGraphics.getCurrentContext(), font, text);
+	}
+	
+	public static int measureAdvance(Object graphicsObject, EpicFont font, String text) {
+		CGContext context = (CGContext) graphicsObject;
+		setInvisibleTextMode(context);
+		setFont(font, context);
+		context.showTextAtPoint(0, 0, text);
+		int advance = (int) context.getTextPosition().x;
+//		EpicLog.d("Advance['" + text + "']@" + font.size_absolute + "(" + font.size_relative + ")" + " = " + advance);
+		return advance;
 	}
 
-	public static int measureAdvance(Object fontObject, char[] chars, int offset, int length) {
-		return measureAdvance(fontObject, new String(chars));
+	public static int measureAdvance(Object graphicsObject, EpicFont font, char[] chars, int offset, int length) {
+		return measureAdvance(graphicsObject, font, new String(chars, offset, length));
 	}
 
-	public static int getSize(Object fontObject) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		return font.size;
+	public static void setFont(EpicFont font, CGContext context) {
+		// DDOPSON-2012-01-01 - for now, everything is hardcoded to Arial
+//		EpicFontImplementationNative.CGContextSetFont(font.fontObject, context);
+		context.setFontSize(font.size_relative);
 	}
-
-	public static Object getFontObjectFromName(String systemName) {
-		return new EpicFontImplementation(systemName, defaultSize);
-	}
-
-	public static Object getFontObjectFromFile(EpicFile file) {
-		return getFontObjectFromName("Arial");
-	}
-
 }

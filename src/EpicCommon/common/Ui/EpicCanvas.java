@@ -3,6 +3,7 @@ package com.epic.framework.common.Ui;
 import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.util.*;
 import com.epic.framework.implementation.EpicCanvasImplementation;
+import com.epic.framework.implementation.EpicFontImplementation;
 
 public class EpicCanvas {
 
@@ -25,6 +26,7 @@ public class EpicCanvas {
 
 	public static EpicCanvas get(Object graphicsObject) {
 		staticCanvas.graphicsObject = graphicsObject;
+		EpicCanvasImplementation.init(graphicsObject);
 		return staticCanvas;
 	}
 
@@ -209,7 +211,7 @@ public class EpicCanvas {
 			throw EpicFail.invalid_argument("halign = " + halign);
 		}
 
-		int advance = font.measureAdvance(text);
+		int advance = EpicFontImplementation.measureAdvance(graphicsObject, font, text);
 		int text_left;
 		switch(halign) {
 		case EpicFont.HALIGN_RIGHT:
@@ -226,7 +228,7 @@ public class EpicCanvas {
 		}
 
 		int text_top;
-		int textHeight = font.measureAscent();
+		int textHeight = font.ascent;
 		switch(valign) {
 		case EpicFont.VALIGN_TOP:
 			text_top = y;
@@ -260,22 +262,22 @@ public class EpicCanvas {
 			buffer[i] = text.charAt(i);
 		}
 		
-		int textSize = font.getSize();
+		int textSize = font.size_absolute;
 
-		while(height < __drawTextBox(buffer, 0, text.length(), left, top, width, height, font, color, true, rotateBy)) {
+		while(textSize > 1 && height < __drawTextBox(buffer, 0, text.length(), left, top, width, height, font, color, true, rotateBy)) {
 			font = font.withSize(--textSize);
 		}
 		__drawTextBox(buffer, 0, text.length(), left, top, width, height, font, color, false, rotateBy);
 	}
 
 	final int __drawTextBox(char[] chars, int offset, int length, int left, int top, int width, int height, EpicFont font, int color, boolean measureOnly, int rotateBy) {
+//		EpicLog.d("drawTextBox(" + StringHelper.namedArgList("chars", chars, "offset", offset, "length", length, "width", width, "height", height) + ")");
 		if(debugRendering) {
 			EpicCanvasImplementation.drawBorder(graphicsObject, left, top, width, height, EpicColor.GREEN, 2);
 		}
 
-
 		int p = offset, plast = offset, lineStart = offset, advance = 0;
-		int lineHeight = font.measureHeight();
+		int lineHeight = font.height;
 		int text_top = top;
 		do {
 			while(p < length && buffer[p] == ' ') {
@@ -284,7 +286,7 @@ public class EpicCanvas {
 			while(p < length && buffer[p] != ' ' && buffer[p] != '\n') {
 				p++;
 			}
-			advance = font.measureAdvance(buffer, lineStart, p - lineStart);
+			advance = EpicFontImplementation.measureAdvance(graphicsObject, font, buffer, lineStart, p - lineStart);
 			if(advance > width || p == length || buffer[p] == '\n') {
 				if(advance > width) {
 					p = plast;

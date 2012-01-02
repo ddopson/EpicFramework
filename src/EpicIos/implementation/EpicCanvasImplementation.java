@@ -10,6 +10,8 @@ import org.xmlvm.iphone.UIImage;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;
+import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.StringHelper;
 
 public class EpicCanvasImplementation {
 	static {
@@ -90,19 +92,23 @@ public class EpicCanvasImplementation {
 		c.addLineToPoint(x2, y2);
 		c.strokePath();
 	}
-
+	
 	public static void drawText(Object graphicsObject, String text, int left, int top, EpicFont font, int color, int rotateBy) {
 		CGContext c = (CGContext) graphicsObject;
-		EpicFontImplementation fi = (EpicFontImplementation)font.fontObject;
-//		EpicLog.v("EpicCanvasImplementation.drawText(" + StringHelper.namedArgList("text", text, "left", left, "top", top, "font", fi.name, "size", fi.size, "color", color) + ")");
+//		EpicLog.v("EpicCanvasImplementation.drawText(" + StringHelper.namedArgList("text", text, "left", left, "top", top, "font", font.name, "size_absolute", font.size_absolute, "size_relative", font.size_relative, "color", color) + ")");
 		c.setFillColor(getColorFloatsFromInt(color));
 		c.setStrokeColor(getColorFloatsFromInt(color));
+		EpicFontImplementation.setFont(font, c);
 		c.setTextDrawingMode(0);
-		c.selectFont(fi.name, (float)fi.size);
-		c.showTextAtPoint((float)left, (float)top + fi.size, text);
+		c.showTextAtPoint((float)left, (float)top + font.ascent, text);
 	}
 
-	public static void drawText(Object graphicsObject, char[] buffer, int lineStart, int i, int left, int top, EpicFont font, int color, int rotateBy) {
-		drawText(graphicsObject, new String(buffer), left, top, font, color, rotateBy);
+	public static void drawText(Object graphicsObject, char[] buffer, int offset, int length, int left, int top, EpicFont font, int color, int rotateBy) {
+		drawText(graphicsObject, new String(buffer, offset, length), left, top, font, color, rotateBy);
+	}
+	
+	public static void init(Object graphicsObject) {
+		CGContext c = (CGContext) graphicsObject;
+		c.selectFont("Arial", 12);
 	}
 }
