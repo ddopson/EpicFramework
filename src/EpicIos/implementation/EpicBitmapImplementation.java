@@ -8,9 +8,8 @@ import com.epic.framework.common.util.EpicFail;
 public class EpicBitmapImplementation {
 
 	public static void loadBitmap(EpicBitmap epicBitmap) {
-		UIImage img = UIImage.imageNamed(epicBitmap.name + "." + epicBitmap.extension);
-		EpicFail.assertNotNull(img, "img");
-		epicBitmap.setPlatformObject(img);
+		Object platformObject = loadBitmap(epicBitmap, epicBitmap.internal_width, epicBitmap.internal_height);
+		epicBitmap.setPlatformObject(platformObject);
 	}
 
 	public static Object loadBitmap(EpicBitmap epicBitmap, int neededInternalWidth, int neededInternalHeight) {
