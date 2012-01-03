@@ -8,6 +8,9 @@ import com.epic.framework.common.util.EpicFail;
 public class EpicBitmapImplementation {
 
 	public static void loadBitmap(EpicBitmap epicBitmap) {
+		// DDOPSON-2012-01-01 - we should always "scale" the bitmap into a buffer, else it might be decompressed on every render
+		// see http://developer.apple.com/library/ios/#qa/qa1708/_index.html
+		
 		Object platformObject = loadBitmap(epicBitmap, epicBitmap.internal_width, epicBitmap.internal_height);
 		epicBitmap.setPlatformObject(platformObject);
 	}

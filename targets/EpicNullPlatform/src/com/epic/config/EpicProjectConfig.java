@@ -1,4 +1,4 @@
-package com.epic.framework.cfg;
+package com.epic.config;
 
 import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.Ui.EpicSound;

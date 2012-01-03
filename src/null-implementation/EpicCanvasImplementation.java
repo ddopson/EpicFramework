@@ -23,4 +23,8 @@ public class EpicCanvasImplementation {
 
 	public static void drawLine(Object graphicsObject, int x, int y, int x2, int y2, int strokeWidth, int color) {
 	}
+
+	public static void init(Object graphicsObject) {
+		// optional.  Doesn't need to do anything
+	}
 }
