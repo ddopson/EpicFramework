@@ -77,8 +77,7 @@ void uncaught_exception_handler(NSException *exception) {
 
 + (void) runOnUiThread___java_lang_Runnable :(java_lang_Runnable*) callback;
 {
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    NSLog(@"Async Dispatch on the UI thread");
+  dispatch_async(dispatch_get_main_queue(), ^{
     [callback run__];
   });
 }
