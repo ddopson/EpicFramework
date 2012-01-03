@@ -5,10 +5,11 @@ public class EpicPlatformImplementation {
 	}
 
 	public static void runOnUiThread(Runnable runnable) {
+		EpicPlatformImplementationNative.runOnUiThread(runnable);
 	}
 
 	public static void runInBackground(Runnable runnable) {
-		// new Thread(runnable).start();
+		new Thread(runnable).start();
 	}
 
 	public static void dismissNotifications() {
@@ -20,12 +21,12 @@ public class EpicPlatformImplementation {
 
 	public static String getListingId() {
 		// TODO Auto-generated method stub
-		return null;
+		return "listing_id";
 	}
 
 	public static String getApplicationVersion() {
 		// TODO Auto-generated method stub
-		return null;
+		return "version_string";
 	}
 
 	public static String getUniqueDeviceId() {

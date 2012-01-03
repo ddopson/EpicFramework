@@ -3,6 +3,7 @@
 #import "org_xmlvm_iphone_UIImage.h"
 #import "com_epic_framework_implementation_EpicPlatformImplementationNative.h"
 #import "org_xmlvm_iphone_NSObject.h"
+#import "java_lang_Runnable.h"
 #import "CoreGraphics/CGBitmapContext.h"
 #include <fcntl.h>
 #include <sys/types.h>
@@ -72,6 +73,14 @@ void uncaught_exception_handler(NSException *exception) {
 + (java_lang_String*) getUniqueDeviceId__
 {
   return [[UIDevice currentDevice] uniqueDeviceIdentifier];
+}
+
++ (void) runOnUiThread___java_lang_Runnable :(java_lang_Runnable*) callback;
+{
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    NSLog(@"Async Dispatch on the UI thread");
+    [callback run__];
+  });
 }
 
 @end
