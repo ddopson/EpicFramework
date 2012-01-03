@@ -24,7 +24,8 @@ public class EpicHttpRequest {
 	}
 
 	public void beginGet(final EpicHttpResponseHandler handler) {
-		handler.handleFailure(new EpicNotImplementedException("Network calls not yet implemented."));
+		EpicHttpImplementation.beginGet(this, handler);
+		// handler.handleFailure(new EpicNotImplementedException("Network calls not yet implemented."));
 //		new Thread(new Runnable() {
 //			Exception exception;
 //			EpicHttpResponse response;		

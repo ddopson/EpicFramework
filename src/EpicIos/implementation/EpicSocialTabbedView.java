@@ -101,9 +101,11 @@ public class EpicSocialTabbedView extends UITabBarController {
 					
 			        ListDataSource src = new ListDataSource(new String[][] { pendingTitles, waitingTitles, completedTitles }, new String[] { "Your Turn", "Their Turn", "Completed"});
 			        table.setDataSource(src);
+			        table.setNeedsDisplay();
 				} else {
 					ListDataSource src = new ListDataSource(new String[][] { new String[] { "No Games Found" }}, new String[] { "Online Challenges"});
 			        table.setDataSource(src);
+			        table.setNeedsDisplay();
 				}
 			}
 			

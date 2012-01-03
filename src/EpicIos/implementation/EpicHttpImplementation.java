@@ -1,15 +1,19 @@
 package com.epic.framework.implementation;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicHttpRequest;
 import com.epic.framework.common.util.EpicHttpResponse;
+import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
+import com.realcasualgames.words.WordsHttp;
 
 public class EpicHttpImplementation {
 
@@ -56,5 +60,26 @@ public class EpicHttpImplementation {
 
 	public static long downloadFileTo(String url, String path) {
 		return 0;
+	}
+
+	public static void beginGet(final EpicHttpRequest request, final EpicHttpResponseHandler handler) {
+		EpicPlatform.runInBackground(new Runnable() {
+			public void run() {
+				try {
+					EpicHttpResponse rs = request.get();
+					WordsHttp.processGenericResponseFields(rs);
+					if(handler != null) {
+						handler.handleResponse(rs);
+					}
+					
+					WordsHttp.shouldDisplayChallengeToasts = true;
+				} catch (IOException e) {
+					EpicLog.e("Problem with connection: " + e.toString());
+					if(handler != null) {
+						handler.handleFailure(e);
+					}
+				}
+			}
+		});
 	}
 }

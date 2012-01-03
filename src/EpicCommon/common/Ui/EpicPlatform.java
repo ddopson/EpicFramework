@@ -159,6 +159,7 @@ public class EpicPlatform {
 		repaintScreen();
 		userDragInputEnabled = true;
 		
+		EpicPlatform.repaintScreen();
 		EpicSoundManager.resumeMusic();
 	}
 
