@@ -20,11 +20,6 @@ import com.realcasualgames.words.PlayerState;
 
 public class Main extends UIApplicationDelegate {
 	public static UIWindow window;
-	public static EpicTimer t  = new EpicTimer() {
-		protected void onTimerTick(int n) {
-			EpicPlatform.onPlatformTimerTick();
-		}
-    };
 	public static UINavigationController navc;
 
     @Override
@@ -40,8 +35,6 @@ public class Main extends UIApplicationDelegate {
         window.makeKeyAndVisible();
         
         EpicProjectConfig.onApplicationStart();
-        
-        t.scheduleAtFixedRate(1000 / EpicPlatform.TIMER_HZ);
         
         EpicLog.i("Main.applicationDidFinishLaunching() complete");
     }
