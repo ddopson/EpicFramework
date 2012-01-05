@@ -161,10 +161,14 @@ public class EpicBitmap {
 						}
 					}
 				}
-				EpicLog.w("EpicBitmap - Scaling '" + this.getFilename() + "'" 
-						+ " from " + this.getWidth() + "x" + this.getHeight() 
-						+ " to " + desiredWidth + "x" + desiredHeight
-				);
+//				
+//				EpicLog.w("EpicBitmap - Scaling '" + this.getFilename() + "'" 
+//						+ " from " + this.getWidth() + "x" + this.getHeight() 
+//						+ " to " + desiredWidth + "x" + desiredHeight
+//				);
+				
+				EpicLog.w("EpicBitmap - Scaling: " + this.getFilename() + " to " + desiredWidth + "x" + desiredHeight);
+				
 				Object scaledPlatformObject = EpicBitmapImplementation.loadBitmap(this, neededInternalWidth, neededInternalHeight);
 				globalPixelsInUse += neededInternalWidth * neededInternalHeight;
 				globalPixelsInUseScaled += neededInternalWidth * neededInternalHeight;

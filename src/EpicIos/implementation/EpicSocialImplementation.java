@@ -1,5 +1,8 @@
 package com.epic.framework.implementation;
 
+import org.xmlvm.iphone.SKProduct;
+import org.xmlvm.iphone.SKRequest;
+
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;

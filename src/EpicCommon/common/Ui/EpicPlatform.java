@@ -196,7 +196,7 @@ public class EpicPlatform {
 			if(dialogs.isEmpty()) {
 				return currentScreen.onKeyPress(c);
 			} else {
-				return dialogs.getLast().onKeyPress(c);
+				return dialogs.get(0).onKeyPress(c);
 			}
 		}
 	}
@@ -208,7 +208,7 @@ public class EpicPlatform {
 			if(dialogs.isEmpty()) {
 				return currentScreen.onKeyPress(EpicKeys.ENTER);
 			} else {
-				return dialogs.getLast().onKeyPress(EpicKeys.ENTER);
+				return dialogs.get(0).onKeyPress(EpicKeys.ENTER);
 			}
 		}
 	}
@@ -220,7 +220,7 @@ public class EpicPlatform {
 			if(dialogs.isEmpty()) {
 				return currentScreen.onNavigationMovement(x, y);
 			} else {
-				return dialogs.getLast().onNavigationMovement(x, y);
+				return dialogs.get(0).onNavigationMovement(x, y);
 			}
 		}
 	}
@@ -232,7 +232,7 @@ public class EpicPlatform {
 			if(dialogs.isEmpty()) {
 				currentScreen.onShow();
 			} else {
-				dialogs.getLast().onShow();
+				dialogs.get(0).onShow();
 			}
 		}
 	}
@@ -246,7 +246,7 @@ public class EpicPlatform {
 			if(dialogs.isEmpty()) {
 				currentScreen.onHide();
 			} else {
-				dialogs.getLast().onHide();
+				dialogs.get(0).onHide();
 			}
 		}
 	}
@@ -264,7 +264,7 @@ public class EpicPlatform {
 			if(dialogs.isEmpty()) {
 				return currentScreen.onBackKey();
 			} else {
-				return dialogs.getLast().onBackKey();
+				return dialogs.get(0).onBackKey();
 			}
 		}
 	}
@@ -366,7 +366,7 @@ public class EpicPlatform {
 			currentScreen.onPaint(epicCanvas, renderWidth, renderHeight, mouseTrail);
 			
 			if(!dialogs.isEmpty()) {
-				dialogs.getLast().onPaint(epicCanvas, renderWidth, renderHeight, mouseTrail);
+				dialogs.get(0).onPaint(epicCanvas, renderWidth, renderHeight, mouseTrail);
 			}
 			
 			EpicPlatformImplementation.dismissNotifications();
@@ -470,7 +470,7 @@ public class EpicPlatform {
 					if(dialogs.isEmpty()) {
 						currentScreen.onDragFinished(mouseTrail);
 					} else {
-						dialogs.getLast().onDragFinished(mouseTrail);
+						dialogs.get(0).onDragFinished(mouseTrail);
 					}
 				}
 			}
@@ -478,7 +478,7 @@ public class EpicPlatform {
 				if(dialogs.isEmpty()) {
 					currentScreen.onClick(x, y);
 				} else {
-					dialogs.getLast().onClick(x, y);
+					dialogs.get(0).onClick(x, y);
 				}
 			}
 			if(userDragInputEnabled) {
@@ -492,7 +492,7 @@ public class EpicPlatform {
 			if(dialogs.isEmpty()) {
 				currentScreen.onTimerTick();
 			} else {
-				dialogs.getLast().onTimerTick();
+				dialogs.get(0).onTimerTick();
 			}
 			if(!notifications.isEmpty()) {
 				timeNotificationDisplayed++;
