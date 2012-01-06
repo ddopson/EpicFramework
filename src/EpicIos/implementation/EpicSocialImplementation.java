@@ -18,7 +18,7 @@ public class EpicSocialImplementation {
 	}
 		
 	public static String getPlatformId() {
-		return "b";
+		return "i";
 	}
 	
 	public static String getDisplayNameFromEmail(String email) {
