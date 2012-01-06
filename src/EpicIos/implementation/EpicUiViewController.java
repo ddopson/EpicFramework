@@ -7,6 +7,8 @@ import org.xmlvm.iphone.UIInterfaceOrientation;
 import org.xmlvm.iphone.UITouch;
 import org.xmlvm.iphone.UIViewController;
 
+import com.epic.framework.common.util.EpicLog;
+
 public class EpicUiViewController extends UIViewController {
 	@Override
 	public boolean shouldAutorotateToInterfaceOrientation(int orientation) {
@@ -23,7 +25,20 @@ public class EpicUiViewController extends UIViewController {
 	@Override
 	public void viewWillDisappear(boolean animated) {
 		super.viewWillDisappear(animated);
-		
+		EpicLog.i("viewWillDisappear in main VC");
+		Main.navc.setNavigationBarHidden(false, true);
+	}
+	
+	@Override
+	public void viewWillAppear(boolean animated) {
+		EpicLog.i("viewWillAppear in main VC");
+		super.viewWillAppear(animated);
 		Main.navc.setNavigationBarHidden(true, true);
+	}
+	
+	@Override
+	public void viewDidUnload() {
+		super.viewDidUnload();
+		EpicLog.i("viewDidUnload in main VC");
 	}
 }

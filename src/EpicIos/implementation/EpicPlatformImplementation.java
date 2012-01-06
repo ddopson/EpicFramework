@@ -26,7 +26,7 @@ public class EpicPlatformImplementation {
 
 	public static String getApplicationVersion() {
 		// TODO Auto-generated method stub
-		return "version_string";
+		return "0.01i";
 	}
 
 	public static String getUniqueDeviceId() {

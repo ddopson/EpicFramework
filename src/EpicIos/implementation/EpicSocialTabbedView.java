@@ -391,11 +391,12 @@ public class EpicSocialTabbedView extends UITabBarController {
 	@Override
 	public void viewWillDisappear(boolean animated) {
 		super.viewWillDisappear(animated);
-		Main.navc.setNavigationBarHidden(true, true);
+		//Main.navc.setNavigationBarHidden(true, true);
 	}
 	
+	@Override
 	public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
-		return true;
+		return false;
 	}
 	
 }
