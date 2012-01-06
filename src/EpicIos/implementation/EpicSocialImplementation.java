@@ -3,9 +3,11 @@ package com.epic.framework.implementation;
 import org.xmlvm.iphone.SKProduct;
 import org.xmlvm.iphone.SKRequest;
 
+import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
+import com.realcasualgames.words.Challenge;
 import com.realcasualgames.words.ScreenConnect;
 import com.realcasualgames.words.ScreenOnlineChallengeDetails;
 
@@ -99,6 +101,24 @@ public class EpicSocialImplementation {
 	public static void showChallengeDetails(String challenge_id) {
 		Main.navc.popToRootViewControllerAnimated(true);
 		EpicPlatform.changeScreen(new ScreenOnlineChallengeDetails(challenge_id, null));
+	}
+
+	public static void showAchievements() {
+		
+		String[] titles = new String[Challenge.challenges.length];
+		String[] subtitles = new String[Challenge.challenges.length];
+		EpicBitmap[] images = new EpicBitmap[Challenge.challenges.length];
+		Challenge[] orderedChallenges = Challenge.getOrderedArray();
+		
+		for(int i = 0; i < orderedChallenges.length; ++i) {
+			titles[i] = orderedChallenges[i].getTitle();
+			subtitles[i] = orderedChallenges[i].getProgress();
+			images[i] = orderedChallenges[i].getImage();
+		}
+		
+		EpicChallengesTableView s = new EpicChallengesTableView(titles, subtitles, images);
+		Main.navc.pushViewController(s, true);
+		Main.navc.setNavigationBarHidden(false, true);
 	}
 
 }

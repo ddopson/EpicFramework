@@ -1,1 +1,5 @@
 .metadata
+
+targets/EpicIPhone/objc-overrides/com_epic_framework_implementation_UniqueIdGenerator.h
+
+targets/EpicIPhone/objc-overrides/com_epic_framework_implementation_UniqueIdGenerator.m

@@ -61,8 +61,14 @@ public class EpicCanvasImplementation {
 		} else {
 			c.setAlpha(alpha / 255.0f);
 		}
+		
 		//		c.drawImage(getDstRect(x, y, sw, sh), uiimg.getCGImage());
-		uiimg.drawAtPoint(getDstPoint(x, y));
+		if(uiimg.getSize().width != sw || uiimg.getSize().height != sh) {
+			UIImage cropped = uiimg.cropImage(sx, sy, sw, sh);
+			cropped.drawAtPoint(getDstPoint(x, y));
+		} else {
+			uiimg.drawAtPoint(getDstPoint(x, y));
+		}
 	}	
 
 	public static void drawCircle(Object graphicsObject, int color, int alpha, int x_center, int y_center, int radius) {
