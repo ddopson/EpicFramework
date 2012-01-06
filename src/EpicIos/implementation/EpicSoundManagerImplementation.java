@@ -23,9 +23,9 @@ public class EpicSoundManagerImplementation {
 			initAudioPlayer(sound.name, true);
 			initialized = true;
 		}
-		
-		audioPlayer.play();
+
 		playing = true;
+		audioPlayer.play();
 	}
 
 	public static void playSound(EpicSound sound) {
@@ -44,9 +44,9 @@ public class EpicSoundManagerImplementation {
 	}
 
 	public static void stopMusic() {
-		if(playing) {
+		//if(playing) {
 			audioPlayer.stop();
-		}
+		//}
 	}
 
 	public static void preload(EpicSound[] soundsToPreload) {
@@ -74,6 +74,7 @@ public class EpicSoundManagerImplementation {
 				initialized = true;
 			}
 			
+			playing = true;
 			audioPlayer.play();
 			
 			return true;

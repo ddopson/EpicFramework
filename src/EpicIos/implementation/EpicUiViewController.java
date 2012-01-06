@@ -19,4 +19,11 @@ public class EpicUiViewController extends UIViewController {
 		EpicUiView epicCanvasView = new EpicUiView(Main.window.getBounds());
 		setView(epicCanvasView);
 	}
+	
+	@Override
+	public void viewWillDisappear(boolean animated) {
+		super.viewWillDisappear(animated);
+		
+		Main.navc.setNavigationBarHidden(true, true);
+	}
 }
