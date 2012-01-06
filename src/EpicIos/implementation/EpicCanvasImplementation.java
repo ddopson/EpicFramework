@@ -80,6 +80,7 @@ public class EpicCanvasImplementation {
 	public static void drawBorder(Object graphicsObject, int left, int top, int width, int height, int color, int size) {
 		CGContext c = (CGContext) graphicsObject;
 		c.setStrokeColor(getColorFloatsFromInt(color));
+		c.setLineWidth(size);
 		c.strokeRect(getDstRect(left, top, width, height));
 	}
 
@@ -93,6 +94,7 @@ public class EpicCanvasImplementation {
 	public static void drawLine(Object graphicsObject, int x, int y, int x2, int y2, int strokeWidth, int color) {
 		CGContext c = (CGContext) graphicsObject;
 		c.setStrokeColor(getColorFloatsFromInt(color));
+		c.setLineWidth(strokeWidth);
 		c.beginPath();
 		c.moveToPoint(x, y);
 		c.addLineToPoint(x2, y2);
