@@ -85,4 +85,14 @@ public class EpicFont {
 	public int measureAdvance(String text) {
 		return EpicFontImplementation.measureAdvance(this, text);
 	}
+
+	public String getFriendlyName() {
+		if(this.name.equals("Nunito.ttf")) {
+			return "Nunito";
+		} else if(this.name.equals("LuckiestGuy.ttf")) {
+			return "Luckiest Guy";
+		} else {
+			return this.name.split("\\.")[0];
+		}
+	}
 }

@@ -8,7 +8,14 @@ import com.epic.framework.common.util.EpicLog;
 
 public class EpicFontImplementation {
 	public static Object getFontObjectFromFile(EpicFile file) {
-		return getFontObjectFromName("Arial");
+		if(file.getFilename().equals("Nunito.ttf")) {
+			return getFontObjectFromName("Nunito");	
+		} else if(file.getFilename().equals("LuckiestGuy.ttf")) {
+			return getFontObjectFromName("Luckiest Guy");	
+		} else {
+			EpicLog.e("Do not recognize font name: " + file.getFilename() + ", trying to load anyways...");
+			return getFontObjectFromName(file.getFilename());
+		}
 	}
 
 	public static Object getFontObjectFromName(String systemName) {
@@ -74,7 +81,7 @@ public class EpicFontImplementation {
 	}
 
 	public static void setFont(EpicFont font, CGContext context) {
-		// DDOPSON-2012-01-01 - for now, everything is hardcoded to Arial
+		// TODO: this call causes no font to show up
 //		EpicFontImplementationNative.CGContextSetFont(font.fontObject, context);
 		context.setFontSize(font.size_relative);
 	}

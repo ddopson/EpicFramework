@@ -1,6 +1,8 @@
 package com.epic.framework.implementation;
 
 
+import org.xmlvm.iphone.CGDataProvider;
+import org.xmlvm.iphone.CGFont;
 import org.xmlvm.iphone.CGPoint;
 import org.xmlvm.iphone.CGContext;
 import org.xmlvm.iphone.CGRect;
@@ -106,7 +108,7 @@ public class EpicCanvasImplementation {
 //		EpicLog.v("EpicCanvasImplementation.drawText(" + StringHelper.namedArgList("text", text, "left", left, "top", top, "font", font.name, "size_absolute", font.size_absolute, "size_relative", font.size_relative, "color", color) + ")");
 		c.setFillColor(getColorFloatsFromInt(color));
 		c.setStrokeColor(getColorFloatsFromInt(color));
-		EpicFontImplementation.setFont(font, c);
+		c.selectFont(font.getFriendlyName(), font.size_relative);
 		c.setTextDrawingMode(0);
 		c.showTextAtPoint((float)left, (float)top + font.ascent, text);
 	}
@@ -117,6 +119,6 @@ public class EpicCanvasImplementation {
 	
 	public static void init(Object graphicsObject) {
 		CGContext c = (CGContext) graphicsObject;
-		c.selectFont("Arial", 12);
+		c.selectFont("Nunito", 12);
 	}
 }
