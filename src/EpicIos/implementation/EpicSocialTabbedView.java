@@ -36,7 +36,6 @@ public class EpicSocialTabbedView extends UITabBarController {
 	private int[] options;
 	protected String[] toDisplay;
 	protected String[] emails;
-
 	
 	public EpicSocialTabbedView() {
 		ArrayList<UIViewController> list = new ArrayList<UIViewController>();
@@ -100,12 +99,18 @@ public class EpicSocialTabbedView extends UITabBarController {
 					}
 					
 			        ListDataSource src = new ListDataSource(new String[][] { pendingTitles, waitingTitles, completedTitles }, new String[] { "Your Turn", "Their Turn", "Completed"});
-			        table.setDataSource(src);
-			        table.setNeedsDisplay();
+			        if(table != null) {
+				        table.setDataSource(src);
+				        table.setNeedsDisplay();
+				        table.reloadData();
+			        }
 				} else {
 					ListDataSource src = new ListDataSource(new String[][] { new String[] { "No Games Found" }}, new String[] { "Online Challenges"});
-			        table.setDataSource(src);
-			        table.setNeedsDisplay();
+					if(table != null) {
+						table.setDataSource(src);
+						table.setNeedsDisplay();
+						table.reloadData();
+			        }
 				}
 			}
 			
@@ -143,7 +148,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         
         final UITableViewController top = new UITableViewController(UITableViewStyle.Grouped) {
         	public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
-       			return true;
+       			return false;
         	}
         };
         
@@ -170,6 +175,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 //				
 		        ListDataSource src = new ListDataSource(new String[][] { toDisplay }, new String[] { "Top Players" });
 		        top.getTableView().setDataSource(src);
+		        top.getTableView().reloadData();
 			}
 			
 			public void handleFailure(Exception e) {
@@ -191,7 +197,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         
         final UITableViewController start = new UITableViewController(UITableViewStyle.Grouped) {
         	public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
-       			return true;
+       			return false;
         	}
         };
         
@@ -228,6 +234,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 //				
 		        ListDataSource src = new ListDataSource(new String[][] { emails }, new String[] { "Select an Opponent" });
 		        start.getTableView().setDataSource(src);
+		        start.getTableView().reloadData();
 			}
 			
 			public void handleFailure(Exception e) {
@@ -269,7 +276,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 	
 		UITableViewController wagerList = new UITableViewController(UITableViewStyle.Grouped) {
 			public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
-       			return true;
+       			return false;
         	}
 		};
 		
