@@ -354,6 +354,7 @@ public class EpicPlatform {
 	public static void doToastNotification(EpicNotification notification) {
 		synchronized (singleThreadingLock) {
 			notifications.add(notification);
+			EpicLog.i("Toasting for: " + notification.title);
 			repaintScreen();
 			// EpicPlatformImplementation.doToastNotification(text, duration);
 		}

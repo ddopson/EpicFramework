@@ -22,6 +22,8 @@ public class EpicHttpImplementation {
 
 	public static EpicHttpResponse get(EpicHttpRequest epicHttpRequest) {
 		try {
+			// TODO: useful to debug Word Farm #38
+			// Thread.sleep(2000);
 			URL url = new URL(epicHttpRequest.url);
 			HttpURLConnection c = (HttpURLConnection) url.openConnection();		
 			if(epicHttpRequest.body != null) {
