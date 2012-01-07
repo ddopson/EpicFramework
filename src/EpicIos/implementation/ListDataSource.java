@@ -18,19 +18,37 @@ class ListDataSource extends UITableViewDataSource {
 	public UITableViewCell cellForRowAtIndexPath(UITableView table, NSIndexPath idx) {
 		UITableViewCell cell = new UITableViewCell();
 		UILabel label = cell.getTextLabel();
-		label.setText(items[idx.getSection()][idx.getRow()]);
+		label.setText(items[getAdjustedSection(idx.getSection())][idx.getRow()]);
 		return cell;
 	}
 	
 	public String titleForHeaderInSection(UITableView table, int section) {
-		return sections[section];
+		return sections[getAdjustedSection(section)];
 	}
 
 	public int numberOfRowsInSection(UITableView table, int section) {
-		return items[section].length;
+		return items[getAdjustedSection(section)].length;
 	}
 	
 	public int numberOfSectionsInTableView(UITableView table) {
-		return sections.length;
+		int num = sections.length;
+		
+		for(int i = 0; i < sections.length; ++i) {
+			if(items[i].length == 0) {
+				--num;
+			}
+		}
+		
+		return num;
+	}
+	
+	public int getAdjustedSection(int section) {
+		for(int i = 0; i <= section; ++i) {
+			if(items[i].length == 0) {
+				section++;
+			}
+		}
+		
+		return section;
 	}
 }

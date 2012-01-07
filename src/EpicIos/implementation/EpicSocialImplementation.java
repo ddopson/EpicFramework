@@ -63,7 +63,7 @@ public class EpicSocialImplementation {
 	}
 	
 	public static void viewChallenges(int amount) {
-		EpicSocialTabbedView s = new EpicSocialTabbedView();
+		EpicSocialTabbedView s = new EpicSocialTabbedView(new ListDataSource[3]);
 //		Main.window.setRootViewController(s);
 //		Main.window.makeKeyAndVisible();
 		Main.navc.pushViewController(s, true);
@@ -98,11 +98,6 @@ public class EpicSocialImplementation {
 	public static void postToFacebook(String title, String url, String caption, String imageUrl, EpicClickListener callback) {
 	}
 
-	public static void showChallengeDetails(String challenge_id) {
-		Main.navc.popToRootViewControllerAnimated(true);
-		EpicPlatform.changeScreen(new ScreenOnlineChallengeDetails(challenge_id, null));
-	}
-
 	public static void showAchievements() {
 		
 		String[] titles = new String[Challenge.challenges.length];
@@ -117,6 +112,12 @@ public class EpicSocialImplementation {
 		}
 		
 		EpicChallengesTableView s = new EpicChallengesTableView(titles, subtitles, images);
+		Main.navc.pushViewController(s, true);
+		Main.navc.setNavigationBarHidden(false, true);
+	}
+
+	public static void viewChallenges(int defaultListLength, Object[] platformResponseObject) {
+		EpicSocialTabbedView s = new EpicSocialTabbedView(platformResponseObject);
 		Main.navc.pushViewController(s, true);
 		Main.navc.setNavigationBarHidden(false, true);
 	}

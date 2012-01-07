@@ -31,11 +31,15 @@ public class EpicHttpImplementation {
 			
 			InputStream in = c.getInputStream();
 			EpicLog.i("Bytes available in stream: " + in.available());
-			byte[] buf = new byte[BUF_SIZE];
-			int read = in.read(buf);
-			EpicLog.i("Read " + read + " bytes from connection body.");
 			
-			String body = new String(buf).trim();
+			String body = "";
+			if(in.available() > 0) {
+				byte[] buf = new byte[BUF_SIZE];
+				int read = in.read(buf);
+				EpicLog.i("Read " + read + " bytes from connection body.");
+				
+				body = new String(buf).trim();
+			}
 			
 			HashMap<String, String> headers = new HashMap<String, String>(); 
 			
@@ -73,7 +77,7 @@ public class EpicHttpImplementation {
 					}
 					
 					WordsHttp.shouldDisplayChallengeToasts = true;
-				} catch (IOException e) {
+				} catch (Exception e) {
 					EpicLog.e("Problem with connection: " + e.toString());
 					if(handler != null) {
 						handler.handleFailure(e);
