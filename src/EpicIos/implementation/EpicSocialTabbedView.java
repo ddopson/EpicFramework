@@ -100,6 +100,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 					
 			        ListDataSource src = new ListDataSource(new String[][] { pendingTitles, waitingTitles, completedTitles }, new String[] { "Your Turn", "Their Turn", "Completed"});
 			        if(table != null) {
+			        	EpicLog.v("Refreshing challenge list...");
 				        table.setDataSource(src);
 				        table.setNeedsDisplay();
 				        table.reloadData();
@@ -107,6 +108,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 				} else {
 					ListDataSource src = new ListDataSource(new String[][] { new String[] { "No Games Found" }}, new String[] { "Online Challenges"});
 					if(table != null) {
+						EpicLog.v("Refreshing challenge list...");
 						table.setDataSource(src);
 						table.setNeedsDisplay();
 						table.reloadData();
@@ -173,6 +175,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 					EpicLog.i("Displaying " + toDisplay[i]);
 				}
 //				
+				EpicLog.v("Refreshing leaderboard...");
 		        ListDataSource src = new ListDataSource(new String[][] { toDisplay }, new String[] { "Top Players" });
 		        top.getTableView().setDataSource(src);
 		        top.getTableView().reloadData();
@@ -232,6 +235,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 					emails = new String[] { "<<Random Opponent>>" };
 				}
 //				
+				EpicLog.v("Refreshing Friends List...");
 		        ListDataSource src = new ListDataSource(new String[][] { emails }, new String[] { "Select an Opponent" });
 		        start.getTableView().setDataSource(src);
 		        start.getTableView().reloadData();
