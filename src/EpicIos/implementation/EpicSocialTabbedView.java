@@ -7,7 +7,9 @@ import org.xmlvm.iphone.UIAlertView;
 import org.xmlvm.iphone.UIImage;
 import org.xmlvm.iphone.UITabBarController;
 import org.xmlvm.iphone.UITableView;
+import org.xmlvm.iphone.UITableViewCell;
 import org.xmlvm.iphone.UITableViewController;
+import org.xmlvm.iphone.UITableViewDataSource;
 import org.xmlvm.iphone.UITableViewDelegate;
 import org.xmlvm.iphone.UITableViewStyle;
 import org.xmlvm.iphone.UIViewController;
@@ -42,6 +44,26 @@ public class EpicSocialTabbedView extends UITabBarController {
         
         UITableViewController controller = new UITableViewController(UITableViewStyle.Grouped);
         final UITableView table = controller.getTableView();
+        
+        table.setDataSource(new UITableViewDataSource() {
+			public int numberOfRowsInSection(UITableView table, int section) {
+				return 0;
+			}
+			
+			public UITableViewCell cellForRowAtIndexPath(UITableView table,
+					NSIndexPath idx) {
+				return null;
+			}
+			
+			@Override
+			public int numberOfSectionsInTableView(UITableView table) {
+				return 1;
+			}
+			
+			public String titleForHeaderInSection(UITableView table, int section) {
+				return "Loading...";
+			}
+		});
         
         WordsHttp.getChallenges(25, new EpicHttpResponseHandler() {
 			
@@ -154,6 +176,26 @@ public class EpicSocialTabbedView extends UITabBarController {
         	}
         };
         
+        top.getTableView().setDataSource(new UITableViewDataSource() {
+			public int numberOfRowsInSection(UITableView table, int section) {
+				return 0;
+			}
+			
+			public UITableViewCell cellForRowAtIndexPath(UITableView table,
+					NSIndexPath idx) {
+				return null;
+			}
+			
+			@Override
+			public int numberOfSectionsInTableView(UITableView table) {
+				return 1;
+			}
+			
+			public String titleForHeaderInSection(UITableView table, int section) {
+				return "Loading...";
+			}
+		});
+        
 		WordsHttp.displayOnlineLeaderboard(new EpicHttpResponseHandler() {
 			public void handleResponse(EpicHttpResponse response) {
 				EpicLog.i("Response: " + response.body);
@@ -203,6 +245,26 @@ public class EpicSocialTabbedView extends UITabBarController {
        			return false;
         	}
         };
+        
+        start.getTableView().setDataSource(new UITableViewDataSource() {
+			public int numberOfRowsInSection(UITableView table, int section) {
+				return 0;
+			}
+			
+			public UITableViewCell cellForRowAtIndexPath(UITableView table,
+					NSIndexPath idx) {
+				return null;
+			}
+			
+			@Override
+			public int numberOfSectionsInTableView(UITableView table) {
+				return 1;
+			}
+			
+			public String titleForHeaderInSection(UITableView table, int section) {
+				return "Loading...";
+			}
+		});
         
 		WordsHttp.getFriends(new EpicHttpResponseHandler() {
 
