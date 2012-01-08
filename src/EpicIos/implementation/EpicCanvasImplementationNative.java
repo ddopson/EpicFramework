@@ -7,7 +7,7 @@ import org.xmlvm.iphone.UIImage;
 import com.epic.framework.common.util.exceptions.EpicNativeMethodMissingImplementation;
 
 public class EpicCanvasImplementationNative {
-	public static UIImage drawImage(UIImage src, int width, int height) {
+	public static void drawImage(UIImage src, int x, int y, int alpha) {
 		throw new EpicNativeMethodMissingImplementation("EpicBitmapImplementationNative");
 	}
 

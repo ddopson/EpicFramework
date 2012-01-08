@@ -7,6 +7,17 @@
 
 
 @implementation com_epic_framework_implementation_EpicCanvasImplementationNative;
++ (org_xmlvm_iphone_UIImage*) drawImage___org_xmlvm_iphone_UIImage_int_int_int
+  : (org_xmlvm_iphone_UIImage*) image
+  : (int) left
+  : (int) top
+  : (int) alpha
+{
+  UIImage* uii = (UIImage*) image;
+  CGPoint point = CGPointMake(left, top);
+  float falpha = alpha / 255.0f;
+  [uii drawAtPoint: point blendMode: kCGBlendModeNormal alpha: falpha];
+}
 
 + (void) setCrop___org_xmlvm_iphone_CGContext_int_int_int_int
   : (org_xmlvm_iphone_CGContext*) context 

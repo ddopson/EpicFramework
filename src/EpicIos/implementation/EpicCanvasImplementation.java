@@ -21,11 +21,11 @@ public class EpicCanvasImplementation {
 		// See http://www.cocoabuilder.com/archive/cocoa/293268-cgcontextselectfont-spinlock.html
 		UIFont.systemFontOfSize(12);
 	}
-	
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// HELPERS
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	private static CGRect dst = new CGRect(0,0,0,0);
 	private static CGRect getDstRect(int x, int y, int w, int h) {
 		dst.origin.x = (float)x;
@@ -34,14 +34,14 @@ public class EpicCanvasImplementation {
 		dst.size.height = (float)h;
 		return dst;
 	}
-	
+
 	private static CGPoint dstp = new CGPoint(0,0);
 	private static CGPoint getDstPoint(int x, int y) {
 		dstp.x = (float)x;
 		dstp.y = (float)y;
 		return dstp;
 	}
-	
+
 	private static float[] colorFloats = new float[4];
 	private static float[] getColorFloatsFromInt(int color) {
 		colorFloats[0] = (float) EpicColor.getRed(color) / 255.0f;
@@ -50,7 +50,7 @@ public class EpicCanvasImplementation {
 		colorFloats[3] = (float) EpicColor.getAlpha(color) / 255.0f;
 		return colorFloats;
 	}
-	
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// METHODS
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,23 +58,10 @@ public class EpicCanvasImplementation {
 	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh) {
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
-		
-		if(alpha == EpicCanvas.NO_ALPHA) {
-			c.setAlpha(1.0f);
-		} else {
-			c.setAlpha(alpha / 255.0f);
-		}
+
 		EpicCanvasImplementationNative.setCrop(c, x, y, sw, sh);
-//		crop = x, y, sw, sh;
-//			render = x - sx; y-sy; 
-		//		c.drawImage(getDstRect(x, y, sw, sh), uiimg.getCGImage());
-//		if(uiimg.getSize().width != sw || uiimg.getSize().height != sh && sw > 0 && sh > 0) {
-//			UIImage cropped = uiimg.cropImage(sx, sy, sw, sh);
-//			cropped.drawAtPoint(getDstPoint(x, y));
-//		} else {
-			uiimg.drawAtPoint(getDstPoint(x-sx, y-sy));
-			EpicCanvasImplementationNative.restoreContext(c);
-//		}
+		EpicCanvasImplementationNative.drawImage(uiimg, x-sx, y-sy, alpha);
+		EpicCanvasImplementationNative.restoreContext(c);
 	}	
 
 	public static void drawCircle(Object graphicsObject, int color, int alpha, int x_center, int y_center, int radius) {
@@ -106,10 +93,10 @@ public class EpicCanvasImplementation {
 		c.addLineToPoint(x2, y2);
 		c.strokePath();
 	}
-	
+
 	public static void drawText(Object graphicsObject, String text, int left, int top, EpicFont font, int color, int rotateBy) {
 		CGContext c = (CGContext) graphicsObject;
-//		EpicLog.v("EpicCanvasImplementation.drawText(" + StringHelper.namedArgList("text", text, "left", left, "top", top, "font", font.name, "size_absolute", font.size_absolute, "size_relative", font.size_relative, "color", color) + ")");
+		//		EpicLog.v("EpicCanvasImplementation.drawText(" + StringHelper.namedArgList("text", text, "left", left, "top", top, "font", font.name, "size_absolute", font.size_absolute, "size_relative", font.size_relative, "color", color) + ")");
 		c.setFillColor(getColorFloatsFromInt(color));
 		c.setStrokeColor(getColorFloatsFromInt(color));
 		c.selectFont(font.getFriendlyName(), font.size_relative);
@@ -120,7 +107,7 @@ public class EpicCanvasImplementation {
 	public static void drawText(Object graphicsObject, char[] buffer, int offset, int length, int left, int top, EpicFont font, int color, int rotateBy) {
 		drawText(graphicsObject, new String(buffer, offset, length), left, top, font, color, rotateBy);
 	}
-	
+
 	public static void init(Object graphicsObject) {
 		CGContext c = (CGContext) graphicsObject;
 		c.selectFont("Nunito", 12);
