@@ -58,18 +58,22 @@ public class EpicCanvasImplementation {
 	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh) {
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
+		
 		if(alpha == EpicCanvas.NO_ALPHA) {
 			c.setAlpha(1.0f);
 		} else {
 			c.setAlpha(alpha / 255.0f);
 		}
-		
+		EpicCanvasImplementationNative.setCrop(c, x, y, sw, sh);
+//		crop = x, y, sw, sh;
+//			render = x - sx; y-sy; 
 		//		c.drawImage(getDstRect(x, y, sw, sh), uiimg.getCGImage());
 //		if(uiimg.getSize().width != sw || uiimg.getSize().height != sh && sw > 0 && sh > 0) {
 //			UIImage cropped = uiimg.cropImage(sx, sy, sw, sh);
 //			cropped.drawAtPoint(getDstPoint(x, y));
 //		} else {
-			uiimg.drawAtPoint(getDstPoint(x, y));
+			uiimg.drawAtPoint(getDstPoint(x-sx, y-sy));
+			EpicCanvasImplementationNative.restoreContext(c);
 //		}
 	}	
 
