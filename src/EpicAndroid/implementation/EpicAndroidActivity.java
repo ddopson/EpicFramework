@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.epic.framework.cfg.EpicProjectConfig;
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicMenu;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
 import com.epic.framework.common.Ui.EpicPlatform;

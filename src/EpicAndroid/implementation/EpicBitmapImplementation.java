@@ -10,7 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Debug;
 
-import com.epic.framework.cfg.EpicProjectConfig;
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicFail;

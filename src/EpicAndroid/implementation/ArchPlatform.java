@@ -2,7 +2,7 @@ package com.epic.framework.implementation;
 
 import java.util.UUID;
 
-import com.epic.framework.cfg.EpicProjectConfig;
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.util.EpicLog;
 

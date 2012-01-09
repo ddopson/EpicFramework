@@ -6,7 +6,7 @@ import static com.epic.framework.common.util.EpicLog.LEVEL_INFO;
 import static com.epic.framework.common.util.EpicLog.LEVEL_VERBOSE;
 import static com.epic.framework.common.util.EpicLog.LEVEL_WARN;
 
-import com.epic.framework.cfg.EpicProjectConfig;
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.util.EpicFail;
 
 import android.util.Log;

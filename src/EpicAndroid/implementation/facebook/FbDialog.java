@@ -38,7 +38,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.epic.framework.implementation.facebook.Facebook.DialogListener;
-import com.realcasualgames.words.R;
 
 public class FbDialog extends Dialog {
 
