@@ -23,6 +23,7 @@ import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 import com.epic.framework.common.util.exceptions.EpicRuntimeException;
+import com.epic.framework.common.util.exceptions.EpicInvalidArgumentException;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.OnlineChallenge;
 import com.realcasualgames.words.PlayerState;
@@ -46,13 +47,16 @@ public class EpicSocialTabbedView extends UITabBarController {
 	protected String[] emails;
 	public ListDataSource[] sources = new ListDataSource[3];
 	ArrayList<UIViewController> list = new ArrayList<UIViewController>();
+	private UITableView table;
+	private UITableViewController top;
+	private UITableViewController start;
 	
 	public EpicSocialTabbedView(Object[] cachedResponses) {
 		sources = (ListDataSource[]) cachedResponses;
 		
         
         UITableViewController controller = new UITableViewController(UITableViewStyle.Grouped);
-        final UITableView table = controller.getTableView();
+        table = controller.getTableView();
         
         table.setDataSource(new UITableViewDataSource() {
 			public int numberOfRowsInSection(UITableView table, int section) {
@@ -73,98 +77,6 @@ public class EpicSocialTabbedView extends UITabBarController {
 				return "Loading...";
 			}
 		});
-        
-        if(sources[0] == null) {
-	        WordsHttp.getChallenges(25, new EpicHttpResponseHandler() {
-				
-				public void handleResponse(EpicHttpResponse response) {
-					OnlineChallenge[] challenges = OnlineChallenge.parseList(response.body);
-					if(challenges != null) {
-						int completed = 0, pending = 0, waiting = 0;
-						
-						for(int i = 0; i < challenges.length; ++i) {
-							int status = challenges[i].getStatus();
-							
-							if(status == OnlineChallenge.STATUS_WAITING_YOU) {
-								pending++;
-							} else if(status == OnlineChallenge.STATUS_GAME_OVER_YOU_WIN || status == OnlineChallenge.STATUS_GAME_OVER_YOU_LOSE || status == OnlineChallenge.STATUS_GAME_OVER_YOU_TIE) {
-								completed++;
-							} else if(status == OnlineChallenge.STATUS_MATCHING || status == OnlineChallenge.STATUS_WAITING_OPPONENT) {
-								waiting++;
-							}
-						}
-						
-						completedGames = new OnlineChallenge[completed];
-						waitingGames = new OnlineChallenge[waiting];
-						pendingGames = new OnlineChallenge[pending];
-						
-						completed = 0;
-						pending = 0;
-						waiting = 0;
-						
-						for(int i = 0; i < challenges.length; ++i) {
-							int status = challenges[i].getStatus();
-							
-							if(status == OnlineChallenge.STATUS_WAITING_YOU) {
-								pendingGames[pending++] = challenges[i];
-							} else if(status == OnlineChallenge.STATUS_GAME_OVER_YOU_WIN || status == OnlineChallenge.STATUS_GAME_OVER_YOU_LOSE || status == OnlineChallenge.STATUS_GAME_OVER_YOU_TIE) {
-								completedGames[completed++] = challenges[i];
-							} else if(status == OnlineChallenge.STATUS_MATCHING || status == OnlineChallenge.STATUS_WAITING_OPPONENT) {
-								waitingGames[waiting++] = challenges[i];
-							}
-						}
-						
-						String[] completedTitles = new String[completedGames.length];
-						String[] waitingTitles = new String[waitingGames.length];
-						String[] pendingTitles = new String[pendingGames.length];
-						
-						for(int i = 0; i < completedTitles.length; ++i) {
-							completedTitles[i] = completedGames[i].toString();
-						}
-						
-						for(int i = 0; i < waitingTitles.length; ++i) {
-							waitingTitles[i] = waitingGames[i].toString();
-						}
-						
-						for(int i = 0; i < pendingTitles.length; ++i) {
-							pendingTitles[i] = pendingGames[i].toString();
-						}
-						
-						if(pendingGames.length == 0) {
-							pendingTitles = new String[] { EpicSocialTabbedView.START_GAME_TEXT };
-						}
-						
-				        ListDataSource src = new ListDataSource(new String[][] { pendingTitles, waitingTitles, completedTitles }, new String[] { "Your Turn", "Their Turn", "Completed"});
-				        if(table != null) {
-				        	EpicLog.v("Refreshing challenge list...");
-				        	sources[0] = src;
-					        table.setDataSource(src);
-					        table.setNeedsDisplay();
-					        table.reloadData();
-				        }
-					} else {
-						ListDataSource src = new ListDataSource(new String[][] { new String[] { "No Games Found" }}, new String[] { "Online Challenges"});
-						if(table != null) {
-							EpicLog.v("Refreshing challenge list...");
-							sources[0] = src;
-							table.setDataSource(src);
-							table.setNeedsDisplay();
-							table.reloadData();
-				        }
-					}
-				}
-				
-				public void handleFailure(Exception e) {
-					EpicLog.e(e.toString());
-					Main.navc.popToRootViewControllerAnimated(true);
-					EpicPlatform.doToastNotification(new EpicNotification("Unable to Connect", new String[] { "There was a problem connecting to our servers.", "Please ensure you have internet connectivity and try again later." }, EpicImages.icon, 4));
-				}
-			});
-        } else {
-			table.setDataSource(sources[0]);
-			table.setNeedsDisplay();
-			table.reloadData();
-        }
         
         table.setDelegate(
         		new UITableViewDelegate() {
@@ -196,7 +108,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         		});
 //        
         
-        final UITableViewController top = new UITableViewController(UITableViewStyle.Grouped) {
+        top = new UITableViewController(UITableViewStyle.Grouped) {
         	public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
        			return false;
         	}
@@ -221,46 +133,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 				return "Loading...";
 			}
 		});
-        
-        if(sources[1] == null) {
-			WordsHttp.displayOnlineLeaderboard(new EpicHttpResponseHandler() {
-				public void handleResponse(EpicHttpResponse response) {
-					EpicLog.i("Response: " + response.body);
-					players = response.body.split(";");
-					// TODO: HACK -- -1 is for split() returning an extra piece of shit for some reason
-					toDisplay = new String[players.length-1];
-					for(int i = 0; i < players.length; ++i) {
-						String[] parts = players[i].split(":");
-						if(parts.length < 3) continue;
-						EpicLog.i("Parsing " + i + " to " + parts.length + " parts");
-						String email = "";
-						if(parts[0].contains("@")) {
-							email = parts[0].split("@")[0];
-						} else {
-							email = parts[0];
-						}
-						
-						toDisplay[i] = email + " (" + parts[1] + ")"; 
-						EpicLog.i("Displaying " + toDisplay[i]);
-					}
-	//				
-					EpicLog.v("Refreshing leaderboard...");
-			        ListDataSource src = new ListDataSource(new String[][] { toDisplay }, new String[] { "Top Players" });
-			        sources[1] = src;
-			        top.getTableView().setDataSource(src);
-			        top.getTableView().reloadData();
-				}
-				
-				public void handleFailure(Exception e) {
-					EpicLog.e(e.toString());
-					Main.navc.popToRootViewControllerAnimated(true);
-				}
-			});		
-        } else {
-        	top.getTableView().setDataSource(sources[1]);
-        	top.getTableView().setNeedsDisplay();
-        	top.getTableView().reloadData();
-        }
+
 
         top.getTableView().setDelegate(
         		new UITableViewDelegate() {
@@ -273,7 +146,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         		});
         
         
-        final UITableViewController start = new UITableViewController(UITableViewStyle.Grouped) {
+        start = new UITableViewController(UITableViewStyle.Grouped) {
         	public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
        			return false;
         	}
@@ -298,56 +171,6 @@ public class EpicSocialTabbedView extends UITabBarController {
 				return "Loading...";
 			}
 		});
-        
-        if(sources[2] == null) {
-			WordsHttp.getFriends(new EpicHttpResponseHandler() {
-	
-				public void handleResponse(EpicHttpResponse response) {
-					EpicLog.i("Response: " + response.body);
-					if(response.body.length() > 0) {
-						final String[] parts = response.body.split(";");
-						EpicLog.i("Found " + parts.length + " friends");
-	//					// TODO: hack since split returns 1 extra usually
-						emails = new String[parts.length];
-						customer_ids = new String[parts.length];
-	//					
-						for(int i = 0; i < parts.length - 1; ++i) {
-							String[] ip = parts[i].split(":");
-							if(ip.length > 1) {
-								if(ip[1].contains("@")) {
-									emails[i+1] = ip[1].split("@")[0];
-								} else {
-									emails[i+1] = ip[1];
-								}
-							} else {
-								emails[i+1] = "Anonymous";
-							}
-							
-							customer_ids[i] = ip[0];
-						}
-	//					
-						emails[0] = "<<Random Opponent>>";
-					} else {
-						emails = new String[] { "<<Random Opponent>>" };
-					}
-	//				
-					EpicLog.v("Refreshing Friends List...");
-			        ListDataSource src = new ListDataSource(new String[][] { emails }, new String[] { "Select an Opponent" });
-			        sources[2] = src;
-			        start.getTableView().setDataSource(src);
-			        start.getTableView().reloadData();
-				}
-				
-				public void handleFailure(Exception e) {
-					EpicLog.e(e.toString());
-					Main.navc.popToRootViewControllerAnimated(true);
-				}
-			});
-        } else {
-			start.getTableView().setDataSource(sources[2]);
-			start.getTableView().setNeedsDisplay();
-			start.getTableView().reloadData();
-        }
 
 		start.getTableView().setDelegate(
         		new UITableViewDelegate() {
@@ -362,7 +185,21 @@ public class EpicSocialTabbedView extends UITabBarController {
         				}
         			}
         		});
-        
+		
+        if(sources[0] == null || sources[1] == null || sources[2] == null) {
+        	getDataAndPopulate();
+        } else {
+			table.setDataSource(sources[0]);
+			table.setNeedsDisplay();
+			table.reloadData();
+			top.getTableView().setDataSource(sources[1]);
+        	top.getTableView().setNeedsDisplay();
+        	top.getTableView().reloadData();
+        	start.getTableView().setDataSource(sources[2]);
+			start.getTableView().setNeedsDisplay();
+			start.getTableView().reloadData();
+        }
+
         controller.setTitle("Challenges");
         controller.getTabBarItem().setImage(UIImage.imageNamed("challenge_icon.png"));
         top.setTitle("Top Players");
@@ -374,6 +211,170 @@ public class EpicSocialTabbedView extends UITabBarController {
         list.add(top);
         list.add(start);
         this.setViewControllers(list);
+	}
+
+	private void getDataAndPopulate() {
+		WordsHttp.getIosChallengeData(25, new EpicHttpResponseHandler() {
+			public void handleResponse(EpicHttpResponse response) {
+				// break into 3 parts on ||| and send to each process method
+				String[] pieces = response.body.split("~");
+				if(pieces.length != 3) {
+					EpicLog.v("Challenge data: " + response.body);
+					handleFailure(new EpicInvalidArgumentException("Expected 3 parts in response, got " + pieces.length));
+				}
+				
+				processChallenges(pieces[0]);
+				processLeaderboard(pieces[1]);
+				processFriendList(pieces[2]);
+			}
+			
+			public void handleFailure(Exception e) {
+				EpicLog.e(e.toString());
+				Main.navc.popToRootViewControllerAnimated(true);
+				EpicPlatform.doToastNotification(new EpicNotification("Unable to Connect", new String[] { "There was a problem connecting to our servers.", "Please ensure you have internet connectivity and try again later." }, EpicImages.icon, 4));
+			}
+		});
+	}
+	
+	private void processFriendList(String responseString) {
+		EpicLog.i("Response: " + responseString);
+		if(responseString.length() > 0) {
+			final String[] parts = responseString.split(";");
+			EpicLog.i("Found " + parts.length + " friends");
+//			// TODO: hack since split returns 1 extra usually
+			emails = new String[parts.length];
+			customer_ids = new String[parts.length];
+//			
+			for(int i = 0; i < parts.length - 1; ++i) {
+				String[] ip = parts[i].split(":");
+				if(ip.length > 1) {
+					if(ip[1].contains("@")) {
+						emails[i+1] = ip[1].split("@")[0];
+					} else {
+						emails[i+1] = ip[1];
+					}
+				} else {
+					emails[i+1] = "Anonymous";
+				}
+				
+				customer_ids[i] = ip[0];
+			}
+//			
+			emails[0] = "<<Random Opponent>>";
+		} else {
+			emails = new String[] { "<<Random Opponent>>" };
+		}
+//		
+		EpicLog.v("Refreshing Friends List...");
+        ListDataSource src = new ListDataSource(new String[][] { emails }, new String[] { "Select an Opponent" });
+        sources[2] = src;
+        start.getTableView().setDataSource(src);
+        start.getTableView().reloadData();
+	}
+	
+	private void processLeaderboard(String responseString) {
+		EpicLog.i("Response: " + responseString);
+		players = responseString.split(";");
+		// TODO: HACK -- -1 is for split() returning an extra piece of shit for some reason
+		toDisplay = new String[players.length-1];
+		for(int i = 0; i < players.length; ++i) {
+			String[] parts = players[i].split(":");
+			if(parts.length < 3) continue;
+			EpicLog.i("Parsing " + i + " to " + parts.length + " parts");
+			String email = "";
+			if(parts[0].contains("@")) {
+				email = parts[0].split("@")[0];
+			} else {
+				email = parts[0];
+			}
+			
+			toDisplay[i] = email + " (" + parts[1] + ")"; 
+			EpicLog.i("Displaying " + toDisplay[i]);
+		}
+//		
+		EpicLog.v("Refreshing leaderboard...");
+        ListDataSource src = new ListDataSource(new String[][] { toDisplay }, new String[] { "Top Players" });
+        sources[1] = src;
+        top.getTableView().setDataSource(src);
+        top.getTableView().reloadData();
+	}
+	
+	
+	private void processChallenges(String responseString) {
+		OnlineChallenge[] challenges = OnlineChallenge.parseList(responseString);
+		if(challenges != null) {
+			int completed = 0, pending = 0, waiting = 0;
+			
+			for(int i = 0; i < challenges.length; ++i) {
+				int status = challenges[i].getStatus();
+				
+				if(status == OnlineChallenge.STATUS_WAITING_YOU) {
+					pending++;
+				} else if(status == OnlineChallenge.STATUS_GAME_OVER_YOU_WIN || status == OnlineChallenge.STATUS_GAME_OVER_YOU_LOSE || status == OnlineChallenge.STATUS_GAME_OVER_YOU_TIE) {
+					completed++;
+				} else if(status == OnlineChallenge.STATUS_MATCHING || status == OnlineChallenge.STATUS_WAITING_OPPONENT) {
+					waiting++;
+				}
+			}
+			
+			completedGames = new OnlineChallenge[completed];
+			waitingGames = new OnlineChallenge[waiting];
+			pendingGames = new OnlineChallenge[pending];
+			
+			completed = 0;
+			pending = 0;
+			waiting = 0;
+			
+			for(int i = 0; i < challenges.length; ++i) {
+				int status = challenges[i].getStatus();
+				
+				if(status == OnlineChallenge.STATUS_WAITING_YOU) {
+					pendingGames[pending++] = challenges[i];
+				} else if(status == OnlineChallenge.STATUS_GAME_OVER_YOU_WIN || status == OnlineChallenge.STATUS_GAME_OVER_YOU_LOSE || status == OnlineChallenge.STATUS_GAME_OVER_YOU_TIE) {
+					completedGames[completed++] = challenges[i];
+				} else if(status == OnlineChallenge.STATUS_MATCHING || status == OnlineChallenge.STATUS_WAITING_OPPONENT) {
+					waitingGames[waiting++] = challenges[i];
+				}
+			}
+			
+			String[] completedTitles = new String[completedGames.length];
+			String[] waitingTitles = new String[waitingGames.length];
+			String[] pendingTitles = new String[pendingGames.length];
+			
+			for(int i = 0; i < completedTitles.length; ++i) {
+				completedTitles[i] = completedGames[i].toString();
+			}
+			
+			for(int i = 0; i < waitingTitles.length; ++i) {
+				waitingTitles[i] = waitingGames[i].toString();
+			}
+			
+			for(int i = 0; i < pendingTitles.length; ++i) {
+				pendingTitles[i] = pendingGames[i].toString();
+			}
+			
+			if(pendingGames.length == 0) {
+				pendingTitles = new String[] { EpicSocialTabbedView.START_GAME_TEXT };
+			}
+			
+	        ListDataSource src = new ListDataSource(new String[][] { pendingTitles, waitingTitles, completedTitles }, new String[] { "Your Turn", "Their Turn", "Completed"});
+	        if(table != null) {
+	        	EpicLog.v("Refreshing challenge list...");
+	        	sources[0] = src;
+		        table.setDataSource(src);
+		        table.setNeedsDisplay();
+		        table.reloadData();
+	        }
+		} else {
+			ListDataSource src = new ListDataSource(new String[][] { new String[] { "No Games Found" }}, new String[] { "Online Challenges"});
+			if(table != null) {
+				EpicLog.v("Refreshing challenge list...");
+				sources[0] = src;
+				table.setDataSource(src);
+				table.setNeedsDisplay();
+				table.reloadData();
+	        }
+		}
 	}
 	
 	public void selectWagerAndSendChallengeTo(final String opponent_id, final String opponent_name) {

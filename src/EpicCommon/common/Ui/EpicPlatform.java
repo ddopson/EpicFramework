@@ -606,6 +606,6 @@ public class EpicPlatform {
 	}
 
 	public static String getUniqueDeviceId() {
-		return EpicPlatformImplementation.getUniqueDeviceId();
+		return EpicPlatformImplementation.getUniqueDeviceId().substring(0, 8) + "@wordfarmgame.com";
 	}
 }
