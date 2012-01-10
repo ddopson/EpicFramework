@@ -34,6 +34,7 @@ public class EpicUiViewController extends UIViewController {
 		EpicLog.i("viewWillAppear in main VC");
 		super.viewWillAppear(animated);
 		Main.navc.setNavigationBarHidden(true, true);
+		EpicSocialTabbedView.displayed = false;
 	}
 	
 	@Override

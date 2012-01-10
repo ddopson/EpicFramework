@@ -35,6 +35,8 @@ import com.realcasualgames.words.WordsHttp;
 
 
 public class EpicSocialTabbedView extends UITabBarController {
+	
+	public static boolean displayed = false;
 
 	protected static final String START_GAME_TEXT = "< Start a Challenge >";
 	private OnlineChallenge[] completedGames;
@@ -52,6 +54,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 	private UITableViewController start;
 	
 	public EpicSocialTabbedView(Object[] cachedResponses) {
+		displayed = true;
 		sources = (ListDataSource[]) cachedResponses;
 		
         
@@ -216,6 +219,11 @@ public class EpicSocialTabbedView extends UITabBarController {
 	private void getDataAndPopulate() {
 		WordsHttp.getIosChallengeData(25, new EpicHttpResponseHandler() {
 			public void handleResponse(EpicHttpResponse response) {
+				if(!displayed) {
+					EpicLog.i("No longer displaying challenge screen, so discarding network response.");
+					return;
+				}
+				
 				// break into 3 parts on ||| and send to each process method
 				String[] pieces = response.body.split("~");
 				if(pieces.length != 3) {
