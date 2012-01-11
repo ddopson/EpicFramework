@@ -46,7 +46,7 @@ class ChallengeDataSource extends UITableViewDataSource {
 		img.setLocation(padding, padding);
 		img.setImage((UIImage) images[idx.getRow()].getPlatformObject(imageDims, imageDims));
 		
-		UILabel subtitle = new UILabel(new CGRect(imageDims + (2*padding), padding + label.getBounds().origin.y + label.getBounds().size.height, textWidth, (int) 2 * table.getRowHeight() / 3));
+		UILabel subtitle = new UILabel(new CGRect(imageDims + (2*padding), padding + label.getBounds().origin.y + label.getBounds().size.height, textWidth, ((int) 2 * table.getRowHeight() / 3) - padding));
 		subtitle.setText(subtitles[idx.getRow()]);
 		subtitle.setTextColor(UIColor.lightGrayColor);
 		subtitle.setNumberOfLines(2);
