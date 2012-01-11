@@ -103,15 +103,17 @@ public class EpicSocialImplementation {
 		String[] titles = new String[Challenge.challenges.length];
 		String[] subtitles = new String[Challenge.challenges.length];
 		EpicBitmap[] images = new EpicBitmap[Challenge.challenges.length];
+		boolean[] completed = new boolean[Challenge.challenges.length];
 		Challenge[] orderedChallenges = Challenge.getOrderedArray();
 		
 		for(int i = 0; i < orderedChallenges.length; ++i) {
-			titles[i] = orderedChallenges[i].getTitle();
-			subtitles[i] = orderedChallenges[i].getProgress();
+			titles[i] = orderedChallenges[i].getTitle() + " - " + orderedChallenges[i].getProgress();
+			subtitles[i] = orderedChallenges[i].getDescription();
 			images[i] = orderedChallenges[i].getImage();
+			completed[i] = orderedChallenges[i].isComplete();
 		}
 		
-		EpicChallengesTableView s = new EpicChallengesTableView(titles, subtitles, images);
+		EpicChallengesTableView s = new EpicChallengesTableView(titles, subtitles, completed, images);
 		Main.navc.pushViewController(s, true);
 		Main.navc.setNavigationBarHidden(false, true);
 	}

@@ -7,9 +7,10 @@ import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.util.EpicLog;
 
 public class EpicChallengesTableView extends UITableViewController {
-	public EpicChallengesTableView(String[] titles, String[] subtitles, EpicBitmap[] images) {
+	public EpicChallengesTableView(String[] titles, String[] subtitles, boolean[] complete, EpicBitmap[] images) {
 		UITableView table = getTableView();
-		table.setDataSource(new ChallengeDataSource(titles, subtitles, images));
+		table.setRowHeight(70.0f);
+		table.setDataSource(new ChallengeDataSource(titles, subtitles, complete, images));
 	}
 	
 	@Override

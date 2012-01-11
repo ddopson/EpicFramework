@@ -204,11 +204,11 @@ public class EpicSocialTabbedView extends UITabBarController {
         }
 
         controller.setTitle("Challenges");
-        controller.getTabBarItem().setImage(UIImage.imageNamed("challenge_icon.png"));
+        controller.getTabBarItem().setImage((UIImage) EpicImages.challenge_icon.getPlatformObject(64, 64));
         top.setTitle("Top Players");
-        top.getTabBarItem().setImage(UIImage.imageNamed("icon_web.png"));
+        top.getTabBarItem().setImage((UIImage) EpicImages.icon.getPlatformObject(64, 64));
         start.setTitle("Start Challenge");
-        start.getTabBarItem().setImage(UIImage.imageNamed("icon_web.png"));
+        start.getTabBarItem().setImage((UIImage) EpicImages.icon_web.getPlatformObject(64, 64));
         
         list.add(controller);
         list.add(top);
