@@ -8,6 +8,27 @@
 #import "org_xmlvm_iphone_NSObject.h"
 
 
+const char* digits = "0123456789ABCDEF";
+
+char outputbuff[1024];
+
+void dumpBuff(char * buff, int length) {
+  int p=0;
+  NSLog(@"Hi");
+  
+  for(int i = 0; i < length; i++) {
+    int c = (int)buff[i];
+    if(c < 0) c += 256;
+    int a = c & 0x0F;
+    int b = (c & 0xF0) >> 4;
+    outputbuff[p++] = digits[a];
+    outputbuff[p++] = digits[b];
+    outputbuff[p++] = " ";
+  }
+  outputbuff[p++] = 0;
+  NSLog(@"Buffer: %s", outputbuff);
+}
+
 @implementation com_epic_framework_implementation_EpicIOImplementationNative;
 
 NSString *getFullPath(java_lang_String *filename) {
@@ -32,6 +53,8 @@ NSString *getFullPath(java_lang_String *filename) {
   : (java_lang_String*) filename
   : (XMLVMArray*) bytes
 {
+  NSLog(@"About to write %@ with %d bytes", filename, bytes->length);
+  //dumpBuff(bytes->array.b, bytes->length);
   NSString *fullPath = getFullPath(filename);
   NSData *data = [NSData dataWithBytesNoCopy: bytes->array.b length: bytes->length freeWhenDone: NO];
   if ([data writeToFile: fullPath atomically: YES])
@@ -43,7 +66,7 @@ NSString *getFullPath(java_lang_String *filename) {
 + (XMLVMArray*) readFile___java_lang_String
   : (java_lang_String*) filename
 {
-  return NULL;
+  //NSLog(@"About to read %@", filename);
   NSString *fullPath = getFullPath(filename);
   NSData *data = [NSData dataWithContentsOfFile: fullPath];
   
@@ -51,6 +74,7 @@ NSString *getFullPath(java_lang_String *filename) {
     XMLVMArray *array = [XMLVMArray createSingleDimensionWithType: BYTE_TYPE size: [data length] andData: [data bytes]];
     [data release];
     NSLog(@"Read %d bytes from file %@", [data length], fullPath);
+    //dumpBuff(array->array.b, array->length);
     return array;
   } else {
     NSLog(@"Error reading %@", fullPath);
