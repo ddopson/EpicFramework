@@ -52,6 +52,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 	private UITableView table;
 	private UITableViewController top;
 	private UITableViewController start;
+	private String cachedString;
 
 	private UITableViewController controller;
 	
@@ -59,10 +60,9 @@ public class EpicSocialTabbedView extends UITabBarController {
 
 	private String[] opponentIds;
 	
-	public EpicSocialTabbedView(Object[] cachedResponses) {
-		displayed = true;
-		sources = (ListDataSource[]) cachedResponses;
-		
+	public EpicSocialTabbedView(String cachedResponse) {
+		displayed = true;		
+		cachedString = cachedResponse;
         
         controller = new UITableViewController(UITableViewStyle.Grouped);
         table = controller.getTableView();
@@ -112,7 +112,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         				}
         				
 	        			Main.navc.popToRootViewControllerAnimated(true);
-	        			EpicPlatform.changeScreen(new ScreenOnlineChallengeDetails(c.challenge_id, sources));
+	        			EpicPlatform.changeScreen(new ScreenOnlineChallengeDetails(c.challenge_id, cachedString));
         			}
         		});
 //        
@@ -196,7 +196,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         		});
 		
         if(sources[0] == null || sources[1] == null || sources[2] == null) {
-        	getDataAndPopulate();
+        	getDataAndPopulate(cachedResponse != null);
         } else {
 			table.setDataSource(sources[0]);
 			table.setNeedsDisplay();
@@ -221,33 +221,51 @@ public class EpicSocialTabbedView extends UITabBarController {
         list.add(start);
         this.setViewControllers(list);
 	}
+	
+	private void exitAndToast() {
+		Main.navc.popToRootViewControllerAnimated(true);
+		EpicPlatform.doToastNotification(new EpicNotification("Unable to Connect", new String[] { "There was a problem connecting to our servers.", "Please ensure you have internet connectivity and try again later." }, EpicImages.icon, 4));
+	}
+	
+	private void processRepsonses(String[] pieces) {
+		if(pieces.length != 3) {
+			EpicLog.e("Was expecting 3 parts, got " + pieces.length);
+			exitAndToast();
+			return;
+		}
+		
+		processChallenges(pieces[0]);
+		processLeaderboard(pieces[1]);
+		processFriendList(pieces[2]);
+	}
 
-	private void getDataAndPopulate() {
-		WordsHttp.getIosChallengeData(25, new EpicHttpResponseHandler() {
-			public void handleResponse(EpicHttpResponse response) {
-				if(!displayed) {
-					EpicLog.i("No longer displaying challenge screen, so discarding network response.");
-					return;
+	private void getDataAndPopulate(final boolean fromCache) {
+		
+		if(fromCache) {
+			String[] pieces = cachedString.split("~");
+			processRepsonses(pieces);
+		} else {
+			WordsHttp.getIosChallengeData(25, new EpicHttpResponseHandler() {
+				public void handleResponse(EpicHttpResponse response) {
+					if(!displayed) {
+						EpicLog.i("No longer displaying challenge screen, so discarding network response.");
+						return;
+					}
+					
+					cachedString = response.body;
+					
+					// break into 3 parts on ||| and send to each process method
+					String[] pieces = response.body.split("~");
+					
+					processRepsonses(pieces);
 				}
 				
-				// break into 3 parts on ||| and send to each process method
-				String[] pieces = response.body.split("~");
-				if(pieces.length != 3) {
-					EpicLog.v("Challenge data: " + response.body);
-					handleFailure(new EpicInvalidArgumentException("Expected 3 parts in response, got " + pieces.length));
+				public void handleFailure(Exception e) {
+					EpicLog.e(e.toString());
+					exitAndToast();
 				}
-				
-				processChallenges(pieces[0]);
-				processLeaderboard(pieces[1]);
-				processFriendList(pieces[2]);
-			}
-			
-			public void handleFailure(Exception e) {
-				EpicLog.e(e.toString());
-				Main.navc.popToRootViewControllerAnimated(true);
-				EpicPlatform.doToastNotification(new EpicNotification("Unable to Connect", new String[] { "There was a problem connecting to our servers.", "Please ensure you have internet connectivity and try again later." }, EpicImages.icon, 4));
-			}
-		});
+			});
+		}
 	}
 	
 	private void processFriendList(String responseString) {

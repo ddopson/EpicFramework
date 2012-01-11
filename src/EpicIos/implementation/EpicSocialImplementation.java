@@ -63,7 +63,7 @@ public class EpicSocialImplementation {
 	}
 	
 	public static void viewChallenges(int amount) {
-		EpicSocialTabbedView s = new EpicSocialTabbedView(new ListDataSource[3]);
+		EpicSocialTabbedView s = new EpicSocialTabbedView(null);
 //		Main.window.setRootViewController(s);
 //		Main.window.makeKeyAndVisible();
 		Main.navc.pushViewController(s, true);
@@ -118,7 +118,7 @@ public class EpicSocialImplementation {
 		Main.navc.setNavigationBarHidden(false, true);
 	}
 
-	public static void viewChallenges(int defaultListLength, Object[] platformResponseObject) {
+	public static void viewChallenges(int defaultListLength, String platformResponseObject) {
 		EpicSocialTabbedView s = new EpicSocialTabbedView(platformResponseObject);
 		Main.navc.pushViewController(s, true);
 		Main.navc.setNavigationBarHidden(false, true);
