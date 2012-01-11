@@ -52,13 +52,17 @@ public class EpicSocialTabbedView extends UITabBarController {
 	private UITableView table;
 	private UITableViewController top;
 	private UITableViewController start;
+
+	private UITableViewController controller;
+	
+	int iconSize = 30;
 	
 	public EpicSocialTabbedView(Object[] cachedResponses) {
 		displayed = true;
 		sources = (ListDataSource[]) cachedResponses;
 		
         
-        UITableViewController controller = new UITableViewController(UITableViewStyle.Grouped);
+        controller = new UITableViewController(UITableViewStyle.Grouped);
         table = controller.getTableView();
         
         table.setDataSource(new UITableViewDataSource() {
@@ -204,11 +208,11 @@ public class EpicSocialTabbedView extends UITabBarController {
         }
 
         controller.setTitle("Challenges");
-        controller.getTabBarItem().setImage((UIImage) EpicImages.challenge_icon.getPlatformObject(64, 64));
+        controller.getTabBarItem().setImage((UIImage) EpicImages.game_tomato_gray.getPlatformObject(iconSize, iconSize));
         top.setTitle("Top Players");
-        top.getTabBarItem().setImage((UIImage) EpicImages.icon.getPlatformObject(64, 64));
+        top.getTabBarItem().setImage((UIImage) EpicImages.nursery_pricebox_unlocked_star.getPlatformObject(iconSize, iconSize));
         start.setTitle("Start Challenge");
-        start.getTabBarItem().setImage((UIImage) EpicImages.icon_web.getPlatformObject(64, 64));
+        start.getTabBarItem().setImage((UIImage) EpicImages.game_extend_icon.getPlatformObject(iconSize, iconSize));
         
         list.add(controller);
         list.add(top);
@@ -328,6 +332,8 @@ public class EpicSocialTabbedView extends UITabBarController {
 			completedGames = new OnlineChallenge[completed];
 			waitingGames = new OnlineChallenge[waiting];
 			pendingGames = new OnlineChallenge[pending];
+			
+//			if(pending > 0) controller.getTabBarItem().setBadgeValue(pending + "");
 			
 			completed = 0;
 			pending = 0;
