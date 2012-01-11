@@ -38,7 +38,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 	
 	public static boolean displayed = false;
 
-	protected static final String START_GAME_TEXT = "< Start a Challenge >";
+	protected static final String START_GAME_TEXT = "+ Start a Challenge ";
 	private OnlineChallenge[] completedGames;
 	private OnlineChallenge[] waitingGames;
 	private OnlineChallenge[] pendingGames;
@@ -274,9 +274,9 @@ public class EpicSocialTabbedView extends UITabBarController {
 				customer_ids[i] = ip[0];
 			}
 //			
-			emails[0] = "<<Random Opponent>>";
+			emails[0] = "< Random Opponent >";
 		} else {
-			emails = new String[] { "<<Random Opponent>>" };
+			emails = new String[] { "< Random Opponent >" };
 		}
 //		
 		EpicLog.v("Refreshing Friends List...");
@@ -309,7 +309,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 		}
 //		
 		EpicLog.v("Refreshing leaderboard...");
-        ListDataSource src = new ListDataSource(new String[][] { toDisplay }, new String[] { "Top Players" });
+        ListDataSource src = new ListDataSource(new String[][] { toDisplay }, new String[] { "Top Players (click to challenge)" });
         sources[1] = src;
         top.getTableView().setDataSource(src);
         top.getTableView().reloadData();
@@ -384,9 +384,10 @@ public class EpicSocialTabbedView extends UITabBarController {
 		        table.reloadData();
 	        }
 		} else {
-			ListDataSource src = new ListDataSource(new String[][] { new String[] { "No Games Found" }}, new String[] { "Online Challenges"});
+			ListDataSource src = new ListDataSource(new String[][] { new String[] { EpicSocialTabbedView.START_GAME_TEXT }}, new String[] { "Your Turn"});
 			if(table != null) {
 				EpicLog.v("Refreshing challenge list...");
+				pendingGames = new OnlineChallenge[0];
 				sources[0] = src;
 				table.setDataSource(src);
 				table.setNeedsDisplay();
