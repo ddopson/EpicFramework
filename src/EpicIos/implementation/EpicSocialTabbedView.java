@@ -56,6 +56,8 @@ public class EpicSocialTabbedView extends UITabBarController {
 	private UITableViewController controller;
 	
 	int iconSize = 30;
+
+	private String[] opponentIds;
 	
 	public EpicSocialTabbedView(Object[] cachedResponses) {
 		displayed = true;
@@ -148,7 +150,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         				ListDataSource src = (ListDataSource) tableview.getDataSource();
         				EpicLog.i("Selected: " + indexPath.getSection() + ", " + indexPath.getRow());
         				// Should go to issue challenge screen
-        				selectWagerAndSendChallengeTo(players[indexPath.getRow()], toDisplay[indexPath.getRow()]);
+        				selectWagerAndSendChallengeTo(opponentIds[indexPath.getRow()], toDisplay[indexPath.getRow()]);
         			}
         		});
         
@@ -289,6 +291,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 		players = responseString.split(";");
 		// TODO: HACK -- -1 is for split() returning an extra piece of shit for some reason
 		toDisplay = new String[players.length-1];
+		opponentIds = new String[players.length-1];
 		for(int i = 0; i < players.length; ++i) {
 			String[] parts = players[i].split(":");
 			if(parts.length < 3) continue;
@@ -299,7 +302,8 @@ public class EpicSocialTabbedView extends UITabBarController {
 			} else {
 				email = parts[0];
 			}
-			
+
+			opponentIds[i] = parts[2];
 			toDisplay[i] = email + " (" + parts[1] + ")"; 
 			EpicLog.i("Displaying " + toDisplay[i]);
 		}
