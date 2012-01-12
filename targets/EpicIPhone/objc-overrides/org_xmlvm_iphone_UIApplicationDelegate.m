@@ -174,7 +174,7 @@
     }    
 }
 
-- (void) postToWall: (NSString*) description withCaption:(NSString*) caption {
+- (void) postToWall: (NSString*) fbMessage {
     // post to wall
     NSLog(@"Attempting to post to wall...");
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -182,8 +182,8 @@
                                    @"https://developers.facebook.com/docs/reference/dialogs/", @"link",
                                    @"http://fbrell.com/f8.jpg", @"picture",
                                    @"Word Farm", @"name",
-                                   caption, @"caption",
-                                   description, @"description",
+                                   @"Play Word Farm Now!", @"caption",
+                                   fbMessage, @"description",
                                    @"",  @"message",
                                    nil];
     

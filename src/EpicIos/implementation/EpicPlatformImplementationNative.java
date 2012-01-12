@@ -18,4 +18,7 @@ public abstract class EpicPlatformImplementationNative {
 	public static int isNetworkAvailable() {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
+	public static void postToWall(String title) {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
 }
