@@ -5,11 +5,16 @@ import org.xmlvm.iphone.SKRequest;
 
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicClickListener;
+import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.EpicSocial;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
+import com.epic.resources.EpicImages;
 import com.realcasualgames.words.Challenge;
+import com.realcasualgames.words.PlayerState;
 import com.realcasualgames.words.ScreenConnect;
+import com.realcasualgames.words.ScreenMainMenu;
 import com.realcasualgames.words.ScreenOnlineChallengeDetails;
 
 public class EpicSocialImplementation {
@@ -39,6 +44,8 @@ public class EpicSocialImplementation {
 //	}
 	
 	public static void promptFacebookLogin() {
+		EpicPlatform.changeScreen(new ScreenMainMenu());
+		EpicPlatform.doToastNotification(new EpicNotification("Connecting to Facebook", new String[] { "Please wait while we complete your login." }, EpicImages.game_word_puzzle_achievementmedal_publicchallenge, 2));
 		EpicPlatformImplementationNative.loginToFacebook();
 	}
 	
@@ -129,8 +136,10 @@ public class EpicSocialImplementation {
 		Main.navc.setNavigationBarHidden(false, true);
 	}
 
-	private static void nativecbFacebookLoginFinished(String username) {
-		EpicLog.i("FB callback returned username to java: " + username);
+	private static void nativecbFacebookLoginFinishedWithId(String username) {
+		String[] parts = username.split("#");
+		EpicLog.i("FB callback returned username to java: " + parts[0] + " and id: " + parts[1]);
+		EpicPlatform.changeScreen(new ScreenMainMenu());
+		EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[1]);
 	}
-
 }

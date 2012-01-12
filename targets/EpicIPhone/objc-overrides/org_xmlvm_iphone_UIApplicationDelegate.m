@@ -159,13 +159,19 @@
         // If basic information callback, set the UI objects to
         // display this.
         NSLog(@"Got username %@", username);
-        // [self postToWall:@"Can you beat me in Word Farm?" withCaption:@"My top score is X, can you beat it? Play for free!"];
         
-        [com_epic_framework_implementation_EpicSocialImplementation nativecbFacebookLoginFinished___java_lang_String: username];
+        NSString *fbid = [result objectForKey:@"id"];
+        if(fbid) {
+            NSLog(@"Found ID: %@", fbid);
+            [com_epic_framework_implementation_EpicSocialImplementation nativecbFacebookLoginFinishedWithId___java_lang_String: [NSString stringWithFormat:@"%@#%@", username, fbid]];
+        } else {
+            NSLog(@"No ID found");
+        }
+        
+        // [self postToWall:@"Can you beat me in Word Farm?" withCaption:@"My top score is X, can you beat it? Play for free!"];
     } else {
         NSLog(@"Username not found.");
-    }
-    
+    }    
 }
 
 - (void) postToWall: (NSString*) description withCaption:(NSString*) caption {

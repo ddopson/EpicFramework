@@ -6,8 +6,6 @@ import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.implementation.EpicSocialImplementation;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.PlayerState;
-import com.realcasualgames.words.ScreenNursery;
-import com.realcasualgames.words.ScreenTutorial;
 import com.realcasualgames.words.WordsHttp;
 
 public class EpicSocial {
@@ -32,32 +30,48 @@ public class EpicSocial {
 			EpicLog.i("PLAYER IDENTITY REQUESTED");
 			EpicSocialImplementation.beginLogin(new EpicSocialSignInCompletionHandler() {
 				public void onSignedIn(String identity) {
-					EpicLog.i("PLAYER IDENTITY CHOSEN: '" + identity + "'");
-					EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now playing as " + identity }, EpicImages.icon);
-					// EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
-					EpicPlatform.doToastNotification(n);
-					PlayerState.setIdentity(identity);
-					
-					WordsHttp.syncAccount(new EpicHttpResponseHandler() {
-						public void handleResponse(EpicHttpResponse response) {	
-							EpicLog.i("Account sync complete.");
-							EpicPlatform.repaintScreen();
-						}
-
-						public void handleFailure(Exception e) {
-							EpicLog.w("Failure to call syncAccount on the remote service");
-						}
-					});
+					onSignInComplete(identity, null);
 					
 					if(doAfter != null) {
 						doAfter.onSignedIn(identity);
 					}
 				}
+
 			});
 		}
 		else {
 			doAfter.onSignedIn(PlayerState.getIdentity());
 		}
+	}
+	
+	public static void onSignInComplete(String identity, String fbid) {
+		EpicLog.i("PLAYER IDENTITY CHOSEN: '" + identity + "'");
+		String un = "";
+		if(identity.contains("@")) {
+			un = identity.split("@")[0];
+		} else {
+			un = identity;
+		}
+		
+		EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now playing as " + un }, EpicImages.icon);
+		// EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
+		EpicPlatform.doToastNotification(n);
+		PlayerState.setIdentity(identity);
+		if(fbid != null) {
+			PlayerState.setFBID(fbid);
+			EpicLog.v("Set FBID: " + fbid);
+		}
+		
+		WordsHttp.syncAccount(new EpicHttpResponseHandler() {
+			public void handleResponse(EpicHttpResponse response) {	
+				EpicLog.i("Account sync complete.");
+				EpicPlatform.repaintScreen();
+			}
+
+			public void handleFailure(Exception e) {
+				EpicLog.w("Failure to call syncAccount on the remote service");
+			}
+		});
 	}
 	
 	public static void switchUser(final EpicSocialSignInCompletionHandler doAfter) {
