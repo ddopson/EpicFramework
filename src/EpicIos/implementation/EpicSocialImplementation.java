@@ -32,10 +32,13 @@ public class EpicSocialImplementation {
 	public static String[] getDisplayNamesFromEmails(String[] names_to_lookup) {
 		return new String[] { };
 	}
-
-	public static String chooseContact() {
+//
+//	public static String chooseContact() {
+//		return "testing@wordfarmgame.com";
+//	}
+	
+	public static void promptFacebookLogin() {
 		EpicPlatformImplementationNative.loginToFacebook();
-		return "testing@wordfarmgame.com";
 	}
 	
 	public static void selectFromEmailList(String[] strings) {
