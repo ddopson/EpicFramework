@@ -19,6 +19,7 @@
  */
 
 #import "org_xmlvm_iphone_UIApplicationDelegate.h"
+#import "com_epic_framework_implementation_EpicSocialImplementation.h"
 
 @implementation org_xmlvm_iphone_UIApplicationDelegate
 
@@ -141,7 +142,9 @@
     NSLog(@"didFailWithError");    
 }
 
-- (void)request:(FBRequest *)request didLoad:(id)result {
+- (void)request : (FBRequest *) request
+        didLoad : (id)result
+{
     NSLog(@"didLoad");
     
     if ([result isKindOfClass:[NSArray class]]) {
@@ -151,15 +154,18 @@
     
     // This callback can be a result of getting the user's basic
     // information or getting the user's permissions.
-    if ([result objectForKey:@"username"]) {
+    NSString *username = [result objectForKey:@"username"];
+    if (username) {
         // If basic information callback, set the UI objects to
         // display this.
-        NSLog(@"Got username %@", [result objectForKey:@"username"]);
+        NSLog(@"Got username %@", username);
         // [self postToWall:@"Can you beat me in Word Farm?" withCaption:@"My top score is X, can you beat it? Play for free!"];
         
+        [com_epic_framework_implementation_EpicSocialImplementation nativecbFacebookLoginFinished___java_lang_String: username];
     } else {
         NSLog(@"Username not found.");
     }
+    
 }
 
 - (void) postToWall: (NSString*) description withCaption:(NSString*) caption {

@@ -6,6 +6,7 @@ import org.xmlvm.iphone.SKRequest;
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
 import com.realcasualgames.words.Challenge;
 import com.realcasualgames.words.ScreenConnect;
@@ -126,6 +127,10 @@ public class EpicSocialImplementation {
 		EpicSocialTabbedView s = new EpicSocialTabbedView(platformResponseObject);
 		Main.navc.pushViewController(s, true);
 		Main.navc.setNavigationBarHidden(false, true);
+	}
+
+	private static void nativecbFacebookLoginFinished(String username) {
+		EpicLog.i("FB callback returned username to java: " + username);
 	}
 
 }
