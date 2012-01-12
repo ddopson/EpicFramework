@@ -1,5 +1,6 @@
 package com.epic.framework.implementation;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.HashMap;
 
 import org.xmlvm.iphone.AVAudioPlayer;
@@ -10,83 +11,68 @@ import org.xmlvm.iphone.NSErrorHolder;
 import org.xmlvm.iphone.NSURL;
 
 import com.epic.framework.common.Ui.EpicSound;
+import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 
 public class EpicSoundManagerImplementation {
-	private static boolean       playing = false;
-	private static boolean initialized = false;
-    private static AVAudioPlayer audioPlayer;
-    private static HashMap<String, AVAudioPlayer> players = new HashMap<String, AVAudioPlayer>();
+    private static EpicSound currentMusic = null;
+    private static AVAudioPlayer currentMusicPlayer = null;
+    private static HashMap<String, AVAudioPlayer> soundPlayers = new HashMap<String, AVAudioPlayer>();
 	
-	public static void playMusic(EpicSound sound) {
-		if(!initialized) {
-			initAudioPlayer(sound.name, true);
-			initialized = true;
-		}
-
-		playing = true;
-		audioPlayer.play();
-	}
-
 	public static void playSound(EpicSound sound) {
-		if(players.containsKey(sound.name)) {
-			try {
-				AVAudioPlayer p = players.get(sound.name);
-				p.prepareToPlay();
-				p.play();
-				EpicLog.v("Playing sound: " + sound.name + "." + sound.extension);
-			} catch(Exception e) {
-				EpicLog.e("Problem playing sound: " + sound.name + "." + sound.extension + ":: " + e.toString());
-			}
-		} else {
-			EpicLog.w("Couldn't find sound: " + sound.name + "." + sound.extension);
-		}
+		AVAudioPlayer player = getPlayerForSound(sound);
+		player.play();
 	}
+
+	public static void playMusic(EpicSound sound) {
+		if(currentMusic != sound) {
+			currentMusic = sound;
+			currentMusicPlayer = getPlayerForSound(sound);
+		}
+		resumeMusic();
+	}
+
 
 	public static void stopMusic() {
-		//if(playing) {
-			audioPlayer.stop();
-		//}
+		if(currentMusicPlayer != null) {
+			currentMusicPlayer.stop();
+		}
 	}
 
 	public static void preload(EpicSound[] soundsToPreload) {
 		for(EpicSound sound : soundsToPreload) {
-			EpicLog.i("Preloading sound: " + sound.name);
-			AVAudioPlayer p = initAudioPlayer(sound.name.substring(0, sound.name.length() - 4), false);
-			if(p != null) {
-				players.put(sound.name, p);
-				EpicLog.i("Preloaded sound: " + sound.name);
-			}
+			getPlayerForSound(sound);
+			//	EpicLog.i("Preloaded sound: " + sound.name);
 		}
 	}
 
 	public static void pauseMusic() {
-		if(playing) {
-			audioPlayer.pause();
-			playing = false;
+		if(currentMusicPlayer != null) {
+			currentMusicPlayer.pause();
 		}
 	}
 
-	public static boolean resumeMusic() {
-		if(!playing) {
-			if(!initialized) {
-				audioPlayer = initAudioPlayer("word_farm_bg", true);
-				initialized = true;
-			}
-			
-			playing = true;
-			audioPlayer.play();
-			
-			return true;
+	public static void resumeMusic() {
+		if(currentMusicPlayer != null) {
+			currentMusicPlayer.play();
+		}
+	}
+	
+	private static AVAudioPlayer getPlayerForSound(EpicSound sound) {
+		if(!soundPlayers.containsKey(sound.name)) {
+			soundPlayers.put(sound.name, createPlayerForSound(sound));
 		}
 		
-		return false;
+		return soundPlayers.get(sound.name);
 	}
 	
 	/**
      * This method is called to initialize the AVAudioPlayer object
      */
-    private static AVAudioPlayer initAudioPlayer(String audioFile, boolean loop) {
+    private static AVAudioPlayer createPlayerForSound(EpicSound sound) {
+    	if(sound == null) {
+    		return null;
+    	}
         /**
          * A NSBundle object represents location in file system. Using pathForResource(),
          * a file with specified extension and name can be looked for in a given bundle directory.
@@ -94,7 +80,11 @@ public class EpicSoundManagerImplementation {
          * application executable is residing.
          */
     	try {
-    		NSURL url = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource(audioFile, "mp3"));
+    		NSBundle bundle = NSBundle.mainBundle();
+    		String path = bundle.pathForResource(sound.name, sound.extension);
+    		EpicFail.assertNotNull(path, "Sound File Not Found for '" + sound.name + "'");
+    		NSURL url = NSURL.fileURLWithPath(path);
+    		EpicFail.assertNotNull(url, "url can't be null. path=" + path);
     		NSErrorHolder errorHolder = new NSErrorHolder();
          
 	        /*
@@ -108,7 +98,6 @@ public class EpicSoundManagerImplementation {
 	        /**
 	         * Set indefinite number of loops
 	         */
-	        if(loop) newPlayer.setNumberOfLoops(-1);
 	        newPlayer.setDelegate(new AVAudioPlayerDelegate() {
 				public void audioPlayerEndInterruption(AVAudioPlayer player) {
 				}

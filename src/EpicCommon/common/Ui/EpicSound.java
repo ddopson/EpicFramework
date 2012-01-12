@@ -12,14 +12,15 @@ public class EpicSound {
 		this.android_id = android_id;
 	}
 	
+	// DDOPSON-2011-10-15 - oops, bug in prebuild.pl adds mp3 into the name.  lazy lazy hack...
 	public EpicSound(String name, int android_id) {
-		this.name = name;
+		int dotpos = name.indexOf('.');
+		this.name = name.substring(0, dotpos);
 		this.android_id = android_id;
-		this.extension = "mp3";
+		this.extension = name.substring(dotpos + 1);
 	}
 	
 	public String getFilename() {
-		// DDOPSON-2011-10-15 - oops, bug in prebuild.pl adds mp3 into the name.  lazy lazy hack...
-		return this.name; // + "." + this.extension;
+		return this.name + "." + this.extension;
 	}
 }

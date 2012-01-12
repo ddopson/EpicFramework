@@ -9,13 +9,15 @@ import com.realcasualgames.words.PlayerState;
 public class EpicSoundManager {
 	
 	public static void playMusic(EpicSound sound) {
-		if(!PlayerState.soundsEnabled()) return;
-		EpicSoundManagerImplementation.playMusic(sound);
+		if(PlayerState.soundsEnabled()) {
+			EpicSoundManagerImplementation.playMusic(sound);
+		}
 	}
 	
 	public static void playSound(EpicSound sound) {		
-		if(!PlayerState.soundsEnabled()) return;
-		EpicSoundManagerImplementation.playSound(sound);
+		if(PlayerState.soundsEnabled()) {
+			EpicSoundManagerImplementation.playSound(sound);
+		}
 	}
 
 	public static void preload(EpicSound[] soundsToPreload) {
@@ -30,9 +32,10 @@ public class EpicSoundManager {
 		EpicSoundManagerImplementation.pauseMusic();
 	}
 	
-	public static boolean resumeMusic() {
-		if(!PlayerState.soundsEnabled()) return false;
-		return EpicSoundManagerImplementation.resumeMusic();
+	public static void resumeMusic() {
+		if(PlayerState.soundsEnabled()) {
+			EpicSoundManagerImplementation.resumeMusic();
+		}
 	}
 
 	public static void toggleSounds() {
