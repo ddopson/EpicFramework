@@ -20,14 +20,14 @@ public class EpicSoundManagerImplementation {
     private static HashMap<String, AVAudioPlayer> soundPlayers = new HashMap<String, AVAudioPlayer>();
 	
 	public static void playSound(EpicSound sound) {
-		AVAudioPlayer player = getPlayerForSound(sound);
+		AVAudioPlayer player = getPlayerForSound(sound, false);
 		player.play();
 	}
 
 	public static void playMusic(EpicSound sound) {
 		if(currentMusic != sound) {
 			currentMusic = sound;
-			currentMusicPlayer = getPlayerForSound(sound);
+			currentMusicPlayer = getPlayerForSound(sound, true);
 		}
 		resumeMusic();
 	}
@@ -39,11 +39,13 @@ public class EpicSoundManagerImplementation {
 		}
 	}
 
-	public static void preload(EpicSound[] soundsToPreload) {
+	public static void preload(EpicSound musicToPreload, EpicSound[] soundsToPreload) {
 		for(EpicSound sound : soundsToPreload) {
-			getPlayerForSound(sound);
+			getPlayerForSound(sound, false);
 			//	EpicLog.i("Preloaded sound: " + sound.name);
 		}
+		
+		getPlayerForSound(musicToPreload, true);
 	}
 
 	public static void pauseMusic() {
@@ -58,9 +60,9 @@ public class EpicSoundManagerImplementation {
 		}
 	}
 	
-	private static AVAudioPlayer getPlayerForSound(EpicSound sound) {
+	private static AVAudioPlayer getPlayerForSound(EpicSound sound, boolean loop) {
 		if(!soundPlayers.containsKey(sound.name)) {
-			soundPlayers.put(sound.name, createPlayerForSound(sound));
+			soundPlayers.put(sound.name, createPlayerForSound(sound, loop));
 		}
 		
 		return soundPlayers.get(sound.name);
@@ -69,7 +71,7 @@ public class EpicSoundManagerImplementation {
 	/**
      * This method is called to initialize the AVAudioPlayer object
      */
-    private static AVAudioPlayer createPlayerForSound(EpicSound sound) {
+    private static AVAudioPlayer createPlayerForSound(EpicSound sound, boolean loop) {
     	if(sound == null) {
     		return null;
     	}
@@ -111,6 +113,8 @@ public class EpicSoundManagerImplementation {
 				public void audioPlayerBeginInterruption(AVAudioPlayer player) {
 				}
 			});
+	        
+	        if(loop) newPlayer.setNumberOfLoops(-1);
 	        
 	        return newPlayer;
     	} catch(Exception e) {

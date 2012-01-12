@@ -20,8 +20,8 @@ public class EpicSoundManager {
 		}
 	}
 
-	public static void preload(EpicSound[] soundsToPreload) {
-		EpicSoundManagerImplementation.preload(soundsToPreload);
+	public static void preload(EpicSound musicToPreload, EpicSound[] soundsToPreload) {
+		EpicSoundManagerImplementation.preload(musicToPreload, soundsToPreload);
 	}
 	
 	public static void stopMusic() {

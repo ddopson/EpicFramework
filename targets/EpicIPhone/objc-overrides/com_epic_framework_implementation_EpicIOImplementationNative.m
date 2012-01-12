@@ -72,7 +72,7 @@ NSString *getFullPath(java_lang_String *filename) {
   
   if(data) {
     XMLVMArray *array = [XMLVMArray createSingleDimensionWithType: BYTE_TYPE size: [data length] andData: [data bytes]];
-    [data release];
+    //[data release];
     NSLog(@"Read %d bytes from file %@", [data length], fullPath);
     //dumpBuff(array->array.b, array->length);
     return array;
