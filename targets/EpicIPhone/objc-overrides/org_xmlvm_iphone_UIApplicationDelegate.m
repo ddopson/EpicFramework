@@ -54,6 +54,8 @@
         facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
     
+    // [self doFbLogin];
+    
     [self applicationDidFinishLaunching___org_xmlvm_iphone_UIApplication: app];
         
     //[self doFbLogin];

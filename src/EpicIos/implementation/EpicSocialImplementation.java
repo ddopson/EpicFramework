@@ -34,6 +34,7 @@ public class EpicSocialImplementation {
 	}
 
 	public static String chooseContact() {
+		EpicPlatformImplementationNative.loginToFacebook();
 		return "testing@wordfarmgame.com";
 	}
 	

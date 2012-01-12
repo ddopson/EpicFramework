@@ -12,4 +12,10 @@ public abstract class EpicPlatformImplementationNative {
 	public static void runOnUiThread(Runnable runnable) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
+	public static void loginToFacebook() {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
+	public static int isNetworkAvailable() {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
 }

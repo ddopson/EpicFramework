@@ -18,6 +18,7 @@ import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicDialogBuilder;
 import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.Ui.EpicTimer;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
@@ -223,6 +224,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 	}
 	
 	private void exitAndToast() {
+		EpicLog.i("Exiting and toasting connection failure.");
 		Main.navc.popToRootViewControllerAnimated(true);
 		EpicPlatform.doToastNotification(new EpicNotification("Unable to Connect", new String[] { "There was a problem connecting to our servers.", "Please ensure you have internet connectivity and try again later." }, EpicImages.icon, 4));
 	}
@@ -245,6 +247,23 @@ public class EpicSocialTabbedView extends UITabBarController {
 			String[] pieces = cachedString.split("~");
 			processRepsonses(pieces);
 		} else {
+			if(EpicPlatformImplementationNative.isNetworkAvailable() == 0) {
+				EpicLog.w("No network, exiting head to head screen.");
+				// TODO: this is probably painfully disgusting, but the only way i could figure out to do it
+				EpicPlatform.runInBackground(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(1000);
+						} catch(Exception e) {
+							EpicLog.e("Couldn't even sleep: " + e.toString());
+						}
+						
+						exitAndToast();	
+					}
+				});
+				return;
+			}
+			
 			WordsHttp.getIosChallengeData(25, new EpicHttpResponseHandler() {
 				public void handleResponse(EpicHttpResponse response) {
 					if(!displayed) {

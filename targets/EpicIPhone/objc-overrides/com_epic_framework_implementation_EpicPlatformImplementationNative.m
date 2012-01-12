@@ -71,6 +71,24 @@ void uncaught_exception_handler(NSException *exception) {
   NSSetUncaughtExceptionHandler(uncaught_exception_handler);
 }
 
+
++ (void) loginToFacebook__
+{
+    [[[UIApplication sharedApplication] delegate] doFbLogin];
+    NSLog(@"Attempted fb login");
+}
+
++ (int) isNetworkAvailable__
+{
+    Reachability* networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    if(networkStatus == NotReachable) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
 + (java_lang_String*) getUniqueDeviceId__
 {
   return [[[UIDevice currentDevice] uniqueDeviceIdentifier] retain];
@@ -81,106 +99,6 @@ void uncaught_exception_handler(NSException *exception) {
   dispatch_async(dispatch_get_main_queue(), ^{
     [callback run__];
   });
-}
-
-@end
-
-@implementation ConnectionManager
-@synthesize internetActive, hostActive;
-
--(id)init {
-    self = [super init];
-    if(self) {
-        
-    }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-    
-    internetReachable = [[Reachability reachabilityForInternetConnection] retain];
-    [internetReachable startNotifier];
-    
-    hostReachable = [[Reachability reachabilityWithHostName:@"www.apple.com"] retain];
-    [hostReachable startNotifier];
-    
-    return self;
-}
-
-- (int) isNetworkAvailable
-{
-    if(self.internetActive) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-- (void) checkNetworkStatus:(NSNotification *)notice {
-    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
-    switch (internetStatus)
-    
-    {
-        case NotReachable:
-        {
-            NSLog(@"The internet is down.");
-            self.internetActive = NO;
-            
-            break;
-            
-        }
-        case ReachableViaWiFi:
-        {
-            NSLog(@"The internet is working via WIFI.");
-            self.internetActive = YES;
-            
-            break;
-            
-        }
-        case ReachableViaWWAN:
-        {
-            NSLog(@"The internet is working via WWAN.");
-            self.internetActive = YES;
-            
-            break;
-            
-        }
-    }
-    
-    NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
-    switch (hostStatus)
-    
-    {
-        case NotReachable:
-        {
-            NSLog(@"A gateway to the host server is down.");
-            self.hostActive = NO;
-            
-            break;
-            
-        }
-        case ReachableViaWiFi:
-        {
-            NSLog(@"A gateway to the host server is working via WIFI.");
-            self.hostActive = YES;
-            
-            break;
-            
-        }
-        case ReachableViaWWAN:
-        {
-            NSLog(@"A gateway to the host server is working via WWAN.");
-            self.hostActive = YES;
-            
-            break;
-            
-        }
-    }
-    
-}
-
-// If lower than SDK 5 : Otherwise, remove the observer as pleased.
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [super dealloc];
 }
 
 @end

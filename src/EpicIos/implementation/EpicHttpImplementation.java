@@ -13,6 +13,8 @@ import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
+import com.epic.framework.common.util.exceptions.EpicInvalidArgumentException;
+import com.epic.framework.common.util.exceptions.EpicRuntimeException;
 import com.realcasualgames.words.WordsHttp;
 
 public class EpicHttpImplementation {
@@ -69,6 +71,13 @@ public class EpicHttpImplementation {
 	}
 
 	public static void beginGet(final EpicHttpRequest request, final EpicHttpResponseHandler handler) {
+		int res = EpicPlatformImplementationNative.isNetworkAvailable(); 
+		EpicLog.i("Network status: " + res);
+		if(res == 0) {
+			handler.handleFailure(new EpicInvalidArgumentException("No network available."));
+			return;
+		}
+		
 		EpicPlatform.runInBackground(new Runnable() {
 			public void run() {
 				try {

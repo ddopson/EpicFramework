@@ -9,28 +9,14 @@
 @class com_epic_framework_implementation_EpicPlatformImplementationNative;
 @class org_xmlvm_iphone_UIImage;
 
-@class Reachability;
-
-@interface ConnectionManager : NSObject {
-    Reachability *internetReachable;
-    Reachability *hostReachable;
-}
-
-@property BOOL internetActive;
-@property BOOL hostActive;
-
-- (void) checkNetworkStatus:(NSNotification *)notice;
-- (int) isNetworkAvailable;
-
-@end
-
 @interface com_epic_framework_implementation_EpicPlatformImplementationNative : java_lang_Object
 {
 
 }
 
 + (void) setupDebugHandlers__;
-
++ (void) loginToFacebook__;
++ (int) isNetworkAvailable__;
 
 + (org_xmlvm_iphone_UIImage*) resizeImage___org_xmlvm_iphone_UIImage_int_int
   : (org_xmlvm_iphone_UIImage*) src 

@@ -39,7 +39,7 @@
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application;
 - (void) applicationDidReceiveMemoryWarning___org_xmlvm_iphone_UIApplication :(org_xmlvm_iphone_UIApplication*)application;
 - (void) postToWall: (NSString*)textToPost withCaption:(NSString*)caption;
-+ (void) doFbLogin;
+- (void) doFbLogin;
 
 @property (nonatomic, retain) Facebook *facebook;
 
