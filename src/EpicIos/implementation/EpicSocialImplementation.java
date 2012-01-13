@@ -7,15 +7,19 @@ import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.util.EpicHttpResponse;
+import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicSocial;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.Challenge;
 import com.realcasualgames.words.PlayerState;
+import com.realcasualgames.words.PushResponder;
 import com.realcasualgames.words.ScreenConnect;
 import com.realcasualgames.words.ScreenMainMenu;
 import com.realcasualgames.words.ScreenOnlineChallengeDetails;
+import com.realcasualgames.words.WordsHttp;
 
 public class EpicSocialImplementation {
 
@@ -137,9 +141,40 @@ public class EpicSocialImplementation {
 	}
 
 	private static void nativecbFacebookLoginFinishedWithId(String username) {
-		String[] parts = username.split("#");
+		final String[] parts = username.split("#");
 		EpicLog.i("FB callback returned username to java: " + parts[0] + " and id: " + parts[1]);
 		EpicPlatform.changeScreen(new ScreenMainMenu());
-		EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[1]);
+		
+		WordsHttp.checkForFacebookAccount(parts[1], new EpicHttpResponseHandler() {
+			public void handleResponse(EpicHttpResponse response) {
+				EpicLog.i("Got response from FB ID check");
+				if(response.body != null && response.body.length() > 0) {
+					EpicSocial.onSignInComplete(response.body, parts[1]);
+					EpicLog.i("Found existing account... signing in.");
+				} else {
+					EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[1]);
+					EpicLog.i("No account found, creating new.");
+				}
+			}
+			
+			public void handleFailure(Exception e) {
+				EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[1]);
+				EpicLog.e("Error getting accounts for FBID: " + e.toString());
+			}
+		});
+	}
+	
+	private static void nativecbNotificationReceived(String payload) {
+		PushResponder.handlePushWhileOpen(payload);
+	}
+	
+	private static void nativecbLoadChallengeDetails(String payload) {
+		// TODO: parse payload for challenge id
+		String challengeId = payload;
+		EpicPlatform.changeScreen(new ScreenOnlineChallengeDetails(challengeId, null));
+	}
+	
+	private static void nativecbSetAPNID(String apnId) {
+		PlayerState.setAPNID(apnId);
 	}
 }

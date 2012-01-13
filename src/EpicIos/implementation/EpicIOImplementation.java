@@ -17,7 +17,7 @@ public class EpicIOImplementation {
 	}
 
 	public static boolean isExistsFile(String filename) {
-		return NSFileManager.defaultManager().fileExistsAtPath(filename);
+		return EpicIOImplementationNative.isExistsFile(filename) == 1;
 	}
 
 	public static void touchFile(String filename) {
@@ -36,6 +36,7 @@ public class EpicIOImplementation {
 
 	public static EpicSerializableClass readFile(String filename, EpicSerializableClassType classType) throws EpicSerializationException, IOException {
 		byte[] bytes = EpicIOImplementationNative.readFile(filename);
+		if(bytes == null) return null;
 		return EpicSerializationHelper.deserializeFromBytes(bytes, classType);
 	}
 }

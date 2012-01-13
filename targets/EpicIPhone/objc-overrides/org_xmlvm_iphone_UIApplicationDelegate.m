@@ -39,11 +39,11 @@
 	// Do nothing here
 }
 
-- (void) applicationDidFinishLaunching: (UIApplication*) app
+- (BOOL) application:(UIApplication*) application didFinishLaunchingWithOptions: (NSDictionary*) launchOptions
 {
-    if ( [app isKindOfClass:[org_xmlvm_iphone_UIApplication class]] ) {
-        SEL appsel = NSSelectorFromString([NSString stringWithFormat:@"__init_%s__", class_getName([app class])]);
-        [app performSelector:appsel];
+    if ( [application isKindOfClass:[org_xmlvm_iphone_UIApplication class]] ) {
+        SEL appsel = NSSelectorFromString([NSString stringWithFormat:@"__init_%s__", class_getName([application class])]);
+        [application performSelector:appsel];
     }
     SEL delsel = NSSelectorFromString([NSString stringWithFormat:@"__init_%s__", class_getName([self class])]);
     [self performSelector:delsel];
@@ -55,9 +55,27 @@
         facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
     
+    // Push handling
+    
+    // Register for push messages
+//    [[UIApplication sharedApplication] 
+//     registerForRemoteNotificationTypes:
+//     (UIRemoteNotificationTypeAlert | 
+//      UIRemoteNotificationTypeBadge | 
+//      UIRemoteNotificationTypeSound)];
+    
+    // Check for push message
+    NSDictionary* remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+    
+    if(remoteNotif) {
+        // Get challenge id and load challenge ID screen with it
+        NSString* payload = @"5555";
+        [com_epic_framework_implementation_EpicSocialImplementation nativecbLoadChallengeDetails___java_lang_String: payload];
+    }
+    
     // [self doFbLogin];
     
-    [self applicationDidFinishLaunching___org_xmlvm_iphone_UIApplication: app];
+    [self applicationDidFinishLaunching___org_xmlvm_iphone_UIApplication: application];
         
     //[self doFbLogin];
 }
@@ -94,6 +112,24 @@
 
 - (void) applicationDidReceiveMemoryWarning___org_xmlvm_iphone_UIApplication :(org_xmlvm_iphone_UIApplication*)application
 {
+}
+
+-(void) application:(UIApplication*) application didReceiveRemoteNotification: (NSDictionary*) userInfo
+{
+    NSString* payload = @"Test Notif";
+    [com_epic_framework_implementation_EpicSocialImplementation nativecbNotificationReceived___java_lang_String: payload];
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSLog(@"My token is: %@", deviceToken);
+    NSString* apnId = [NSString stringWithFormat:@"%@", deviceToken];
+    [com_epic_framework_implementation_EpicSocialImplementation nativecbSetAPNID___java_lang_String: apnId];
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
 }
 
 - (void)doFbLogin {

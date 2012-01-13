@@ -12,6 +12,7 @@ public class EpicHttpRequest {
 	public HashMap<String, String> headers;
 	public boolean allowRedirect = true;
 	public String body;
+	public boolean allowUiFromRequest = true;
 
 	public EpicHttpRequest(String url, HashMap<String, String> headers) {
 		if(headers == null) throw new EpicInvalidArgumentException("Headers cannot be null");

@@ -17,5 +17,9 @@ public class EpicIOImplementationNative {
 
 	public static byte[] readFile(String filename) {
 		throw new EpicNativeMethodMissingImplementation("EpicIOImplementationNative");
+	}
+
+	public static int isExistsFile(String filename) {
+		throw new EpicNativeMethodMissingImplementation("EpicIOImplementationNative");
 	}	
 }

@@ -18,6 +18,7 @@
 + (void) initialize;
 - (id) init;
 - (void) __init_com_epic_framework_implementation_EpicIOImplementationNative__;
++ (int) isExistsFile___java_lang_String : (java_lang_String*) filename;
 + (void) writeFile___java_lang_String_byte_ARRAYTYPE :(java_lang_String*)n1 :(XMLVMArray*)n2;
 + (XMLVMArray*) readFile___java_lang_String :(java_lang_String*)n1;
 

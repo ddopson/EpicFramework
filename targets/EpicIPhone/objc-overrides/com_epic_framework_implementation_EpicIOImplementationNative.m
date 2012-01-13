@@ -6,6 +6,7 @@
 
 #import "com_epic_framework_implementation_EpicIOImplementationNative.h"
 #import "org_xmlvm_iphone_NSObject.h"
+#import "org_xmlvm_iphone_NSFileManager.h"
 
 
 const char* digits = "0123456789ABCDEF";
@@ -49,13 +50,32 @@ NSString *getFullPath(java_lang_String *filename) {
   return [getFullPath(filename) retain];  
 }
 
++ (int) isExistsFile___java_lang_String : (java_lang_String*) filename
+{
+    NSString* docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString* fullPath = [docPath stringByAppendingPathComponent:filename];
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:fullPath];
+
+    if(fileExists) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 + (void) writeFile___java_lang_String_byte_ARRAYTYPE
   : (java_lang_String*) filename
   : (XMLVMArray*) bytes
 {
   NSLog(@"About to write %@ with %d bytes", filename, bytes->length);
   //dumpBuff(bytes->array.b, bytes->length);
-  NSString *fullPath = getFullPath(filename);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains
+    (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docPath = [paths objectAtIndex:0];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@", 
+                          docPath, filename];
+
+
   NSData *data = [NSData dataWithBytesNoCopy: bytes->array.b length: bytes->length freeWhenDone: NO];
   if ([data writeToFile: fullPath atomically: YES])
     NSLog(@"%@ saved.", fullPath);
@@ -67,7 +87,12 @@ NSString *getFullPath(java_lang_String *filename) {
   : (java_lang_String*) filename
 {
   //NSLog(@"About to read %@", filename);
-  NSString *fullPath = getFullPath(filename);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains
+    (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docPath = [paths objectAtIndex:0];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@", 
+                          docPath, filename];
+    
   NSData *data = [NSData dataWithContentsOfFile: fullPath];
   
   if(data) {

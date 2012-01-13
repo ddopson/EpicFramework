@@ -28,7 +28,7 @@
 }
 
 - (void) __init_org_xmlvm_iphone_UIApplicationDelegate__;
-- (void) applicationDidFinishLaunching: (UIApplication*) app;
+- (BOOL) application:(UIApplication*) application didFinishLaunchingWithOptions: (NSDictionary*) launchOptions;
 - (void) applicationDidFinishLaunching___org_xmlvm_iphone_UIApplication :(org_xmlvm_iphone_UIApplication*) app;
 - (void) applicationWillTerminate: (UIApplication*) app;
 - (void) applicationWillTerminate___org_xmlvm_iphone_UIApplication :(org_xmlvm_iphone_UIApplication*) app;
@@ -38,6 +38,7 @@
 - (void) applicationWillResignActive:(org_xmlvm_iphone_UIApplication*) app;
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application;
 - (void) applicationDidReceiveMemoryWarning___org_xmlvm_iphone_UIApplication :(org_xmlvm_iphone_UIApplication*)application;
+- (void) application:(UIApplication*) application didReceiveRemoteNotification: (NSDictionary*) userInfo;
 - (void) postToWall: (NSString*)textToPost withCaption:(NSString*)caption;
 - (void) doFbLogin;
 

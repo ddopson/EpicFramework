@@ -64,7 +64,7 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 	 * list of CGPoints. The list is stored in 'points'.
 	 */
 	private void getTouches(UIEvent event) {
-		EpicLog.i("Getting touches...");
+		// EpicLog.i("Getting touches...");
 		/**
 		 * Erase previous list of points.
 		 */

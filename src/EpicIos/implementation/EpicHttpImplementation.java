@@ -87,7 +87,7 @@ public class EpicHttpImplementation {
 						handler.handleResponse(rs);
 					}
 					
-					WordsHttp.shouldDisplayChallengeToasts = true;
+					if(request.allowUiFromRequest) WordsHttp.shouldDisplayChallengeToasts = true;
 				} catch (Exception e) {
 					EpicLog.e("Problem with connection: " + e.toString());
 					if(handler != null) {
