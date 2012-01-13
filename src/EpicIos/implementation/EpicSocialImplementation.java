@@ -60,11 +60,12 @@ public class EpicSocialImplementation {
 	}
 
 	public static boolean supportsFacebookPost() {
-		return false;
+		return EpicPlatform.isAndroid();
 	}
 
 	public static void postToFacebook(String title, String url, String caption, String imageUrl) {
-		
+		EpicLog.v("Sending native request to post to wall.");
+		EpicPlatformImplementationNative.postToWall(title);
 	}
 
 	public static void beginLogin(EpicSocialSignInCompletionHandler epicSocialSignInCompletionHandler) {
@@ -112,6 +113,9 @@ public class EpicSocialImplementation {
 	}
 
 	public static void postToFacebook(String title, String url, String caption, String imageUrl, EpicClickListener callback) {
+		EpicLog.v("Sending native request to post to wall.");
+		EpicPlatformImplementationNative.postToWall(title);
+		callback.onClick();
 	}
 
 	public static void showAchievements() {

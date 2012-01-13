@@ -16,6 +16,10 @@
 
 + (void) setupDebugHandlers__;
 + (void) loginToFacebook__;
+
++ (void) postToFacebook___java_lang_String
+: (java_lang_String *) fbMessage;
+
 + (int) isNetworkAvailable__;
 
 + (org_xmlvm_iphone_UIImage*) resizeImage___org_xmlvm_iphone_UIImage_int_int
