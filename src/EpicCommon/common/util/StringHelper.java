@@ -294,5 +294,12 @@ public class StringHelper {
         }
         return true;
     }
+	public static String sanitizeToAlphanumeric(String apnId) {
+		// brutal, but no regex in xmlvm, so tailoring for one use case with APN
+		String ret = apnId.replaceAll(" ", "");
+		ret = ret.replaceAll("<", "");
+		ret = ret.replaceAll(">", "");
+		return ret;
+	}
 
 }

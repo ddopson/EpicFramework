@@ -67,7 +67,7 @@ NSString *getFullPath(java_lang_String *filename) {
   : (java_lang_String*) filename
   : (XMLVMArray*) bytes
 {
-  NSLog(@"About to write %@ with %d bytes", filename, bytes->length);
+  //NSLog(@"About to write %@ with %d bytes", filename, bytes->length);
   //dumpBuff(bytes->array.b, bytes->length);
     NSArray *paths = NSSearchPathForDirectoriesInDomains
     (NSDocumentDirectory, NSUserDomainMask, YES);

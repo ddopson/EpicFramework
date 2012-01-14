@@ -62,7 +62,7 @@ public class EpicFont {
 	}
 
 	public EpicFont findBestFittingFont(String text, int width, int height) {
-		EpicLog.i("EpicFont.findBestFittingFont(" + StringHelper.namedArgList("text", text, "width", width, "height", height) + ")");
+		// EpicLog.i("EpicFont.findBestFittingFont(" + StringHelper.namedArgList("text", text, "width", width, "height", height) + ")");
 		int size = height;
 		while(size < MAX_SIZE && this.withSize(size).height < EpicPlatform.scaleLogicalToRealY(height)) {
 			size++;

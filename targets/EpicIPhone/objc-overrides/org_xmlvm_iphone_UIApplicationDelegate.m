@@ -58,11 +58,11 @@
     // Push handling
     
     // Register for push messages
-//    [[UIApplication sharedApplication] 
-//     registerForRemoteNotificationTypes:
-//     (UIRemoteNotificationTypeAlert | 
-//      UIRemoteNotificationTypeBadge | 
-//      UIRemoteNotificationTypeSound)];
+    [[UIApplication sharedApplication] 
+     registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeAlert | 
+      UIRemoteNotificationTypeBadge | 
+      UIRemoteNotificationTypeSound)];
     
     // Check for push message
     NSDictionary* remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -123,7 +123,7 @@
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
 	NSLog(@"My token is: %@", deviceToken);
-    NSString* apnId = [NSString stringWithFormat:@"%@", deviceToken];
+    NSString* apnId = [[NSString stringWithFormat:@"%@", deviceToken] retain];
     [com_epic_framework_implementation_EpicSocialImplementation nativecbSetAPNID___java_lang_String: apnId];
 }
 

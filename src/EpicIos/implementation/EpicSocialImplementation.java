@@ -179,6 +179,7 @@ public class EpicSocialImplementation {
 	}
 	
 	private static void nativecbSetAPNID(String apnId) {
-		PlayerState.setAPNID(apnId);
+		EpicLog.i("Got APN of " + apnId);
+		 PlayerState.setAPNID(apnId);
 	}
 }
