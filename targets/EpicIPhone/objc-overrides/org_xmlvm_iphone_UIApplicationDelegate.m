@@ -65,13 +65,12 @@
       UIRemoteNotificationTypeSound)];
     
     // Check for push message
-    NSDictionary* remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
-    
-    if(remoteNotif) {
-        // Get challenge id and load challenge ID screen with it
-        NSString* payload = @"5555";
-        [com_epic_framework_implementation_EpicSocialImplementation nativecbLoadChallengeDetails___java_lang_String: payload];
-    }
+//    NSDictionary* remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+//    
+//    if(remoteNotif) {
+//        NSString* payload = [NSString stringWithFormat:@"%@", [remoteNotif objectForKey:@"wfdata"]];
+//        [com_epic_framework_implementation_EpicSocialImplementation nativecbLoadChallengeDetails___java_lang_String: payload];
+//    }
     
     // [self doFbLogin];
     
@@ -116,7 +115,8 @@
 
 -(void) application:(UIApplication*) application didReceiveRemoteNotification: (NSDictionary*) userInfo
 {
-    NSString* payload = @"Test Notif";
+    NSString* payload = [NSString stringWithFormat:@"%@", [userInfo objectForKey:@"wfdata"]];
+    //NSLog("Got %@ for payload", payload);
     [com_epic_framework_implementation_EpicSocialImplementation nativecbNotificationReceived___java_lang_String: payload];
 }
 

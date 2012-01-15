@@ -11,12 +11,14 @@ import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicSocial;
+import com.epic.framework.common.util.StringHelper;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.Challenge;
 import com.realcasualgames.words.PlayerState;
 import com.realcasualgames.words.PushResponder;
 import com.realcasualgames.words.ScreenConnect;
+import com.realcasualgames.words.ScreenGame;
 import com.realcasualgames.words.ScreenMainMenu;
 import com.realcasualgames.words.ScreenOnlineChallengeDetails;
 import com.realcasualgames.words.WordsHttp;
@@ -174,7 +176,17 @@ public class EpicSocialImplementation {
 	
 	private static void nativecbLoadChallengeDetails(String payload) {
 		// TODO: parse payload for challenge id
-		String challengeId = payload;
+		
+		final String[] parts = payload.split(":");
+		String challengeId = "";
+	    if(parts[0].equals("challenge")) {
+	    	// challenge:<challenge id(int)>:<their name(String)>:<wager(int)>
+	    	challengeId = parts[1];
+	    } else if(parts[0].equals("complete")) {
+	    	// complete:your_score:their_score:wager:rank_award:their_id:their_name:challenge_id
+	    	challengeId = parts[7];
+	    }
+	    
 		EpicPlatform.changeScreen(new ScreenOnlineChallengeDetails(challengeId, null));
 	}
 	
