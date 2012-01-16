@@ -18,7 +18,7 @@ public abstract class EpicPlatformImplementationNative {
 	public static int isNetworkAvailable() {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
-	public static void postToWall(String title) {
+	public static void postToFacebook(String fbMessage) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
 	public static void setAppBadge(int newCount) {

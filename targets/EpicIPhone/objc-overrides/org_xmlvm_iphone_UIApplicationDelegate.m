@@ -216,7 +216,7 @@
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                    @"172905469435543", @"app_id",
                                    @"https://developers.facebook.com/docs/reference/dialogs/", @"link",
-                                   @"http://fbrell.com/f8.jpg", @"picture",
+                                   @"http://wordfarmgame.com/icon.png", @"picture",
                                    @"Word Farm", @"name",
                                    @"Play Word Farm Now!", @"caption",
                                    fbMessage, @"description",
