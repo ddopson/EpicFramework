@@ -27,4 +27,7 @@ public abstract class EpicPlatformImplementationNative {
 	public static void launchBrowserTo(String string) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");				
 	}
+	public static void requestFacebookFriends(String message) {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");				
+	}
 }

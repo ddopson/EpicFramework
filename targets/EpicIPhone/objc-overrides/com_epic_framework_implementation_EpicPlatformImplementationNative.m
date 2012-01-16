@@ -94,6 +94,12 @@ void uncaught_exception_handler(NSException *exception) {
     NSLog(@"Attempted fb login");
 }
 
++ (void) requestFacebookFriends___java_lang_String : (java_lang_String*) message
+{
+    [[[UIApplication sharedApplication] delegate] requestFriendsOnFacebook: message];
+    NSLog(@"Attempted fb request for friends");
+}
+
 + (int) isNetworkAvailable__
 {
     Reachability* networkReachability = [Reachability reachabilityForInternetConnection];

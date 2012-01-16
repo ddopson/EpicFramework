@@ -229,6 +229,15 @@
     
 }
 
+- (void) requestFriendsOnFacebook: (NSString*) message 
+{
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys: message,  @"message", nil];
+    
+    [facebook dialog:@"apprequests"
+           andParams:params
+         andDelegate:self];
+}
+
 - (void) postToWall: (NSString*) fbMessage {
     // post to wall
     NSLog(@"Attempting to post to wall...");

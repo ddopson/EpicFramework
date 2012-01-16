@@ -40,4 +40,8 @@ public class EpicPlatformImplementation {
 	public static void deepLinkToMarket(String string) {
 		EpicPlatformImplementationNative.launchBrowserTo(string);
 	}
+	
+	public static void requestFacebookFriends(String message) {
+		EpicPlatformImplementationNative.requestFacebookFriends(message);
+	}
 }
