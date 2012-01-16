@@ -71,6 +71,11 @@ void uncaught_exception_handler(NSException *exception) {
   NSSetUncaughtExceptionHandler(uncaught_exception_handler);
 }
 
++ (void) setAppBadge___int : (int) newCount
+{
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:newCount];
+}
+
 + (void) postToFacebook___java_lang_String : (java_lang_String *) fbMessage
 {
     NSLog(@"About to post %@ to FB wall", fbMessage);

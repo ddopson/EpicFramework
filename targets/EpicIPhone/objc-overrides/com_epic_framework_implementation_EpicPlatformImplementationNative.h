@@ -16,7 +16,7 @@
 
 + (void) setupDebugHandlers__;
 + (void) loginToFacebook__;
-
++ (void) setAppBadge___int : (int) newCount;
 + (void) postToFacebook___java_lang_String
 : (java_lang_String *) fbMessage;
 

@@ -32,4 +32,8 @@ public class EpicPlatformImplementation {
 	public static String getUniqueDeviceId() {
 		return EpicPlatformImplementationNative.getUniqueDeviceId();
 	}
+
+	public static void setAppBadge(int newCount) {
+		EpicPlatformImplementationNative.setAppBadge(newCount);
+	}
 }

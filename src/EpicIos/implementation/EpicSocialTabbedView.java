@@ -64,6 +64,8 @@ public class EpicSocialTabbedView extends UITabBarController {
 	public EpicSocialTabbedView(String cachedResponse) {
 		displayed = true;		
 		cachedString = cachedResponse;
+		
+		EpicPlatform.setAppBadge(0);
         
         controller = new UITableViewController(UITableViewStyle.Grouped);
         table = controller.getTableView();
@@ -483,8 +485,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 						WordsHttp.sendRandomChallenge(wager, new EpicHttpResponseHandler() {
 							public void handleResponse(EpicHttpResponse response) {
 								if(response.responseCode == 200) {
-									PlayerState.getState().openChallenges++;
-									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
+									PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
 										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
 										Main.navc.popToRootViewControllerAnimated(true);
 										EpicPlatform.changeScreen(new ScreenNursery());
@@ -515,7 +516,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 						WordsHttp.sendChallenge(opponent_id, wager, new EpicHttpResponseHandler() {
 							public void handleResponse(EpicHttpResponse response) {
 								if(response.responseCode == 200) {
-									PlayerState.getState().openChallenges++;
+									PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);
 									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
 										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
 										Main.navc.popToRootViewControllerAnimated(true);

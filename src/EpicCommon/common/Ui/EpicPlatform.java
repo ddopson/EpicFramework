@@ -608,4 +608,8 @@ public class EpicPlatform {
 	public static String getUniqueDeviceId() {
 		return EpicPlatformImplementation.getUniqueDeviceId().substring(0, 8) + "@wordfarmgame.com";
 	}
+
+	public static void setAppBadge(int newCount) {
+		EpicPlatformImplementation.setAppBadge(newCount);
+	}
 }
