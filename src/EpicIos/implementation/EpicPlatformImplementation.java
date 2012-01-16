@@ -36,4 +36,8 @@ public class EpicPlatformImplementation {
 	public static void setAppBadge(int newCount) {
 		EpicPlatformImplementationNative.setAppBadge(newCount);
 	}
+
+	public static void deepLinkToMarket(String string) {
+		EpicPlatformImplementationNative.launchBrowserTo(string);
+	}
 }

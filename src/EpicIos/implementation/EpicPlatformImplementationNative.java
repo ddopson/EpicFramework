@@ -24,4 +24,7 @@ public abstract class EpicPlatformImplementationNative {
 	public static void setAppBadge(int newCount) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");		
 	}
+	public static void launchBrowserTo(String string) {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");				
+	}
 }

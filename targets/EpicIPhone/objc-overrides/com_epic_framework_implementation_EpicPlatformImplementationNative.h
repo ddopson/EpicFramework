@@ -19,7 +19,7 @@
 + (void) setAppBadge___int : (int) newCount;
 + (void) postToFacebook___java_lang_String
 : (java_lang_String *) fbMessage;
-
++ (void) launchBrowserTo___java_lang_String : (java_lang_String*) url;
 + (int) isNetworkAvailable__;
 
 + (org_xmlvm_iphone_UIImage*) resizeImage___org_xmlvm_iphone_UIImage_int_int

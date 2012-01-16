@@ -593,8 +593,7 @@ public class EpicPlatform {
 	}
 
 	public static void androidLaunchMarketplace(String string) {
-		// TODO Auto-generated method stub
-		
+		EpicPlatformImplementation.deepLinkToMarket(string);
 	}
 
 	public static String getApplicationVersion() {

@@ -82,6 +82,11 @@ void uncaught_exception_handler(NSException *exception) {
     [[[UIApplication sharedApplication] delegate] postToWall: (NSString*) fbMessage];
 }
 
++ (void) launchBrowserTo___java_lang_String : (java_lang_String*) url
+{
+    NSURL *appStoreUrl = [NSURL URLWithString:url];
+    [[UIApplication sharedApplication] openURL:appStoreUrl];
+}
 
 + (void) loginToFacebook__
 {
