@@ -25,6 +25,8 @@ import com.realcasualgames.words.WordsHttp;
 
 public class EpicSocialImplementation {
 
+	public static String friendList;
+	
 	public static String getUniqueUserId() {
 		return "unique_user_id";
 	}
@@ -76,6 +78,7 @@ public class EpicSocialImplementation {
 	}
 	
 	public static void viewChallenges() {
+		viewChallenges(25);
 	}
 	
 	public static void viewChallenges(String cached_list) {
@@ -193,5 +196,45 @@ public class EpicSocialImplementation {
 	private static void nativecbSetAPNID(String apnId) {
 		EpicLog.i("Got APN of " + apnId);
 		 PlayerState.setAPNID(apnId);
+	}
+	
+	private static void nativeCbFacebookFriendList(String friendsString) {
+		friendList = friendsString;
+		if(PlayerState.getIdentity() != null) {
+			searchFriendList(friendsString);
+		} else {
+			EpicLog.w("No identity, not loading friends list yet.");
+		}
+	}
+
+	public static void searchFriendList(String friendsString) {
+		EpicLog.i("Searching friend list of length: " + friendsString.length());
+		WordsHttp.findFriends(friendsString, new EpicHttpResponseHandler() {
+			public void handleResponse(EpicHttpResponse response) {
+				String[] parts = response.body.split(";");
+				EpicLog.v("Found " + parts.length + " friends");
+//				final String[] names = new String[parts.length];
+//				final String[] ids = new String[parts.length];
+//				
+//				for(int i = 0; i < parts.length; ++i) {
+//					String[] pieces = parts[i].split(":");
+//					names[i] = pieces[0];
+//					ids[i] = pieces[1];
+//				}
+//				
+				EpicNotification n = new EpicNotification(parts.length + " friends playing Word Farm!", new String[] { "Click here to challenge them!" });
+				n.clickCallback = new EpicClickListener() {
+					public void onClick() {
+						EpicSocialImplementation.viewChallenges();
+					}
+				};
+				EpicPlatform.doToastNotification(n);
+			}
+			
+			public void handleFailure(Exception e) {
+				EpicLog.e("Failure processing friends list: " + e.toString());
+				EpicPlatform.doToastNotification(new EpicNotification("Problem Searching For Friends", new String[] { "Please try again later or contact support."}));
+			}
+		});
 	}
 }

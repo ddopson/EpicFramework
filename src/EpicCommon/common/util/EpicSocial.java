@@ -72,6 +72,12 @@ public class EpicSocial {
 				EpicLog.w("Failure to call syncAccount on the remote service");
 			}
 		});
+		
+		if(EpicSocialImplementation.friendList != null) {
+			EpicSocialImplementation.searchFriendList(EpicSocialImplementation.friendList);
+		} else {
+			EpicLog.i("Friends list still null when signing in...");
+		}
 	}
 	
 	public static void switchUser(final EpicSocialSignInCompletionHandler doAfter) {

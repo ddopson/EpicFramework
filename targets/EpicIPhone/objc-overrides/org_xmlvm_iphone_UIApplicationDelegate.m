@@ -167,6 +167,10 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [facebook requestWithGraphPath:@"me" andDelegate:self];
         NSLog(@"Details requested.");
+        
+        [facebook requestWithGraphPath:@"me/friends" andDelegate:self];
+        NSLog(@"Friends requested.");
+        
     });
 }
 
@@ -208,6 +212,21 @@
     } else {
         NSLog(@"Username not found.");
     }    
+    
+    
+    if([result objectForKey:@"data"]) {
+        NSString* friendsString = @"";
+        for(NSDictionary* aFriend in [result objectForKey:@"data"]) {
+            friendsString = [friendsString stringByAppendingString:[aFriend objectForKey:@"name"]];
+            friendsString = [friendsString stringByAppendingString:@";"];
+            friendsString = [friendsString stringByAppendingString:[aFriend objectForKey:@"id"]];
+            friendsString = [friendsString stringByAppendingString:@":"];
+        }
+        
+        [com_epic_framework_implementation_EpicSocialImplementation nativeCbFacebookFriendList___java_lang_String: [NSString stringWithFormat:@"%@", friendsString]];
+    }
+    
+    
 }
 
 - (void) postToWall: (NSString*) fbMessage {
