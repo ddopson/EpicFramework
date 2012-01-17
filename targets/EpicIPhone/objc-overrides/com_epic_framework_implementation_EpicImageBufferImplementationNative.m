@@ -30,8 +30,8 @@
   // Create the Render Context
   CGContextRef context = CGBitmapContextCreate(
     bitmapData,       // "data" - the actual array
-    pwidth,           // "width" in pixels (real pixels, not density adjusted)
-    pheight,          // "height" in pixels (real pixels, not density adjusted)
+    width,           // "width" in pixels (real pixels, not density adjusted)
+    height,          // "height" in pixels (real pixels, not density adjusted)
     8,                // "bits-per-component"
     width * 4,        // "bytes-per-row"
     colorSpace,       // "colorspace"
@@ -48,8 +48,8 @@
 
   // Create the Bitmap
   CGImageRef cgi = CGImageCreate(
-    pwidth,           // "width" in pixels (real pixels, not density adjusted)
-    pheight,          // "height" in pixels (real pixels, not density adjusted)
+    width,           // "width" in pixels (real pixels, not density adjusted)
+    height,          // "height" in pixels (real pixels, not density adjusted)
     8,                // "bits-per-component"
     32,               // "bits-per-pixel"
     width * 4,        // "bytes-per-row"

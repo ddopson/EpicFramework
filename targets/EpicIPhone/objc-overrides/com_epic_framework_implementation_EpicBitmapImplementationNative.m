@@ -25,10 +25,10 @@
 
   CGContextRef context = CGBitmapContextCreate(
     bitmapData,            // void* bitmapData
-    (int)psize.width,      // width
-    (int)psize.height,     // height
+    width,                // "width" in pixels (real pixels, not density adjusted)
+    height,               // "height" in pixels (real pixels, not density adjusted)
     8,                     // bits-per-component
-    width * 4,             // bytes-per-row
+    width * 4,            // bytes-per-row
     colorSpace,            // color-space
     bitmapInfo             // bitmapInfo
   );
@@ -54,8 +54,8 @@
   );
 
   CGImageRef cgi = CGImageCreate(
-    pwidth,           // "width" in pixels (real pixels, not density adjusted)
-    pheight,          // "height" in pixels (real pixels, not density adjusted)
+    width,           // "width" in pixels (real pixels, not density adjusted)
+    height,          // "height" in pixels (real pixels, not density adjusted)
     8,                // "bits-per-component"
     32,               // "bits-per-pixel"
     width * 4,        // "bytes-per-row"
