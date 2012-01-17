@@ -20,6 +20,7 @@ public class EpicBitmap {
 	public final int tpad;
 	public final int rpad;
 	public final int bpad;
+	public final boolean opaque;
 
 
 	public class EpicBitmapInstance {
@@ -57,6 +58,7 @@ public class EpicBitmap {
 		this.tpad = tpad;
 		this.rpad = rpad;
 		this.bpad = bpad;
+		this.opaque = extension.equals("jpg") ? true : false;
 		this.internal_height = height - tpad - bpad;
 		this.internal_width = width - lpad - rpad;
 		if(register) {

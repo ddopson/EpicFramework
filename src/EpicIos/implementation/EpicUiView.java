@@ -23,7 +23,7 @@ import com.epic.framework.common.util.EpicLog;
 public class EpicUiView extends UIView implements EpicPlatformInterface {
 	public EpicUiView(CGRect rect) {
 		super(rect);
-
+		this.setOpaque(true);
 		EpicPlatform.initialize(this, null, null);
 		EpicPlatformImplementationNative.setupDebugHandlers();
 	}

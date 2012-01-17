@@ -9,6 +9,9 @@ public class EpicBitmapImplementationNative {
 	public static UIImage resizeImage(UIImage src, int width, int height) {
 		throw new EpicNativeMethodMissingImplementation("EpicBitmapImplementationNative");
 	}
+	public static UIImage resizeImage2(UIImage src, int width, int height, boolean opaque) {
+		throw new EpicNativeMethodMissingImplementation("EpicBitmapImplementationNative");
+	}
 	
 	public static void drawAtPoint(UIImage image, CGPoint point) {
 		throw new EpicNativeMethodMissingImplementation("EpicBitmapImplementationNative");		

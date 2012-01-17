@@ -9,6 +9,7 @@ import org.xmlvm.iphone.CGRect;
 import org.xmlvm.iphone.UIFont;
 import org.xmlvm.iphone.UIImage;
 
+import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;
@@ -55,13 +56,13 @@ public class EpicCanvasImplementation {
 	// METHODS
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh) {
+	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
 
-		EpicCanvasImplementationNative.setCrop(c, x, y, sw, sh);
-		EpicCanvasImplementationNative.drawImage(uiimg, x-sx, y-sy, alpha);
-		EpicCanvasImplementationNative.restoreContext(c);
+		if(isCropped) EpicCanvasImplementationNative.setCrop(c, x, y, sw, sh);
+		EpicCanvasImplementationNative.drawImage(c, uiimg, x-sx, y-sy, alpha);
+		if(isCropped) EpicCanvasImplementationNative.restoreContext(c);
 	}	
 
 	public static void drawCircle(Object graphicsObject, int color, int alpha, int x_center, int y_center, int radius) {

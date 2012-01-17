@@ -1,20 +1,19 @@
 package com.epic.framework.common.Ui;
 
 import com.epic.framework.common.util.EpicFail;
+import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.framework.implementation.EpicBitmapImplementation;
+import com.epic.framework.implementation.EpicImageBufferImplementation;
 
 public class EpicImageBuffer extends EpicBitmap {
 	private final EpicCanvas canvas = new EpicCanvas();
 	
-	public EpicImageBuffer(String name, int width, int height, int lpad, int tpad, int rpad, int bpad) {
-		super(name, "BUFFER", -1, width, height, lpad, tpad, rpad, bpad);
-		this.platformObject = EpicBitmapImplementation.getImageBuffer(width - lpad - rpad, height - tpad - bpad);
-		canvas.graphicsObject = EpicBitmapImplementation.getBufferCanvasObject(this.platformObject);
-	}
-	
-	public EpicImageBuffer(String name, int width, int height) {
-		this(name, width, height, 0, 0, 0, 0);
+	public EpicImageBuffer(String name, int width, int height, boolean opaque) {
+		super(name, "BUFFER", -1, width, height, 0, 0, 0, 0);
+		EpicImageBufferImplementation implementation = new EpicImageBufferImplementation(width, height, opaque);
+		this.platformObject = implementation.getPlatformBitmapObject();
+		canvas.graphicsObject = implementation.getPlatformGraphicsObject();
 	}
 
 	public EpicCanvas getCanvas() {
