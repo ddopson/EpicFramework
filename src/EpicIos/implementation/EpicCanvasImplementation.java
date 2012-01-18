@@ -6,6 +6,7 @@ import org.xmlvm.iphone.CGFont;
 import org.xmlvm.iphone.CGPoint;
 import org.xmlvm.iphone.CGContext;
 import org.xmlvm.iphone.CGRect;
+import org.xmlvm.iphone.CGSize;
 import org.xmlvm.iphone.UIFont;
 import org.xmlvm.iphone.UIImage;
 
@@ -56,9 +57,15 @@ public class EpicCanvasImplementation {
 	// METHODS
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	public static boolean hack = false;
 	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
+
+		if(hack) {
+			CGSize size = uiimg.getSize();
+			EpicLog.i("drawBitmapImpl(" + StringHelper.namedArgList("x", x, "y", y, "alpha", alpha, "sx", sx, "sy", sy, "sw", sw, "sh", sh, "i.w", (int)size.width, "i.h", (int)size.height) + ")");
+		}
 
 		if(isCropped) EpicCanvasImplementationNative.setCrop(c, x, y, sw, sh);
 		EpicCanvasImplementationNative.drawImage(c, uiimg, x-sx, y-sy, alpha);

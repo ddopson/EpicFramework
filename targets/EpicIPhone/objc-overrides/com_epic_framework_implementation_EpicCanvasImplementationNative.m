@@ -21,6 +21,7 @@
   CGContextSetBlendMode(context, opaque ? kCGBlendModeCopy : kCGBlendModeNormal);
   float falpha = alpha / 255.0f;
   CGContextSetAlpha(context, falpha);
+  //NSLog(@"Drawing image to (%f, %f) - %fx%f, or is it %dx%d", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, CGImageGetWidth(cgimage), CGImageGetHeight(cgimage));
   CGContextDrawImage(context, rect, cgimage);
 
   //float falpha = alpha / 255.0f;

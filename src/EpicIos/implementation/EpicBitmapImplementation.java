@@ -21,7 +21,7 @@ public class EpicBitmapImplementation {
 	public static Object loadBitmap(EpicBitmap epicBitmap, int neededInternalWidth, int neededInternalHeight) {
 		UIImage src = UIImage.imageNamed(epicBitmap.name + "." + epicBitmap.extension);	
 		EpicFail.assertNotNull(src, "src");
-		UIImage scaled = EpicBitmapImplementationNative.resizeImage2(src, neededInternalWidth, neededInternalHeight, epicBitmap.opaque);
+		UIImage scaled = EpicBitmapImplementationNative.resizeImage(src, neededInternalWidth, neededInternalHeight);//, epicBitmap.opaque);
 		EpicFail.assertNotNull(scaled, "scaled");
 //		EpicLog.i("Image: " + epicBitmap.name);
 //		EpicCanvasImplementationNative.inspectImage(src);
