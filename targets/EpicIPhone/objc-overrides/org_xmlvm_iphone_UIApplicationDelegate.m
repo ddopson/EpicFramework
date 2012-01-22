@@ -133,10 +133,10 @@
 }
 
 - (void)doFbLogin {
-    //if (![facebook isSessionValid]) {
+    if (![facebook isSessionValid]) {
         NSLog(@"login requested.");
         [facebook authorize:nil];
-    //} else {
+    }// else {
     //    NSLog(@"Using stored Facebook credentials.");
     //}    
 }
@@ -231,6 +231,7 @@
 
 - (void) requestFriendsOnFacebook: (NSString*) message 
 {
+    [self doFbLogin];
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys: message,  @"message", nil];
     
     [facebook dialog:@"apprequests"
@@ -241,6 +242,7 @@
 - (void) postToWall: (NSString*) fbMessage {
     // post to wall
     NSLog(@"Attempting to post to wall...");
+    [self doFbLogin];
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                    @"172905469435543", @"app_id",
                                    @"https://developers.facebook.com/docs/reference/dialogs/", @"link",
