@@ -4,6 +4,8 @@ import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.util.*;
 import com.epic.framework.implementation.EpicCanvasImplementation;
 import com.epic.framework.implementation.EpicFontImplementation;
+import com.epic.framework.implementation.EpicFontImplementationNative;
+import com.epic.framework.implementation.EpicPlatformConfig;
 
 public class EpicCanvas {
 
@@ -52,7 +54,7 @@ public class EpicCanvas {
 	////////////////////////////////////////////////////////////////////////////////
 	// HELPERS
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	static final int sx(int x) {
 		return x * EpicPlatform.renderWidth / EpicPlatform.designWidth;
 	}
@@ -60,11 +62,11 @@ public class EpicCanvas {
 	static final int sy(int y) {
 		return y * EpicPlatform.renderHeight / EpicPlatform.designHeight;
 	}
-	
+
 	private static int max(int a, int b) {
 		return a > b ? a : b;
 	}
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	// INTERFACE
 	////////////////////////////////////////////////////////////////////////////////
@@ -140,7 +142,7 @@ public class EpicCanvas {
 		if((tcrop + bcrop) > height || (lcrop + rcrop) > width) {
 			throw EpicFail.invalid_argument(StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop));
 		}
-//		EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
+		//		EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
 		int lpad = image.lpad;
 		int tpad = image.tpad;
 		int rpad = image.rpad;
@@ -195,40 +197,26 @@ public class EpicCanvas {
 		//			y = y * this.real_height / EpicCanvas.DESIGN_HEIGHT;
 		//		}
 
+		int advance = -999;
+		int text_left = -999;
 		switch(halign) {
-		case EpicFont.HALIGN_CENTER:
-		case EpicFont.HALIGN_LEFT:
-		case EpicFont.HALIGN_RIGHT:
-			break;
-		default:
-			throw EpicFail.invalid_argument("halign = " + halign);
-		}
-		switch(valign) {
-		case EpicFont.VALIGN_BOTTOM:
-		case EpicFont.VALIGN_CENTER:
-		case EpicFont.VALIGN_TOP:
-			break;
-		default:
-			throw EpicFail.invalid_argument("halign = " + halign);
-		}
-
-		int advance = EpicFontImplementation.measureAdvance(graphicsObject, font, text);
-		int text_left;
-		switch(halign) {
-		case EpicFont.HALIGN_RIGHT:
-			text_left = x + width - advance;
-			break;
 		case EpicFont.HALIGN_LEFT:
 			text_left = x;
 			break;
+		case EpicFont.HALIGN_RIGHT:
+			advance = EpicFontImplementation.measureAdvance(graphicsObject, font, text);
+			text_left = x + width - advance;
+			break;
 		case EpicFont.HALIGN_CENTER:
+			advance = EpicFontImplementation.measureAdvance(graphicsObject, font, text);
 			text_left = x + (width - advance) / 2;
 			break;
 		default:
-			throw EpicFail.unhandled_case();
+			throw EpicFail.invalid_argument("halign = " + halign);
+
 		}
 
-		int text_top;
+		int text_top = -99; // default: VALIGN_TOP
 		int textHeight = font.ascent;
 		switch(valign) {
 		case EpicFont.VALIGN_TOP:
@@ -241,28 +229,32 @@ public class EpicCanvas {
 			text_top = y + (height - textHeight) / 2;
 			break;
 		default:
-			throw EpicFail.unhandled_case();
+			throw EpicFail.invalid_argument("halign = " + halign);
 		}
-		if(debugRendering) {
-			EpicCanvasImplementation.drawBorder(graphicsObject, x, y, width, height, EpicColor.BLUE, 2);
-			EpicCanvasImplementation.drawBorder(graphicsObject, text_left, text_top, advance, textHeight, EpicColor.BLUE, 2);
-		}
+		//IOS	if(debugRendering) {
+		//IOS		EpicCanvasImplementation.drawBorder(graphicsObject, x, y, width, height, EpicColor.BLUE, 2);
+		//IOS			EpicCanvasImplementation.drawBorder(graphicsObject, text_left, text_top, advance, textHeight, EpicColor.BLUE, 2);
+		//IOS }
 		EpicCanvasImplementation.drawText(graphicsObject, text, text_left, text_top, font, color, rotateBy);
 	}
 
 	final void _drawTextBox(String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
+		if(EpicPlatform.isIos()) {
+			EpicCanvasImplementation.drawTextBox(graphicsObject, text, left, top, width, height, font, color, rotateBy);
+			return;
+		}
 		EpicFail.assertTrue(text.length() < BUFFER_SIZE, "text.length() is bigger than BUFFER_SIZE.  length=" + text.length());
 
-//		text.getChars(0, text.length(), buffer, 0);
-		
+		//		text.getChars(0, text.length(), buffer, 0);
+
 		for(int i = 0; i < buffer.length; ++i) {
 			buffer[i] = '\0';
 		}
-		
+
 		for(int i = 0; i < text.length(); ++i) {
 			buffer[i] = text.charAt(i);
 		}
-		
+
 		int textSize = font.size_absolute;
 
 		while(textSize > 1 && height < __drawTextBox(buffer, 0, text.length(), left, top, width, height, font, color, true, rotateBy)) {
@@ -272,7 +264,7 @@ public class EpicCanvas {
 	}
 
 	final int __drawTextBox(char[] chars, int offset, int length, int left, int top, int width, int height, EpicFont font, int color, boolean measureOnly, int rotateBy) {
-//		EpicLog.d("drawTextBox(" + StringHelper.namedArgList("chars", chars, "offset", offset, "length", length, "width", width, "height", height) + ")");
+		//		EpicLog.d("drawTextBox(" + StringHelper.namedArgList("chars", chars, "offset", offset, "length", length, "width", width, "height", height) + ")");
 		if(debugRendering) {
 			EpicCanvasImplementation.drawBorder(graphicsObject, left, top, width, height, EpicColor.GREEN, 2);
 		}

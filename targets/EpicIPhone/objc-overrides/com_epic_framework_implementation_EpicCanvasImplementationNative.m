@@ -99,5 +99,29 @@
   CGContextRestoreGState(context->context);
 }
 
++ (void) drawTextAtPoint___java_lang_String_java_lang_Object_int_int
+   : (java_lang_String *) text
+   : (java_lang_Object *) fontObject
+   : (int) x
+   : (int) y
+{ 
+   UIFont *font = (UIFont *)fontObject;
+   CGPoint point = CGPointMake(x, y);
+   [text drawAtPoint: point withFont: font];
+}
+
++ (void) drawTextInRect___java_lang_String_java_lang_Object_int_int_int_int
+   : (java_lang_String *) text
+   : (java_lang_Object *) fontObject
+   : (int) x
+   : (int) y
+   : (int) width
+   : (int) height
+{ 
+   UIFont *font = (UIFont *)fontObject;
+   CGRect rect = CGRectMake(x, y, width, height);
+   [text drawInRect: rect withFont: font];
+}
 @end
+
 

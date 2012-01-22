@@ -14,43 +14,44 @@
 
 @implementation com_epic_framework_implementation_EpicFontImplementationNative;
 
-// CGFontCreateFromName
-+ (org_xmlvm_iphone_CGFont*) CGFontCreateFromName___java_lang_String 
+// UIFont
++ (java_lang_Object*) UIFont___java_lang_String_int
   : (java_lang_String *) name
+  : (int) size
 {
-  CGFontRef font = CGFontCreateWithFontName((CFStringRef)name);
-  NSLog(@"Font['%@'] = %p", name, font); 
+  UIFont *font = [UIFont fontWithName:name size: size];
+  //NSLog(@"Font['%@'] = %p", name, font); 
   return [XMLVM_NIL2NULL(font) retain];
 }
 
-// CGContextSetFont
-+ (void) CGContextSetFont___java_lang_Object_org_xmlvm_iphone_CGContext
+// UIFontWithSize
++ (java_lang_Object *) UIFontWithSize___java_lang_Object_int
   : (java_lang_Object *) fontObject
-  : (org_xmlvm_iphone_CGContext*) context
+  : (int) size
 {
-  NSLog(@"Setting font: %p", fontObject);
-  CGContextSetFont(context->context, fontObject);
+  UIFont *font = (UIFont *)fontObject;
+  UIFont *newFont = [font fontWithSize: (CGFloat)size];
+  return [XMLVM_NIL2NULL(newFont) retain];
 }
 
-// CGFontGetAscent
-+ (int) CGFontGetAscent___java_lang_Object
+// measureAscent
++ (int) measureAscent___java_lang_Object
   : (java_lang_Object *) fontObject
 {
-  return CGFontGetAscent(fontObject);
+  UIFont *font = (UIFont*)fontObject;
+  CGFloat a = [font ascender];
+  //NSLog(@"ascent = %f", a);
+  return (int)a;
 }
 
-// CGFontGetUnitsPerEm
-+ (int) CGFontGetUnitsPerEm___java_lang_Object
+// measureDescent
++ (int) measureDescent___java_lang_Object
   : (java_lang_Object *) fontObject
 {
-  return CGFontGetUnitsPerEm(fontObject);
-}
-
-// CGFontGetDescent
-+ (int) CGFontGetDescent___java_lang_Object
-  : (java_lang_Object *) fontObject
-{
-  return CGFontGetDescent(fontObject);
+  UIFont *font = (UIFont*)fontObject;
+  CGFloat a = [font descender];
+  //NSLog(@"descent = %f", a);
+  return (int)a;
 }
 
 // measureAdvance
@@ -58,7 +59,10 @@
   : (java_lang_Object *) fontObject
   : (java_lang_String *) text
 {
-  return 0;
+  UIFont *font = (UIFont *)fontObject;
+  CGSize sz = [text sizeWithFont: font];
+  //NSLog(@"Measured text to %fx%f", sz.width, sz.height);
+  return (int)sz.width;
 }
 
 @end

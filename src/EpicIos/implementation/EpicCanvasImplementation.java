@@ -14,6 +14,7 @@ import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;
+import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.StringHelper;
 
@@ -102,22 +103,23 @@ public class EpicCanvasImplementation {
 		c.strokePath();
 	}
 
-	public static void drawText(Object graphicsObject, String text, int left, int top, EpicFont font, int color, int rotateBy) {
+	public static void drawTextBox(Object graphicsObject, String text, int x, int y, int width, int height, EpicFont font, int color, int rotateBy) {
 		CGContext c = (CGContext) graphicsObject;
-		//		EpicLog.v("EpicCanvasImplementation.drawText(" + StringHelper.namedArgList("text", text, "left", left, "top", top, "font", font.name, "size_absolute", font.size_absolute, "size_relative", font.size_relative, "color", color) + ")");
 		c.setFillColor(getColorFloatsFromInt(color));
 		c.setStrokeColor(getColorFloatsFromInt(color));
-		c.selectFont(font.getFriendlyName(), font.size_relative);
-		c.setTextDrawingMode(0);
-		c.showTextAtPoint((float)left, (float)top + font.ascent, text);
+		EpicCanvasImplementationNative.drawTextInRect(text, font.fontObject, x, y, width, height);
+	}
+	public static void drawText(Object graphicsObject, String text, int left, int top, EpicFont font, int color, int rotateBy) {
+		CGContext c = (CGContext) graphicsObject;
+		c.setFillColor(getColorFloatsFromInt(color));
+		c.setStrokeColor(getColorFloatsFromInt(color));
+		EpicCanvasImplementationNative.drawTextAtPoint(text, font.fontObject, left, top);
 	}
 
 	public static void drawText(Object graphicsObject, char[] buffer, int offset, int length, int left, int top, EpicFont font, int color, int rotateBy) {
-		drawText(graphicsObject, new String(buffer, offset, length), left, top, font, color, rotateBy);
+		throw EpicFail.not_supported();
 	}
 
 	public static void init(Object graphicsObject) {
-		CGContext c = (CGContext) graphicsObject;
-		c.selectFont("Nunito", 12);
 	}
 }

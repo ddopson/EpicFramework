@@ -52,12 +52,12 @@ public class EpicFont {
 	}
 
 	public static EpicFont fromFile(EpicFile file, int size) {
-		Object platformObject = EpicFontImplementation.getFontObjectFromFile(file);
+		Object platformObject = EpicFontImplementation.getFontObjectFromFile(file, size);
 		return new EpicFont(null, file.getFilename(), platformObject, size);
 	}
 
 	public static EpicFont fromName(String name, int size) {
-		Object platformObject = EpicFontImplementation.getFontObjectFromName(name);
+		Object platformObject = EpicFontImplementation.getFontObjectFromName(name, size);
 		return new EpicFont(null, name, platformObject, size);
 	}
 
