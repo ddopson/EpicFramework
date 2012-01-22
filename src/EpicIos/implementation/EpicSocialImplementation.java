@@ -177,6 +177,10 @@ public class EpicSocialImplementation {
 		PushResponder.handlePushWhileOpen(payload);
 	}
 	
+	private static void nativeCbFacebookAddFriendComplete() {
+		PlayerState.onChallengeComplete(31);
+	}
+	
 	private static void nativecbLoadChallengeDetails(String payload) {
 		// TODO: parse payload for challenge id
 		
@@ -205,6 +209,11 @@ public class EpicSocialImplementation {
 		} else {
 			EpicLog.w("No identity, not loading friends list yet.");
 		}
+	}
+	
+	private static void nativeCbFacebookPostComplete() {
+		PlayerState.updateLocalTokens(500);
+		PlayerState.onChallengeComplete(30);
 	}
 
 	public static void searchFriendList(String friendsString) {

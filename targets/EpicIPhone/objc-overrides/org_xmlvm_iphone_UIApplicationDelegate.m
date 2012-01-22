@@ -229,6 +229,23 @@
     
 }
 
+- (void) dialogCompleteWithUrl:(NSURL*) url
+{
+    if ([url.absoluteString rangeOfString:@"post_id="].location != NSNotFound) {
+        //alert user of successful post
+        NSLog(@"Got post ID--Facebook post complete.");
+        [com_epic_framework_implementation_EpicSocialImplementation nativeCbFacebookPostComplete__];
+	} else if ([url.absoluteString rangeOfString:@"request_ids="].location != NSNotFound) {
+	        //alert user of successful post
+	        NSLog(@"Got request ids--Facebook request complete.");
+	        [com_epic_framework_implementation_EpicSocialImplementation nativeCbFacebookAddFriendComplete__];
+    } else {
+        //user pressed "cancel"
+       // NSLog("Dialog completed, but doesn't contain post id. Instead contains %@", url);
+    }
+}
+
+
 - (void) requestFriendsOnFacebook: (NSString*) message 
 {
     [self doFbLogin];
