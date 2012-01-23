@@ -150,6 +150,11 @@ public class EpicSocialImplementation {
 	}
 
 	private static void nativecbFacebookLoginFinishedWithId(String username) {
+		if(PlayerState.getIdentity() != null && PlayerState.getState().fbid != null) {
+			EpicLog.w("Skipping login from Facebook due to identity being set already.");
+			return;
+		}
+		
 		final String[] parts = username.split("#");
 		EpicLog.i("FB callback returned username to java: " + parts[0] + " and id: " + parts[1]);
 		EpicPlatform.changeScreen(new ScreenMainMenu());
