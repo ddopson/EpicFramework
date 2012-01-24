@@ -30,6 +30,7 @@ import com.realcasualgames.words.OnlineChallenge;
 import com.realcasualgames.words.PlayerState;
 import com.realcasualgames.words.ScreenBuyTokens;
 import com.realcasualgames.words.ScreenDailySpecials;
+import com.realcasualgames.words.ScreenGame;
 import com.realcasualgames.words.ScreenGameLoading;
 import com.realcasualgames.words.ScreenMainMenu;
 import com.realcasualgames.words.ScreenNursery;
@@ -510,7 +511,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 						if(PlayerState.getState().currentChallenge != null) {
 							EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
 							Main.navc.popToRootViewControllerAnimated(true);
-							EpicPlatform.changeScreen(EpicPlatform.isIos() ? new ScreenDailySpecials() : new ScreenNursery());
+							ScreenGame.startGame();
 							EpicPlatform.doToastNotification(n);
 							return;
 						}
@@ -522,7 +523,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
 										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
 										Main.navc.popToRootViewControllerAnimated(true);
-										EpicPlatform.changeScreen(EpicPlatform.isIos() ? new ScreenDailySpecials() : new ScreenNursery());
+										ScreenGame.startGame();
 									}
 								} else if(response.responseCode == 403) {
 									EpicNotification n = new EpicNotification("Your challenge was declined.", new String[] { "Your opponent is not accepting challenges at this time." }, EpicImages.challenge_icon, 4);
