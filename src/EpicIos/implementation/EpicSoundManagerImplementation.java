@@ -21,7 +21,12 @@ public class EpicSoundManagerImplementation {
 	
 	public static void playSound(EpicSound sound) {
 		AVAudioPlayer player = getPlayerForSound(sound, false);
-		player.play();
+		if(player.isPlaying()) {
+			player.stop();
+			player.play();
+		} else {
+			player.play();
+		}
 	}
 
 	public static void playMusic(EpicSound sound) {
