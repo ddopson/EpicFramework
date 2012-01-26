@@ -265,7 +265,7 @@
                                    @"https://developers.facebook.com/docs/reference/dialogs/", @"link",
                                    @"http://wordfarmgame.com/icon.png", @"picture",
                                    @"Word Farm", @"name",
-                                   @"Play Word Farm Now!", @"caption",
+                                   @"Word Farm is available for iPhone, iPad, Android and BlackBerry. Click here to get it now!", @"caption",
                                    fbMessage, @"description",
                                    @"",  @"message",
                                    nil];

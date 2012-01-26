@@ -67,11 +67,6 @@ public class EpicSocialImplementation {
 		return EpicPlatform.isAndroid() || EpicPlatform.isIos();
 	}
 
-	public static void postToFacebook(String title, String url, String caption, String imageUrl) {
-		EpicLog.v("Sending native request to post to wall.");
-		EpicPlatformImplementationNative.postToFacebook(title);
-	}
-
 	public static void beginLogin(EpicSocialSignInCompletionHandler epicSocialSignInCompletionHandler) {
 		// epicSocialSignInCompletionHandler.onSignedIn(chooseContact());
 		EpicPlatform.changeScreen(new ScreenConnect(epicSocialSignInCompletionHandler));
