@@ -19,7 +19,7 @@ import com.realcasualgames.words.WordsHttp;
 
 public class EpicHttpImplementation {
 
-	private static String[] knownHeaders = new String[] { "Online", "Tokencount", "Points", "B", "Daily", "Open_challenges", "Rank", "Player_record", "C", "Usermessage", "Usermessageurl" };
+	private static String[] knownHeaders = new String[] { "Online", "Tokencount", "Coincount", "Points", "B", "Daily", "Open_challenges", "Rank", "Player_record", "C", "Usermessage", "Usermessageurl" };
 	private static final int BUF_SIZE = 64000;
 
 	public static EpicHttpResponse get(EpicHttpRequest epicHttpRequest) {
