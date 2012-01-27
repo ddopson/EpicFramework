@@ -19,7 +19,7 @@ public abstract class HexGrid<T> implements Iterable<T> {
 	// x         6         x  
 	//      x         x       
 	// x         x         x  
-	ArrayList<T> array;
+	protected ArrayList<T> array;
 //	T[] array;
 	int width;
 	int height; // note that Y is double the height ...
