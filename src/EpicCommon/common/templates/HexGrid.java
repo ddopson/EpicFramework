@@ -7,8 +7,9 @@ import java.util.Iterator;
 
 import com.epic.framework.common.util.ArrayIterator;
 import com.epic.framework.common.util.EpicFail;
+import com.realcasualgames.words.WordsCell;
 
-public abstract class HexGrid<T extends HexGrid.HexGridCell> implements Iterable<T> {
+public abstract class HexGrid<T> implements Iterable<T> {
 	// The grid looks like this:
 	//      x         x       
 	// x         12        x   
@@ -45,6 +46,11 @@ public abstract class HexGrid<T extends HexGrid.HexGridCell> implements Iterable
 	public T getByIndex(int i) {
 		return array.get(i);
 	}
+	
+	public T getNeighbor(int x, int y, HexDirection d) {
+		return get(x + d.delta_x, (HexGridPosition.getRenderY(x, y) + d.delta_y) / 2);
+	}
+
 
 	public T get(HexGridPosition pos) {
 		return get(pos.x, pos.y);
@@ -88,11 +94,10 @@ public abstract class HexGrid<T extends HexGrid.HexGridCell> implements Iterable
 	}
 	
 	public static class HexGridPosition {
-		private static final HashMap<Integer, HexGridPosition> indexMap = new HashMap<Integer, HexGrid.HexGridPosition>();
 		public final int x;
 		public final int y;
 		public final int i;
-		private HexGridPosition(int x, int y, int i) {
+		protected HexGridPosition(int x, int y, int i) {
 			this.x = x;
 			this.y = y;
 			this.i = i;
@@ -104,6 +109,10 @@ public abstract class HexGrid<T extends HexGrid.HexGridCell> implements Iterable
 		}
 		
 		public int getRenderY() {
+			return 2*y + (x % 2);
+		}
+
+		public static int getRenderY(int x, int y) {
 			return 2*y + (x % 2);
 		}
 //		public static HexGridPosition logical(int x, int y) {
@@ -143,6 +152,7 @@ public abstract class HexGrid<T extends HexGrid.HexGridCell> implements Iterable
 		public static final HexDirection[] all = new HexDirection[] {
 			two, four, six, eight, ten, twelve
 		};
+		
 		public HexDirection(int delta_x, int delta_y) {
 			this.delta_x = delta_x;
 			this.delta_y = delta_y;

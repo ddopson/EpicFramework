@@ -60,4 +60,7 @@ public class EpicSoundManagerImplementation {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public static void preload(EpicSound musicToPreload, EpicSound[] soundsToPreload) {
+	}
 }

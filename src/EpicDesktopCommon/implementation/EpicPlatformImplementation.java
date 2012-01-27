@@ -2,6 +2,8 @@ package com.epic.framework.implementation;
 
 import javax.swing.SwingUtilities;
 
+import com.epic.framework.common.util.EpicLog;
+
 public class EpicPlatformImplementation {
 	public static void doToastNotification(String text, int duration) {
 	}
@@ -30,6 +32,24 @@ public class EpicPlatformImplementation {
 	}
 
 	public static void dismissNotifications() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void deepLinkToMarket(String string) {
+		EpicLog.w("NOT_IMPLEMENTED");
+	}
+
+	public static String getUniqueDeviceId() {
+		EpicLog.w("NOT_IMPLEMENTED");
+		return "device_id";
+	}
+
+	public static void setAppBadge(int newCount) {
+		EpicLog.w("NOT_IMPLEMENTED");
+	}
+
+	public static void requestFacebookFriends(String string) {
 		// TODO Auto-generated method stub
 		
 	}

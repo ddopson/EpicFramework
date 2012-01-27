@@ -9,6 +9,7 @@ import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandl
 
 public class EpicSocialImplementation {
 	private static String hostname = null;
+	public static Object friendList;
 	public static String getHostname() {
 		if(hostname == null) {
 			try {
@@ -85,6 +86,22 @@ public class EpicSocialImplementation {
 		
 	}
 	public static void promptForTokens() {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void searchFriendList(Object friendList2) {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void promptFacebookLogin() {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void showAchievements() {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void viewChallenges(int defaultListLength, String response) {
 		// TODO Auto-generated method stub
 		
 	}

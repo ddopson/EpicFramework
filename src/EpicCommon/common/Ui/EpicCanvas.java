@@ -4,7 +4,6 @@ import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.util.*;
 import com.epic.framework.implementation.EpicCanvasImplementation;
 import com.epic.framework.implementation.EpicFontImplementation;
-import com.epic.framework.implementation.EpicFontImplementationNative;
 import com.epic.framework.implementation.EpicPlatformConfig;
 
 public class EpicCanvas {
@@ -204,11 +203,11 @@ public class EpicCanvas {
 			text_left = x;
 			break;
 		case EpicFont.HALIGN_RIGHT:
-			advance = EpicFontImplementation.measureAdvance(graphicsObject, font, text);
+			advance = EpicFontImplementation.measureAdvance(font, text);
 			text_left = x + width - advance;
 			break;
 		case EpicFont.HALIGN_CENTER:
-			advance = EpicFontImplementation.measureAdvance(graphicsObject, font, text);
+			advance = EpicFontImplementation.measureAdvance(font, text);
 			text_left = x + (width - advance) / 2;
 			break;
 		default:
@@ -279,7 +278,7 @@ public class EpicCanvas {
 			while(p < length && buffer[p] != ' ' && buffer[p] != '\n') {
 				p++;
 			}
-			advance = EpicFontImplementation.measureAdvance(graphicsObject, font, buffer, lineStart, p - lineStart);
+			advance = EpicFontImplementation.measureAdvance(font, buffer, lineStart, p - lineStart);
 			if(advance > width || p == length || buffer[p] == '\n') {
 				if(advance > width) {
 					p = plast;

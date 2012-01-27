@@ -154,4 +154,20 @@ public class EpicSocial {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static void promptFacebookLogin() {
+		EpicSocialImplementation.promptFacebookLogin();	
+	}
+
+	public static void showAchievements() {
+		EpicSocialImplementation.showAchievements();
+	}
+
+	public static void viewChallenges(int defaultListLength, String response) {
+		EpicSocialImplementation.viewChallenges(defaultListLength, response);
+	}
+
+	public static void viewChallenges(int defaultListLength) {
+		EpicSocialImplementation.viewChallenges(defaultListLength);
+	}
 }

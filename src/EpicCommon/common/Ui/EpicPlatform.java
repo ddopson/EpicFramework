@@ -611,4 +611,8 @@ public class EpicPlatform {
 	public static void setAppBadge(int newCount) {
 		EpicPlatformImplementation.setAppBadge(newCount);
 	}
+
+	public static void requestFacebookFriends(String string) {
+		EpicPlatformImplementation.requestFacebookFriends(string);
+	}
 }

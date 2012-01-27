@@ -36,14 +36,6 @@ public class EpicBitmapImplementation {
 		epicBitmap.setPlatformObject(nativeImage);
 	}
 	
-	public static Object getImageBuffer(int width, int height) {
-		return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-	}
-	public static Object getBufferCanvasObject(Object bufferObject) {
-		BufferedImage bi = (BufferedImage)bufferObject;
-		return bi.getGraphics();
-	}
-
 	public static Object resize(Object platformObject, int neededInternalWidth, int neededInternalHeight) {
 		BufferedImage original = (BufferedImage)platformObject;
 		BufferedImage scaled = new BufferedImage(neededInternalWidth, neededInternalHeight, BufferedImage.TYPE_INT_ARGB);

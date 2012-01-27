@@ -41,11 +41,7 @@ public class EpicFontImplementation {
 		return EpicFontImplementationNative.measureAdvance(font.fontObject, text);
 	}
 
-	public static int measureAdvance(Object graphicsObject, EpicFont font, String text) {
-		return EpicFontImplementationNative.measureAdvance(font.fontObject, text);
-	}
-
-	public static int measureAdvance(Object graphicsObject, EpicFont font, char[] chars, int offset, int length) {
+	public static int measureAdvance(EpicFont font, char[] chars, int offset, int length) {
 		throw EpicFail.not_supported();
 	}
 }

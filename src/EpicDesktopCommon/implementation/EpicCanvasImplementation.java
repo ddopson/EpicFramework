@@ -18,12 +18,13 @@ import java.text.AttributedString;
 
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;
+import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.resources.EpicFiles;
 
 
 public class EpicCanvasImplementation {
-	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int left, int top, int alpha, int sx, int sy, int sw, int sh) {
+	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int left, int top, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
 		Graphics2D graphics = (Graphics2D)graphicsObject;
 		Image bitmap = (Image)bitmapObject;
 		Composite originalAlpha = (alpha > 0) ? setAlpha(graphics, alpha) : null;
@@ -117,5 +118,14 @@ public class EpicCanvasImplementation {
 		graphics.setColor(getColor(color));
 		graphics.setStroke(new BasicStroke(strokeWidth));
 		graphics.drawLine(x, y, x2, y2);
+	}
+
+	public static void init(Object graphicsObject) {
+		// optional
+	}
+
+
+	public static void drawTextBox(Object graphicsObject, String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
+		EpicFail.not_supported();
 	}
 }
