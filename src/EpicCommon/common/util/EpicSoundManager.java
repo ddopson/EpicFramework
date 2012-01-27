@@ -34,7 +34,7 @@ public class EpicSoundManager {
 	
 	public static void resumeMusic() {
 		if(PlayerState.soundsEnabled()) {
-			EpicSoundManagerImplementation.resumeMusic();
+			EpicSoundManagerImplementation.playMusic(EpicProjectConfig.getBackgroundMusic());
 		}
 	}
 

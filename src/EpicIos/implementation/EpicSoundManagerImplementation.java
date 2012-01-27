@@ -25,6 +25,7 @@ public class EpicSoundManagerImplementation {
 	}
 
 	public static void playMusic(EpicSound sound) {
+		EpicLog.i("Request to play music " + sound.name);
 		if(currentMusic != sound) {
 			currentMusic = sound;
 			currentMusicPlayer = getPlayerForSound(sound, true);
@@ -54,9 +55,12 @@ public class EpicSoundManagerImplementation {
 		}
 	}
 
-	public static void resumeMusic() {
+	private static void resumeMusic() {
 		if(currentMusicPlayer != null) {
 			currentMusicPlayer.play();
+			EpicLog.v("Resuming music.");
+		} else {
+			EpicLog.w("Music player is null, so not playing.");
 		}
 	}
 	
