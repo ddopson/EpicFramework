@@ -23,20 +23,27 @@ public class EpicHttpImplementation {
 	private static final int BUF_SIZE = 64000;
 
 	public static EpicHttpResponse get(EpicHttpRequest epicHttpRequest) {
+		HttpURLConnection c = null;
+		URL url = null;
 		try {
 			// TODO: useful to debug Word Farm #38
 			// Thread.sleep(2000);
-			URL url = new URL(epicHttpRequest.url);
-			HttpURLConnection c = (HttpURLConnection) url.openConnection();		
+			url = new URL(epicHttpRequest.url);
+			c = (HttpURLConnection) url.openConnection();		
 			if(epicHttpRequest.body != null) {
 				c.setDoOutput(true);
 				c.getOutputStream().write(epicHttpRequest.body.getBytes());
 			}
-			
+		} catch(Exception e) {
+			EpicLog.e("Problem opening connection: " + e.toString());
+		}
+		
+		String body = "";
+
+		try {
 			InputStream in = c.getInputStream();
 			EpicLog.i("Bytes available in stream: " + in.available());
 			
-			String body = "";
 			if(in.available() > 0) {
 				byte[] buf = new byte[BUF_SIZE];
 				int read = in.read(buf);
@@ -44,7 +51,11 @@ public class EpicHttpImplementation {
 				
 				body = new String(buf).trim();
 			}
+		} catch(Exception e) {
+			EpicLog.e("Problem reading response body: " + e.toString());
+		}
 			
+		try {
 			HashMap<String, String> headers = new HashMap<String, String>(); 
 			
 			for(String s : knownHeaders) {
@@ -60,7 +71,7 @@ public class EpicHttpImplementation {
 			EpicHttpResponse r = new EpicHttpResponse(200, body, headers);
 			return r;
 		} catch (Exception e) {
-			EpicLog.e("Problem with connection: " + e.toString());
+			EpicLog.e("Problem with reading response: " + e.toString());
 		}
 		
 		throw new EpicFrameworkException("Failed to complete connection.");

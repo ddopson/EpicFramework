@@ -32,14 +32,14 @@ class ChallengeDataSource extends UITableViewDataSource {
 		int textWidth = (int) table.getFrame().size.width - imageDims - (padding * 3);
 		UITableViewCell cell = new UITableViewCell();
 		
-		if(complete[idx.getRow()]) cell.getContentView().setBackgroundColor(completedBgColor);
+		// if(complete[idx.getRow()]) cell.getContentView().setBackgroundColor(completedBgColor);
 		
 		UILabel label = new UILabel(new CGRect(imageDims + (2*padding), padding, textWidth, (int) table.getRowHeight() / 3));
 		label.setText(titles[idx.getRow()]);
 //		UILabel subtitle = cell.getDetailTextLabel();
 //		subtitle.setText(subtitles[idx.getRow()]);
 		
-		if(complete[idx.getRow()]) label.setBackgroundColor(UIColor.clearColor);
+		// if(complete[idx.getRow()]) label.setBackgroundColor(UIColor.clearColor);
 		cell.addSubview(label);
 		
 		UIImageView img = cell.getImageView();
@@ -50,7 +50,7 @@ class ChallengeDataSource extends UITableViewDataSource {
 		subtitle.setText(subtitles[idx.getRow()]);
 		subtitle.setTextColor(UIColor.lightGrayColor);
 		subtitle.setNumberOfLines(2);
-		if(complete[idx.getRow()]) subtitle.setBackgroundColor(UIColor.clearColor);
+		// if(complete[idx.getRow()]) subtitle.setBackgroundColor(UIColor.clearColor);
 		cell.addSubview(subtitle);
 		
 		return cell;
