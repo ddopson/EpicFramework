@@ -19,15 +19,15 @@
   CGRect rect = CGRectMake(left, top, size.width, size.height);
   bool opaque = (alpha == 255 && CGImageGetAlphaInfo(cgimage) != kCGImageAlphaPremultipliedFirst);
   CGContextSetBlendMode(context, opaque ? kCGBlendModeCopy : kCGBlendModeNormal);
-  float falpha = alpha / 255.0f;
-  CGContextSetAlpha(context, falpha);
   //NSLog(@"Drawing image to (%f, %f) - %fx%f, or is it %dx%d", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, CGImageGetWidth(cgimage), CGImageGetHeight(cgimage));
-  CGContextDrawImage(context, rect, cgimage);
-
-  //float falpha = alpha / 255.0f;
- // UIImage* uii = (UIImage*) image;
-  //CGPoint point = CGPointMake(left, top);
-  //[uii drawAtPoint: point blendMode: kCGBlendModeNormal alpha: falpha];
+  if(alpha == 255) {
+  	CGContextDrawImage(context, rect, cgimage);
+  } else {
+  	float falpha = alpha / 255.0f;
+  	CGContextSetAlpha(context, falpha);
+  	CGContextDrawImage(context, rect, cgimage);
+  	CGContextSetAlpha(context, 1.0f);
+  }
 }
 
 + (void) inspectImage___org_xmlvm_iphone_UIImage
