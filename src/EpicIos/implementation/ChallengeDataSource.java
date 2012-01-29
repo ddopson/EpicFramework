@@ -1,5 +1,6 @@
 package com.epic.framework.implementation;
 
+import org.xmlvm.iphone.CGAffineTransform;
 import org.xmlvm.iphone.CGRect;
 import org.xmlvm.iphone.NSIndexPath;
 import org.xmlvm.iphone.UIColor;
@@ -43,6 +44,7 @@ class ChallengeDataSource extends UITableViewDataSource {
 		cell.addSubview(label);
 		
 		UIImageView img = cell.getImageView();
+		img.setTransform(CGAffineTransform.makeScale(1, -1));
 		img.setLocation(padding, padding);
 		img.setImage((UIImage) images[idx.getRow()].getPlatformObject(imageDims, imageDims));
 		

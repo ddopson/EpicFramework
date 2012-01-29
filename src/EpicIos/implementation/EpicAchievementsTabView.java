@@ -12,6 +12,7 @@ import org.xmlvm.iphone.UITableViewStyle;
 import org.xmlvm.iphone.UIViewController;
 
 import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicImageBuffer;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.Challenge;
 import com.realcasualgames.words.PlayerState;
@@ -22,7 +23,6 @@ public class EpicAchievementsTabView extends UITabBarController {
 	
 	ArrayList<UIViewController> list = new ArrayList<UIViewController>();
 	private int iconSize = 30;
-	
 	public EpicAchievementsTabView() {
 		// Get achievements, and split into 2 lists
 		ArrayList<Challenge> completedChallenges = new ArrayList<Challenge>();
@@ -53,7 +53,7 @@ public class EpicAchievementsTabView extends UITabBarController {
         		});
         
         completed.setTitle("Completed");
-        completed.getTabBarItem().setImage((UIImage) EpicImages.game_tomato_gray.getPlatformObject(iconSize , iconSize));
+        completed.getTabBarItem().setImage((UIImage) EpicImages.game_tomato_red.getPlatformObject(iconSize , iconSize));
                 
         incomplete = new UITableViewController(UITableViewStyle.Plain);
         UITableView table2 = incomplete.getTableView();
@@ -69,7 +69,6 @@ public class EpicAchievementsTabView extends UITabBarController {
         
         incomplete.setTitle("Incomplete");
         incomplete.getTabBarItem().setImage((UIImage) EpicImages.game_tomato_gray.getPlatformObject(iconSize , iconSize));
-        
         list.add(incomplete);
         list.add(completed);
 
