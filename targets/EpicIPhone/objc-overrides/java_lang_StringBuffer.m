@@ -39,7 +39,10 @@
 {
 	// TODO Implement this
 }
+- (void) __init_java_lang_StringBuffer___int: (int) length
+{
 
+}
 - (void) __init_java_lang_StringBuffer__
 {
 	[self setString: @""];
