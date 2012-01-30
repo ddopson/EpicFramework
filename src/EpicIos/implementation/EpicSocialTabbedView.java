@@ -188,8 +188,12 @@ public class EpicSocialTabbedView extends UITabBarController {
         				// Should go to issue challenge screen
         				if(indexPath.getRow() == 0) {
         					selectWagerAndSendChallengeTo(null, "Random Opponent");
+        				} else if(indexPath.getRow() == 1 && PlayerState.getState().fbid == null) {
+        					Main.navc.popToRootViewControllerAnimated(true);
+        					EpicSocialImplementation.promptFacebookLogin(new ScreenMainMenu());
         				} else {
-        					selectWagerAndSendChallengeTo(customer_ids[indexPath.getRow()-1], emails[indexPath.getRow()-1]);
+        					int offset = PlayerState.getState().fbid == null ? 2 : 1;
+        					selectWagerAndSendChallengeTo(customer_ids[indexPath.getRow()-offset], emails[indexPath.getRow()]);
         				}
         			}
         		});
@@ -287,31 +291,42 @@ public class EpicSocialTabbedView extends UITabBarController {
 	
 	private void processFriendList(String responseString) {
 		EpicLog.i("Response: " + responseString);
+		int offset = PlayerState.getState().fbid != null ? 1 : 2;
+
 		if(responseString.length() > 0) {
 			final String[] parts = responseString.split(";");
 			EpicLog.i("Found " + parts.length + " friends");
 //			// TODO: hack since split returns 1 extra usually
-			emails = new String[parts.length];
+			emails = new String[parts.length + (offset-2)];
 			customer_ids = new String[parts.length];
 //			
-			for(int i = 0; i < parts.length - 1; ++i) {
+			
+			for(int i = 0; i < parts.length - offset; ++i) {
 				String[] ip = parts[i].split(":");
 				if(ip.length > 1) {
 					if(ip[1].contains("@")) {
-						emails[i+1] = ip[1].split("@")[0];
+						emails[i+offset] = ip[1].split("@")[0];
 					} else {
-						emails[i+1] = ip[1];
+						emails[i+offset] = ip[1];
 					}
 				} else {
-					emails[i+1] = "Anonymous";
+					emails[i+offset] = "Anonymous";
 				}
 				
 				customer_ids[i] = ip[0];
 			}
 //			
 			emails[0] = "< Random Opponent >";
+			if(offset == 2) {
+				emails[1] = "< Find Facebook Friends >";
+			}
+			
 		} else {
-			emails = new String[] { "< Random Opponent >" };
+			if(offset == 2) {
+				emails = new String[] { "< Random Opponent >", "< Find Facebook Friends >" };	
+			} else {
+				emails = new String[] { "< Random Opponent >" };
+			}
 		}
 //		
 		EpicLog.v("Refreshing Friends List...");

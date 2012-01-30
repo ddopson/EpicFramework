@@ -7,6 +7,7 @@ import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
@@ -51,8 +52,8 @@ public class EpicSocialImplementation {
 //		return "testing@wordfarmgame.com";
 //	}
 	
-	public static void promptFacebookLogin() {
-		EpicPlatform.changeScreen(new ScreenMainMenu());
+	public static void promptFacebookLogin(EpicScreen screen) {
+		EpicPlatform.changeScreen(screen);
 		EpicPlatform.doToastNotification(new EpicNotification("Connecting to Facebook", new String[] { "Please wait while we complete your login." }, EpicImages.game_word_puzzle_achievementmedal_publicchallenge, 2));
 		EpicPlatformImplementationNative.loginToFacebook();
 	}

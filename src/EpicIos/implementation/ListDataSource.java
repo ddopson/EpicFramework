@@ -18,7 +18,12 @@ class ListDataSource extends UITableViewDataSource {
 	public UITableViewCell cellForRowAtIndexPath(UITableView table, NSIndexPath idx) {
 		UITableViewCell cell = new UITableViewCell();
 		UILabel label = cell.getTextLabel();
-		label.setText(items[getAdjustedSection(idx.getSection())][idx.getRow()]);
+		String text = items[getAdjustedSection(idx.getSection())][idx.getRow()];
+		if(text == null) {
+			text = "ERROR";
+		}
+		
+		label.setText(text);
 		return cell;
 	}
 	
