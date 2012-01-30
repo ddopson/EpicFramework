@@ -3,7 +3,6 @@ package com.epic.framework.implementation;
 import java.util.ArrayList;
 
 import org.xmlvm.iphone.NSIndexPath;
-import org.xmlvm.iphone.UIAlertView;
 import org.xmlvm.iphone.UIImage;
 import org.xmlvm.iphone.UITabBarController;
 import org.xmlvm.iphone.UITableView;
@@ -18,22 +17,16 @@ import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicDialogBuilder;
 import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.epic.framework.common.Ui.EpicTimer;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
-import com.epic.framework.common.util.exceptions.EpicRuntimeException;
-import com.epic.framework.common.util.exceptions.EpicInvalidArgumentException;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.OnlineChallenge;
 import com.realcasualgames.words.PlayerState;
 import com.realcasualgames.words.ScreenBuyTokens;
-import com.realcasualgames.words.ScreenDailySpecials;
 import com.realcasualgames.words.ScreenGame;
-import com.realcasualgames.words.ScreenGameLoading;
 import com.realcasualgames.words.ScreenMainMenu;
-import com.realcasualgames.words.ScreenNursery;
 import com.realcasualgames.words.ScreenOnlineChallengeDetails;
 import com.realcasualgames.words.WordsHttp;
 
@@ -480,7 +473,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 						if(PlayerState.getState().currentChallenge != null) {
 							EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
 							Main.navc.popToRootViewControllerAnimated(true);
-							EpicPlatform.changeScreen(new ScreenNursery());
+							ScreenGame.startGame();
 							EpicPlatform.doToastNotification(n);
 							return;
 						}
@@ -491,7 +484,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 									PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
 										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
 										Main.navc.popToRootViewControllerAnimated(true);
-										EpicPlatform.changeScreen(new ScreenNursery());
+										ScreenGame.startGame();
 									}
 								} else {
 									EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
