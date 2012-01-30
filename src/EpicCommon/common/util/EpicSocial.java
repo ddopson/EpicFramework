@@ -30,7 +30,7 @@ public class EpicSocial {
 			EpicLog.i("PLAYER IDENTITY REQUESTED");
 			EpicSocialImplementation.beginLogin(new EpicSocialSignInCompletionHandler() {
 				public void onSignedIn(String identity) {
-					onSignInComplete(identity, null);
+					onSignInComplete(identity, null, null);
 					
 					if(doAfter != null) {
 						doAfter.onSignedIn(identity);
@@ -44,7 +44,7 @@ public class EpicSocial {
 		}
 	}
 	
-	public static void onSignInComplete(String identity, String fbid) {
+	public static void onSignInComplete(String identity, String displayName, String fbid) {
 		EpicLog.i("PLAYER IDENTITY CHOSEN: '" + identity + "'");
 		String un = "";
 		if(identity.contains("@")) {
@@ -56,7 +56,7 @@ public class EpicSocial {
 		EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now playing as " + un }, EpicImages.icon);
 		// EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
 		EpicPlatform.doToastNotification(n);
-		PlayerState.setIdentity(identity);
+		PlayerState.setIdentityWithFacebookId(identity, displayName, fbid);
 		if(fbid != null) {
 			PlayerState.setFBID(fbid);
 			EpicLog.v("Set FBID: " + fbid);

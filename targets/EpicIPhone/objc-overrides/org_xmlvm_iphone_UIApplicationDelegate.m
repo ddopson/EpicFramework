@@ -195,6 +195,7 @@
     // This callback can be a result of getting the user's basic
     // information or getting the user's permissions.
     NSString *username = [result objectForKey:@"username"];
+    NSString *displayName = [result objectForKey:@"name"];
     if (username) {
         // If basic information callback, set the UI objects to
         // display this.
@@ -203,7 +204,7 @@
         NSString *fbid = [result objectForKey:@"id"];
         if(fbid) {
             NSLog(@"Found ID: %@", fbid);
-            [com_epic_framework_implementation_EpicSocialImplementation nativecbFacebookLoginFinishedWithId___java_lang_String: [NSString stringWithFormat:@"%@#%@", username, fbid]];
+            [com_epic_framework_implementation_EpicSocialImplementation nativecbFacebookLoginFinishedWithId___java_lang_String: [NSString stringWithFormat:@"%@#%@#%@", username, fbid, [displayName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
         } else {
             NSLog(@"No ID found");
         }

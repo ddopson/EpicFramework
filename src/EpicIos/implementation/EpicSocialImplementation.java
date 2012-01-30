@@ -138,23 +138,23 @@ public class EpicSocialImplementation {
 		}
 		
 		final String[] parts = username.split("#");
-		EpicLog.i("FB callback returned username to java: " + parts[0] + " and id: " + parts[1]);
+		EpicLog.i("FB callback returned username to java: " + parts[0] + " and id: " + parts[1] + " and display name: " + parts[2]);
 		EpicPlatform.changeScreen(new ScreenMainMenu());
 		
 		WordsHttp.checkForFacebookAccount(parts[1], new EpicHttpResponseHandler() {
 			public void handleResponse(EpicHttpResponse response) {
 				EpicLog.i("Got response from FB ID check");
 				if(response.body != null && response.body.length() > 0) {
-					EpicSocial.onSignInComplete(response.body, parts[1]);
+					EpicSocial.onSignInComplete(response.body, parts[2], parts[1]);
 					EpicLog.i("Found existing account... signing in.");
 				} else {
-					EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[1]);
+					EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", null, parts[1]);
 					EpicLog.i("No account found, creating new.");
 				}
 			}
 			
 			public void handleFailure(Exception e) {
-				EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[1]);
+				EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", null, parts[1]);
 				EpicLog.e("Error getting accounts for FBID: " + e.toString());
 			}
 		});
