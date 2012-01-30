@@ -148,13 +148,13 @@ public class EpicSocialImplementation {
 					EpicSocial.onSignInComplete(response.body, parts[2], parts[1]);
 					EpicLog.i("Found existing account... signing in.");
 				} else {
-					EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", null, parts[1]);
+					EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[2], parts[1]);
 					EpicLog.i("No account found, creating new.");
 				}
 			}
 			
 			public void handleFailure(Exception e) {
-				EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", null, parts[1]);
+				EpicSocial.onSignInComplete(parts[0] + "@wordfarmgame.com", parts[2], parts[1]);
 				EpicLog.e("Error getting accounts for FBID: " + e.toString());
 			}
 		});
