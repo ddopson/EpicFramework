@@ -298,7 +298,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 			EpicLog.i("Found " + parts.length + " friends");
 //			// TODO: hack since split returns 1 extra usually
 			emails = new String[parts.length + (offset-2)];
-			customer_ids = new String[parts.length];
+			customer_ids = new String[parts.length-1];
 //			
 			
 			for(int i = 0; i < parts.length - offset; ++i) {
