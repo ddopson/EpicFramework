@@ -199,7 +199,7 @@ public class EpicSocialImplementation {
 	}
 	
 	private static void nativeCbFacebookPostComplete() {
-		PlayerState.updateLocalTokens(500);
+		PlayerState.updateLocalTokens(5);
 		PlayerState.onChallengeComplete(30);
 	}
 
