@@ -149,7 +149,7 @@ public class EpicSocialTabbedView extends UITabBarController {
         				ListDataSource src = (ListDataSource) tableview.getDataSource();
         				EpicLog.i("Selected: " + indexPath.getSection() + ", " + indexPath.getRow());
         				// Should go to issue challenge screen
-        				selectWagerAndSendChallengeTo(opponentIds[indexPath.getRow()], toDisplay[indexPath.getRow()]);
+        				sendChallengeTo(opponentIds[indexPath.getRow()], toDisplay[indexPath.getRow()]);
         			}
         		});
         
@@ -187,13 +187,13 @@ public class EpicSocialTabbedView extends UITabBarController {
         				EpicLog.i("Selected: " + indexPath.getSection() + ", " + indexPath.getRow());
         				// Should go to issue challenge screen
         				if(indexPath.getRow() == 0) {
-        					selectWagerAndSendChallengeTo(null, "Random Opponent");
+        					sendChallengeTo(null, "Random Opponent");
         				} else if(indexPath.getRow() == 1 && PlayerState.getState().fbid == null) {
         					Main.navc.popToRootViewControllerAnimated(true);
         					EpicSocialImplementation.promptFacebookLogin(new ScreenMainMenu());
         				} else {
         					int offset = PlayerState.getState().fbid == null ? 2 : 1;
-        					selectWagerAndSendChallengeTo(customer_ids[indexPath.getRow()-offset], emails[indexPath.getRow()]);
+        					sendChallengeTo(customer_ids[indexPath.getRow()-offset], emails[indexPath.getRow()]);
         				}
         			}
         		});
@@ -445,114 +445,187 @@ public class EpicSocialTabbedView extends UITabBarController {
 	        }
 		}
 	}
-	
-	public void selectWagerAndSendChallengeTo(final String opponent_id, final String opponent_name) {
-		options = opponent_id == null ? new int[] { 100, 1000 } : new int[] { 100, 500, 1000, 5000, 10000 };
-		String[] string_options = opponent_id == null ? new String[] { "100 tokens", "1,000 tokens" } : new String[] { "100 tokens", "500 tokens", "1,000 tokens", "5,000 tokens", "10,000 tokens" };
-	
-		UITableViewController wagerList = new UITableViewController(UITableViewStyle.Grouped) {
-			public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
-       			return false;
-        	}
-		};
-		
-		wagerList.setTitle("Select a Wager for " + opponent_name);
-		
-		ListDataSource src = new ListDataSource(new String[][] { string_options }, new String[] { "Select a Token Wager" } );
-		wagerList.getTableView().setDataSource(src);
-		Main.navc.pushViewController(wagerList, true);
-		
-		wagerList.getTableView().setDelegate(new UITableViewDelegate() {
-			public void didSelectRowAtIndexPath(UITableView tableview, NSIndexPath indexPath) {
-				final int wager = options[indexPath.getRow()];
-				
-				if(PlayerState.getTokens() < wager) {
-					// prompt for tokens
-					EpicDialogBuilder b = new EpicDialogBuilder();
-					b.setMessage("You do not have enough tokens for this wager. Please select another option or get more tokens.").
-					setPositiveButton("Get More Tokens", new EpicClickListener() {
-						public void onClick() {
-							Main.navc.popToRootViewControllerAnimated(true);
-							EpicPlatform.changeScreen(new ScreenBuyTokens(new ScreenMainMenu()));
-						}
-					}).
-					setNegativeButton("OK", new EpicClickListener() {
-						public void onClick() {
-						}
-					}).show();
-					return;
-				} else {
 
-					if(opponent_id == null) {
-						
-						if(PlayerState.getState().currentChallenge != null) {
-							EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
+//
+//	public void selectWagerAndSendChallengeTo(final String opponent_id, final String opponent_name) {
+//		options = opponent_id == null ? new int[] { 100, 1000 } : new int[] { 100, 500, 1000, 5000, 10000 };
+//		String[] string_options = opponent_id == null ? new String[] { "100 tokens", "1,000 tokens" } : new String[] { "100 tokens", "500 tokens", "1,000 tokens", "5,000 tokens", "10,000 tokens" };
+//	
+//		UITableViewController wagerList = new UITableViewController(UITableViewStyle.Grouped) {
+//			public boolean shouldAutorotateToInterfaceOrientation(int uiInterfaceOrientation) {
+//       			return false;
+//        	}
+//		};
+//		
+//		wagerList.setTitle("Select a Wager for " + opponent_name);
+//		
+//		ListDataSource src = new ListDataSource(new String[][] { string_options }, new String[] { "Select a Token Wager" } );
+//		wagerList.getTableView().setDataSource(src);
+//		Main.navc.pushViewController(wagerList, true);
+//		
+//		wagerList.getTableView().setDelegate(new UITableViewDelegate() {
+//			public void didSelectRowAtIndexPath(UITableView tableview, NSIndexPath indexPath) {
+//				final int wager = options[indexPath.getRow()];
+//				
+//				if(PlayerState.getTokens() < wager) {
+//					// prompt for tokens
+//					EpicDialogBuilder b = new EpicDialogBuilder();
+//					b.setMessage("You do not have enough tokens for this wager. Please select another option or get more tokens.").
+//					setPositiveButton("Get More Tokens", new EpicClickListener() {
+//						public void onClick() {
+//							Main.navc.popToRootViewControllerAnimated(true);
+//							EpicPlatform.changeScreen(new ScreenBuyTokens(new ScreenMainMenu()));
+//						}
+//					}).
+//					setNegativeButton("OK", new EpicClickListener() {
+//						public void onClick() {
+//						}
+//					}).show();
+//					return;
+//				} else {
+//
+//					if(opponent_id == null) {
+//						
+//						if(PlayerState.getState().currentChallenge != null) {
+//							EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
+//							Main.navc.popToRootViewControllerAnimated(true);
+//							ScreenGame.startGame();
+//							EpicPlatform.doToastNotification(n);
+//							return;
+//						}
+//	
+//						WordsHttp.sendRandomChallenge(wager, new EpicHttpResponseHandler() {
+//							public void handleResponse(EpicHttpResponse response) {
+//								if(response.responseCode == 200) {
+//									PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
+//										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
+//										Main.navc.popToRootViewControllerAnimated(true);
+//										ScreenGame.startGame();
+//									}
+//								} else {
+//									EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
+//								}
+//							}
+//							
+//							public void handleFailure(Exception e) {
+//								EpicLog.e(e.toString());
+//								Main.navc.popToRootViewControllerAnimated(true);
+//								EpicPlatform.doToastNotification(new EpicNotification("Problem sending challenge request", new String[] { "Please try again later or contact support." }));
+//							}
+//						});
+//						
+//						PlayerState.onChallengeComplete(65);
+//						
+//					} else {
+//						if(PlayerState.getState().currentChallenge != null) {
+//							EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
+//							Main.navc.popToRootViewControllerAnimated(true);
+//							ScreenGame.startGame();
+//							EpicPlatform.doToastNotification(n);
+//							return;
+//						}
+//	
+//						WordsHttp.sendChallenge(opponent_id, wager, new EpicHttpResponseHandler() {
+//							public void handleResponse(EpicHttpResponse response) {
+//								if(response.responseCode == 200) {
+//									PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);
+//									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
+//										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
+//										Main.navc.popToRootViewControllerAnimated(true);
+//										ScreenGame.startGame();
+//									}
+//								} else if(response.responseCode == 403) {
+//									EpicNotification n = new EpicNotification("Your challenge was declined.", new String[] { "Your opponent is not accepting challenges at this time." }, EpicImages.challenge_icon, 4);
+//									Main.navc.popToRootViewControllerAnimated(true);
+//									EpicPlatform.doToastNotification(n);
+//								} else {
+//									EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
+//									handleFailure(new EpicFrameworkException("Got response: " + response.body));
+//								}
+//							}
+//							
+//							public void handleFailure(Exception e) {
+//								EpicLog.e(e.toString());
+//								Main.navc.popToRootViewControllerAnimated(true);
+//								EpicPlatform.doToastNotification(new EpicNotification("Problem sending challenge request", new String[] { "Please try again later or contact support." }));
+//							}
+//						});
+//					}
+//				}
+//			}
+//		});		
+//	}
+//	
+	
+	public void sendChallengeTo(final String opponent_id, final String opponent_name) {
+		if(opponent_id == null) {
+			
+			if(PlayerState.getState().currentChallenge != null) {
+				EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
+				Main.navc.popToRootViewControllerAnimated(true);
+				ScreenGame.startGame();
+				EpicPlatform.doToastNotification(n);
+				return;
+			}
+	
+			WordsHttp.sendRandomChallenge(0, new EpicHttpResponseHandler() {
+				public void handleResponse(EpicHttpResponse response) {
+					if(response.responseCode == 200) {
+						PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);									
+						if(PlayerState.getState().setCurrentChallengeId(response.body, 0)) {
+							EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
 							Main.navc.popToRootViewControllerAnimated(true);
 							ScreenGame.startGame();
-							EpicPlatform.doToastNotification(n);
-							return;
 						}
-	
-						WordsHttp.sendRandomChallenge(wager, new EpicHttpResponseHandler() {
-							public void handleResponse(EpicHttpResponse response) {
-								if(response.responseCode == 200) {
-									PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
-										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
-										Main.navc.popToRootViewControllerAnimated(true);
-										ScreenGame.startGame();
-									}
-								} else {
-									EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
-								}
-							}
-							
-							public void handleFailure(Exception e) {
-								EpicLog.e(e.toString());
-								Main.navc.popToRootViewControllerAnimated(true);
-								EpicPlatform.doToastNotification(new EpicNotification("Problem sending challenge request", new String[] { "Please try again later or contact support." }));
-							}
-						});
-						
-						PlayerState.onChallengeComplete(65);
-						
 					} else {
-						if(PlayerState.getState().currentChallenge != null) {
-							EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
-							Main.navc.popToRootViewControllerAnimated(true);
-							ScreenGame.startGame();
-							EpicPlatform.doToastNotification(n);
-							return;
-						}
-	
-						WordsHttp.sendChallenge(opponent_id, wager, new EpicHttpResponseHandler() {
-							public void handleResponse(EpicHttpResponse response) {
-								if(response.responseCode == 200) {
-									PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);
-									if(PlayerState.getState().setCurrentChallengeId(response.body, wager)) {
-										EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
-										Main.navc.popToRootViewControllerAnimated(true);
-										ScreenGame.startGame();
-									}
-								} else if(response.responseCode == 403) {
-									EpicNotification n = new EpicNotification("Your challenge was declined.", new String[] { "Your opponent is not accepting challenges at this time." }, EpicImages.challenge_icon, 4);
-									Main.navc.popToRootViewControllerAnimated(true);
-									EpicPlatform.doToastNotification(n);
-								} else {
-									EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
-									handleFailure(new EpicFrameworkException("Got response: " + response.body));
-								}
-							}
-							
-							public void handleFailure(Exception e) {
-								EpicLog.e(e.toString());
-								Main.navc.popToRootViewControllerAnimated(true);
-								EpicPlatform.doToastNotification(new EpicNotification("Problem sending challenge request", new String[] { "Please try again later or contact support." }));
-							}
-						});
+						EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
 					}
 				}
+				
+				public void handleFailure(Exception e) {
+					EpicLog.e(e.toString());
+					Main.navc.popToRootViewControllerAnimated(true);
+					EpicPlatform.doToastNotification(new EpicNotification("Problem sending challenge request", new String[] { "Please try again later or contact support." }));
+				}
+			});
+			
+			PlayerState.onChallengeComplete(65);
+						
+		} else {
+			if(PlayerState.getState().currentChallenge != null) {
+				EpicNotification n = new EpicNotification("You are already in a challenge!", new String[] { "Click here to play your challenge."}, EpicImages.challenge_icon, 6);
+				Main.navc.popToRootViewControllerAnimated(true);
+				ScreenGame.startGame();
+				EpicPlatform.doToastNotification(n);
+				return;
 			}
-		});		
+
+			WordsHttp.sendChallenge(opponent_id, 0, new EpicHttpResponseHandler() {
+				public void handleResponse(EpicHttpResponse response) {
+					if(response.responseCode == 200) {
+						PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);
+						if(PlayerState.getState().setCurrentChallengeId(response.body, 0)) {
+							EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
+							Main.navc.popToRootViewControllerAnimated(true);
+							ScreenGame.startGame();
+						}
+					} else if(response.responseCode == 403) {
+						EpicNotification n = new EpicNotification("Your challenge was declined.", new String[] { "Your opponent is not accepting challenges at this time." }, EpicImages.challenge_icon, 4);
+						Main.navc.popToRootViewControllerAnimated(true);
+						EpicPlatform.doToastNotification(n);
+					} else {
+						EpicLog.i("Response (status " + response.responseCode + ") was: " + response.body);
+						handleFailure(new EpicFrameworkException("Got response: " + response.body));
+					}
+				}
+				
+				public void handleFailure(Exception e) {
+					EpicLog.e(e.toString());
+					Main.navc.popToRootViewControllerAnimated(true);
+					EpicPlatform.doToastNotification(new EpicNotification("Problem sending challenge request", new String[] { "Please try again later or contact support." }));
+				}
+			});
+		}
 	}
 	
 	@Override
