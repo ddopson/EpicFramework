@@ -396,7 +396,7 @@ public class EpicPlatform {
 					int textWidth = n.icon == null ? 640 : 510;
 					int textLeftPad = n.icon == null ? 20 : 100;
 					
-					epicCanvas.drawText(n.title, EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 5, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.title, textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE), EpicFont.HALIGN_LEFT, EpicFont.VALIGN_CENTER);
+					epicCanvas.drawTextBox(n.title, EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 5, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.title, textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
 					
 					if(n.messages != null && n.messages.length > 0) {
 						int whichMessage = timeNotificationDisplayed / (n.duration * TIMER_HZ / n.messages.length);
