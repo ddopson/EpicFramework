@@ -3,6 +3,7 @@ package com.epic.framework.implementation;
 import org.xmlvm.iphone.UIImage;
 
 import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicBufferedReader;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
@@ -19,7 +20,9 @@ public class EpicBitmapImplementation {
 	}
 
 	public static Object loadBitmap(EpicBitmap epicBitmap, int neededInternalWidth, int neededInternalHeight) {
-		UIImage src = UIImage.imageNamed(epicBitmap.name + "." + epicBitmap.extension);	
+		// TODO: when ready to add second set of images, we can enable this
+		boolean ipad = false; //EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() > 480;
+		UIImage src = UIImage.imageNamed(epicBitmap.name + (ipad ? "_ipad" : "") + "." + epicBitmap.extension);	
 		EpicFail.assertNotNull(src, "src");
 		UIImage scaled = EpicBitmapImplementationNative.resizeImage(src, neededInternalWidth, neededInternalHeight);//, epicBitmap.opaque);
 		EpicFail.assertNotNull(scaled, "scaled");
