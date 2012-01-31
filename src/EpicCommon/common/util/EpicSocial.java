@@ -55,7 +55,7 @@ public class EpicSocial {
 			un = identity;
 		}
 		
-		EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now playing as " + un }, EpicImages.icon);
+		EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now logged in." }, EpicImages.icon);
 		// EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
 		EpicPlatform.doToastNotification(n);
 		PlayerState.setIdentityWithFacebookId(identity, displayName, fbid);
