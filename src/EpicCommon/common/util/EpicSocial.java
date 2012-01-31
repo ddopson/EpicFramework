@@ -47,7 +47,9 @@ public class EpicSocial {
 	public static void onSignInComplete(String identity, String displayName, String fbid) {
 		EpicLog.i("PLAYER IDENTITY CHOSEN: '" + identity + "'");
 		String un = "";
-		if(identity.contains("@")) {
+		if(displayName != null) {
+			un = displayName;
+		} else if(identity.contains("@")) {
 			un = identity.split("@")[0];
 		} else {
 			un = identity;
