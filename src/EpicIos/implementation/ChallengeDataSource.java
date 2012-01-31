@@ -27,7 +27,6 @@ class ChallengeDataSource extends UITableViewDataSource {
 	}
 	
 	public UITableViewCell cellForRowAtIndexPath(UITableView table, NSIndexPath idx) {
-		UIColor completedBgColor = UIColor.colorWithRGBA(10.0f / 255.0f, 200.0f / 255.0f, 10.0f / 255.0f, 0.2f);
 		int padding = 5;
 		int imageDims = (int)table.getRowHeight() - (padding * 2);
 		int textWidth = (int) table.getFrame().size.width - imageDims - (padding * 3);
@@ -37,6 +36,8 @@ class ChallengeDataSource extends UITableViewDataSource {
 		
 		UILabel label = new UILabel(new CGRect(imageDims + (2*padding), padding, textWidth, (int) table.getRowHeight() / 3));
 		label.setText(titles[idx.getRow()]);
+		label.setFont(label.getFont().fontWithSize(26));
+		label.setSize(label.getBounds().size.width, 28);
 //		UILabel subtitle = cell.getDetailTextLabel();
 //		subtitle.setText(subtitles[idx.getRow()]);
 		
@@ -52,6 +53,7 @@ class ChallengeDataSource extends UITableViewDataSource {
 		subtitle.setText(subtitles[idx.getRow()]);
 		subtitle.setTextColor(UIColor.lightGrayColor);
 		subtitle.setNumberOfLines(2);
+		subtitle.setFont(subtitle.getFont().fontWithSize(20));
 		// if(complete[idx.getRow()]) subtitle.setBackgroundColor(UIColor.clearColor);
 		cell.addSubview(subtitle);
 		
