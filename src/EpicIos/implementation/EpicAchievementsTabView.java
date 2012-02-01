@@ -47,7 +47,7 @@ public class EpicAchievementsTabView extends UITabBarController {
         
         table.setDataSource(ds);
         table.setRowHeight(64);
-        table.setSeparatorColor(UIColor.clearColor);
+        //table.setSeparatorColor(UIColor.clearColor);
         table.setDelegate(
         		new UITableViewDelegate() {
         			public void didSelectRowAtIndexPath(UITableView tableview, NSIndexPath indexPath) {
@@ -62,7 +62,7 @@ public class EpicAchievementsTabView extends UITabBarController {
         UITableView table2 = incomplete.getTableView();
         
         table2.setDataSource(ids);
-        table2.setSeparatorColor(UIColor.clearColor);
+        //table2.setSeparatorColor(UIColor.clearColor);
         table2.setRowHeight(64);
         table2.setDelegate(
         		new UITableViewDelegate() {
