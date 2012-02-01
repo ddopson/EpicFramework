@@ -196,6 +196,11 @@
     // information or getting the user's permissions.
     NSString *username = [result objectForKey:@"username"];
     NSString *displayName = [result objectForKey:@"name"];
+    
+    if(!username) {
+        username = [result objectForKey:@"id"];
+    }
+    
     if (username) {
         // If basic information callback, set the UI objects to
         // display this.

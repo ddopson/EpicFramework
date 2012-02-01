@@ -14,6 +14,7 @@ import org.xmlvm.iphone.UIViewController;
 
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicImageBuffer;
+import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.Challenge;
 import com.realcasualgames.words.PlayerState;

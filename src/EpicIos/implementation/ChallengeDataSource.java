@@ -12,6 +12,7 @@ import org.xmlvm.iphone.UITableViewCell;
 import org.xmlvm.iphone.UITableViewDataSource;
 
 import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicPlatform;
 
 class ChallengeDataSource extends UITableViewDataSource {
 	private String[] titles;
@@ -34,10 +35,9 @@ class ChallengeDataSource extends UITableViewDataSource {
 		
 		// if(complete[idx.getRow()]) cell.getContentView().setBackgroundColor(completedBgColor);
 		
-		UILabel label = new UILabel(new CGRect(imageDims + (2*padding), padding, textWidth, (int) table.getRowHeight() / 3));
+		UILabel label = new UILabel(new CGRect(imageDims + (2*padding), padding, textWidth, 26));
 		label.setText(titles[idx.getRow()]);
-		label.setFont(label.getFont().fontWithSize(26));
-		label.setSize(label.getBounds().size.width, 28);
+		label.setFont(label.getFont().fontWithSize(EpicPlatform.getPlatformWidth() <= 480 ? 18 : 24));
 //		UILabel subtitle = cell.getDetailTextLabel();
 //		subtitle.setText(subtitles[idx.getRow()]);
 		
@@ -48,12 +48,12 @@ class ChallengeDataSource extends UITableViewDataSource {
 		img.setTransform(CGAffineTransform.makeScale(1, -1));
 		img.setLocation(padding, padding);
 		img.setImage((UIImage) images[idx.getRow()].getPlatformObject(imageDims, imageDims));
+		int height = 28;
 		
-		UILabel subtitle = new UILabel(new CGRect(imageDims + (2*padding), padding + label.getBounds().origin.y + label.getBounds().size.height, textWidth, ((int) 2 * table.getRowHeight() / 3) - padding));
+		UILabel subtitle = new UILabel(new CGRect(imageDims + (2*padding), padding + (EpicPlatform.getPlatformWidth() <= 480 ? 21 : 25), textWidth, height));
 		subtitle.setText(subtitles[idx.getRow()]);
 		subtitle.setTextColor(UIColor.lightGrayColor);
-		subtitle.setNumberOfLines(2);
-		subtitle.setFont(subtitle.getFont().fontWithSize(20));
+		subtitle.setFont(subtitle.getFont().fontWithSize(EpicPlatform.getPlatformWidth() <= 480 ? 14 : 18));
 		// if(complete[idx.getRow()]) subtitle.setBackgroundColor(UIColor.clearColor);
 		cell.addSubview(subtitle);
 		
