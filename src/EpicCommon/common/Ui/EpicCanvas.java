@@ -13,7 +13,7 @@ public class EpicCanvas {
 	public static final int defaultHAlign = EpicFont.HALIGN_LEFT;
 	public static final int defaultVAlign = EpicFont.VALIGN_TOP;
 
-	public static final int NO_ALPHA = 255;
+	public static final int OPAQUE = 255;
 	private static boolean debugRendering = false;
 
 	Object graphicsObject;
@@ -70,19 +70,19 @@ public class EpicCanvas {
 	// INTERFACE
 	////////////////////////////////////////////////////////////////////////////////
 	public final void drawFullscreenBitmap(EpicBitmap image) {
-		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, NO_ALPHA, 0, 0, 0, 0);
+		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, OPAQUE, 0, 0, 0, 0);
 	}
 	public final void drawFullscreenBitmap(EpicBitmap image, int alpha) {
 		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, alpha, 0, 0, 0, 0);
 	}
 	public final void drawBitmap(EpicBitmap image, int left, int top, int width, int height) {
-		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), NO_ALPHA, 0, 0, 0, 0);
+		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), OPAQUE, 0, 0, 0, 0);
 	}
 	public final void drawBitmapWithGlobalAlpha(EpicBitmap image, int left, int top, int width, int height, int alpha) {
 		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), alpha, 0, 0, 0, 0);
 	}
 	public final void drawBitmapSubset(EpicBitmap image, int left, int top, int width, int height, int lcrop, int tcrop, int rcrop, int bcrop) {
-		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), NO_ALPHA, sx(lcrop), sy(tcrop), sx(rcrop), sy(bcrop));
+		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), OPAQUE, sx(lcrop), sy(tcrop), sx(rcrop), sy(bcrop));
 	}
 	public final void drawBitmapSubsetWithGlobalAlpha(EpicBitmap image, int left, int top, int width, int height, int alpha, int lcrop, int tcrop, int rcrop, int bcrop) {
 		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), alpha, sx(lcrop), sy(tcrop), sx(rcrop), sy(bcrop));
