@@ -11,6 +11,7 @@ import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.EpicMarketplace;
 import com.epic.framework.common.util.EpicSocial;
 import com.epic.framework.common.util.StringHelper;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
@@ -129,6 +130,26 @@ public class EpicSocialImplementation {
 		EpicSocialTabbedView s = new EpicSocialTabbedView(platformResponseObject);
 		Main.navc.pushViewController(s, true);
 		Main.navc.setNavigationBarHidden(false, true);
+	}
+	
+	private static void nativeCbInAppFailedWithError(String errorString) {
+		EpicLog.w("Got error while performing purchase: " + errorString);
+		EpicNotification n = new EpicNotification("Problem with your purchase", new String[] { errorString });
+		EpicPlatform.doToastNotification(n);
+	}
+	
+	private static void nativeCbInAppCompleteFor(String productId) {
+		EpicLog.i("Purchase complete for: " + productId);
+		
+		for(int i = 0; i < EpicMarketplace.iosProducts.length; ++i) {
+			if(EpicMarketplace.iosProducts[i].sku.equals(productId)) {
+				PlayerState.updateLocalTokens(EpicMarketplace.iosProducts[0].tokens);
+				EpicLog.i("Awarded " + EpicMarketplace.iosProducts[0].tokens + " tokens");
+				return;
+			}
+		}
+		
+		EpicLog.e("***NO PRODUCT FOUND AFTER PURCHASE COMPLETED ***");
 	}
 
 	private static void nativecbFacebookLoginFinishedWithId(String username) {

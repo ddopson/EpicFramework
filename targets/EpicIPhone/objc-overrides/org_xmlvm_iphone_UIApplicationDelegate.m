@@ -279,5 +279,74 @@
     [facebook dialog:@"feed" andParams:params andDelegate:self];
 }
 
+- (void) requestProductData
+{
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    
+    SKProductsRequest *request= [[SKProductsRequest alloc] initWithProductIdentifiers: [NSSet setWithObject:@"com.realcasualgames.WordFarm.wf_tokens_small"]];
+    request.delegate = self;
+    [request start];
+}
+
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+{
+    NSArray *myProduct = response.products;
+    NSLog([NSString stringWithFormat:@"Products from iTunes: %@", response.products]);
+    [request autorelease];
+}
+
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
+{
+    for (SKPaymentTransaction *transaction in transactions)
+    {
+        switch (transaction.transactionState)
+        {
+            case SKPaymentTransactionStatePurchased:
+                [self completeTransaction:transaction];
+                break;
+            case SKPaymentTransactionStateFailed:
+                [self failedTransaction:transaction];
+                break;
+            case SKPaymentTransactionStateRestored:
+                [self restoreTransaction:transaction];
+            default:
+                break;
+        }
+    }
+}
+
+- (void) purchaseItem: (NSString*) whichProduct {
+    NSLog(@"Request to purchase item %@.", whichProduct);
+    [self requestProductData];
+    
+    SKPayment *payment = [SKPayment paymentWithProductIdentifier:whichProduct];
+    [[SKPaymentQueue defaultQueue] addPayment:payment];
+    NSLog(@"Added payment to queue.");
+}
+
+- (void) completeTransaction: (SKPaymentTransaction *)transaction
+{
+    // Provide tokens
+    NSLog(@"Complete transaction!");
+    [com_epic_framework_implementation_EpicSocialImplementation nativeCbInAppCompleteFor___java_lang_String: [NSString stringWithFormat:@"%@", transaction.payment.productIdentifier]];
+    
+    // Remove the transaction from the payment queue.
+    [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+}
+
+- (void) failedTransaction: (SKPaymentTransaction *)transaction
+{
+    if (transaction.error.code != SKErrorPaymentCancelled)
+    {
+        // Optionally, display an error here.
+        NSLog(@"Transaction failed.");
+        [com_epic_framework_implementation_EpicSocialImplementation nativeCbInAppFailedWithError___java_lang_String: [NSString stringWithFormat:@"%@", transaction.error]];
+    } else {
+        NSLog(@"Transaction canceled.");
+    }
+    
+    [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+}
+
 @end
 

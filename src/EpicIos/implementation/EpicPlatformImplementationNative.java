@@ -30,4 +30,7 @@ public abstract class EpicPlatformImplementationNative {
 	public static void requestFacebookFriends(String message) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");				
 	}
+	public static void requestPurchase(String whichItem) {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
 }

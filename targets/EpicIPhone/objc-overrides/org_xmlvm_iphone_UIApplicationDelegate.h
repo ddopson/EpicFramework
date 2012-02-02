@@ -22,6 +22,7 @@
 #import "java_lang_Object.h"
 #import "org_xmlvm_iphone_UIApplication.h"
 #import "FBConnect.h"
+#import <StoreKit/StoreKit.h>
 
 @interface org_xmlvm_iphone_UIApplicationDelegate : java_lang_Object <UIApplicationDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate> {
     Facebook* facebook;
@@ -40,6 +41,7 @@
 - (void) applicationDidReceiveMemoryWarning___org_xmlvm_iphone_UIApplication :(org_xmlvm_iphone_UIApplication*)application;
 - (void) application:(UIApplication*) application didReceiveRemoteNotification: (NSDictionary*) userInfo;
 - (void) postToWall: (NSString*)textToPost withCaption:(NSString*)caption;
+- (void) purchaseItem: (NSString*) whichProduct;
 - (void) doFbLogin;
 
 @property (nonatomic, retain) Facebook *facebook;

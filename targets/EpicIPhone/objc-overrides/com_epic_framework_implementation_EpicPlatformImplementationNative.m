@@ -82,6 +82,12 @@ void uncaught_exception_handler(NSException *exception) {
     [[[UIApplication sharedApplication] delegate] postToWall: (NSString*) fbMessage];
 }
 
++ (void) requestPurchase___java_lang_String : (java_lang_String *) whichItem
+{
+    NSLog(@"About to try to buy %@", whichItem);
+    [[[UIApplication sharedApplication] delegate] purchaseItem: (NSString*) whichItem];
+}
+
 + (void) launchBrowserTo___java_lang_String : (java_lang_String*) url
 {
     NSURL *appStoreUrl = [NSURL URLWithString:url];

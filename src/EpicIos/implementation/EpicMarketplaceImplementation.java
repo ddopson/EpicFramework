@@ -15,35 +15,9 @@ import com.epic.framework.common.util.Product;
 import com.realcasualgames.words.PlayerState;
 
 public class EpicMarketplaceImplementation {
-	public static boolean observerSet = false;
-	public static SKPaymentTransactionObserver purchaseObserver = new SKPaymentTransactionObserver() {
-		public void updatedTransactions(SKPaymentQueue queue, ArrayList<SKPaymentTransaction> transactions) {
-			for(SKPaymentTransaction t : transactions) {
-				if(t.getTransactionState() == SKPaymentTransactionState.Purchased) {
-					String iden = t.getPayment().getProductIdentifier();
-					EpicLog.i("Purchase complete for " + iden);
-					if(iden.equals("tokens_sm")) {
-						PlayerState.updateLocalTokens(25000);
-					} else if(iden.equals("tokens_med")) {
-						PlayerState.updateLocalTokens(60000);
-					} else if(iden.equals("tokens_lg")) {
-						PlayerState.updateLocalTokens(100000);
-					} else if(iden.equals("tokens_max")) {
-						PlayerState.updateLocalTokens(9999999);
-					} else {
-						EpicLog.e("Unknown product ID purchased: " + iden);
-					}
-					
-					queue.finishTransaction(t);
-				}
-			}
-		}
-	};
 	
 	public static boolean doPurchase(Product p) {
-		if(!observerSet) SKPaymentQueue.defaultQueue().addTransactionObserver(purchaseObserver);
-		SKPayment payment = SKPayment.paymentWithProductIdentifier(p.sku);
-		SKPaymentQueue.defaultQueue().addPayment(payment);
+		EpicPlatformImplementationNative.requestPurchase(p.sku);
 		return false;
 	}
 	

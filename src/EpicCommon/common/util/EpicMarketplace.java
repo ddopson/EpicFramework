@@ -27,6 +27,13 @@ public class EpicMarketplace {
 		new Product("tokens_lg", "Large Token Pack and Premium Player Upgrade", "100,000", "$5.99", 100000),
 		new Product("tokens_max", "Unlimited Token Pack and Premium Player Upgrade", "Unlimited", "$29.99", 9999999)
 	};
+	
+	public static Product[] iosProducts = new Product[] { 
+		new Product("wf_tokens_small", "Small Token Pack", "100", "$0.99", 100),
+		new Product("wf_tokens_medium", "Medium Token Pack", "400", "$2.99", 400),
+		new Product("wf_tokens_large", "Large Token Pack", "1,000", "$4.99", 1000),
+		new Product("wf_tokens_unlimited", "Unlimited Token Pack", "Unlimited", "$19.99", 9999999)
+	};
 
 	public static void displayOffers() {
 		EpicMarketplaceImplementation.displayOffers();
