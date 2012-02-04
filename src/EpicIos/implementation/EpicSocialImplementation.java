@@ -134,7 +134,7 @@ public class EpicSocialImplementation {
 	
 	private static void nativeCbInAppFailedWithError(String errorString) {
 		EpicLog.w("Got error while performing purchase: " + errorString);
-		EpicNotification n = new EpicNotification("Problem with your purchase", new String[] { errorString });
+		EpicNotification n = new EpicNotification("Problem with your purchase", new String[] { "Please contact support or try again later." });
 		EpicPlatform.doToastNotification(n);
 	}
 	
