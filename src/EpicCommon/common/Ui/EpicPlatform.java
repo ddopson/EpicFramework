@@ -615,4 +615,12 @@ public class EpicPlatform {
 	public static void requestFacebookFriends(String string) {
 		EpicPlatformImplementation.requestFacebookFriends(string);
 	}
+
+	public static boolean isIphone() {
+		return EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() <= 480;
+	}
+	
+	public static boolean isIpad() {
+		return EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() > 480;
+	}
 }
