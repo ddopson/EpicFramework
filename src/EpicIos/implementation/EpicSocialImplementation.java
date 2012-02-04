@@ -143,8 +143,22 @@ public class EpicSocialImplementation {
 		
 		for(int i = 0; i < EpicMarketplace.iosProducts.length; ++i) {
 			if(EpicMarketplace.iosProducts[i].sku.equals(productId)) {
-				PlayerState.updateLocalTokens(EpicMarketplace.iosProducts[0].tokens);
-				EpicLog.i("Awarded " + EpicMarketplace.iosProducts[0].tokens + " tokens");
+				EpicLog.v("Purchased item " + productId + " == " + EpicMarketplace.iosProducts[i].sku);
+				PlayerState.updateLocalTokens(EpicMarketplace.iosProducts[i].tokens);
+				EpicPlatform.changeScreen(new ScreenMainMenu());
+				EpicBitmap img = null;
+				
+				if(productId.equals("wf_tokens_small")) {
+					img = EpicImages.icon_tokens_small;
+				} else if(productId.equals("wf_tokens_medium")) {
+					img = EpicImages.icon_tokens_medium;
+				} else {
+					img = EpicImages.icon_tokens_large;
+				}
+				
+				EpicNotification n = new EpicNotification("Your purchase is complete!", new String[] { (productId.equals("wf_tokens_unlimited") ? "Unlimited" : EpicMarketplace.iosProducts[i].tokens) + " tokens have been awarded immediately." }, img, 5);
+				EpicPlatform.doToastNotification(n);
+				EpicLog.i("Awarded " + EpicMarketplace.iosProducts[i].tokens + " tokens");
 				return;
 			}
 		}

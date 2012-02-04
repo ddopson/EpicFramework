@@ -283,7 +283,11 @@
 {
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
-    SKProductsRequest *request= [[SKProductsRequest alloc] initWithProductIdentifiers: [NSSet setWithObject:@"com.realcasualgames.WordFarm.wf_tokens_small"]];
+    SKProductsRequest *request= [[SKProductsRequest alloc] initWithProductIdentifiers: [NSSet setWithObjects:@"com.realcasualgames.WordFarm.wf_tokens_small",
+                                                                                        @"com.realcasualgames.WordFarm.wf_tokens_medium",
+                                                                                        @"com.realcasualgames.WordFarm.wf_tokens_large",
+                                                                                        @"com.realcasualgames.WordFarm.wf_tokens_unlimited",
+                                                                                        nil]];
     request.delegate = self;
     [request start];
 }
