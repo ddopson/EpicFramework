@@ -20,6 +20,7 @@ import com.realcasualgames.words.Challenge;
 import com.realcasualgames.words.PlayerState;
 import com.realcasualgames.words.PushResponder;
 import com.realcasualgames.words.ScreenConnect;
+import com.realcasualgames.words.ScreenDailySpecials;
 import com.realcasualgames.words.ScreenGame;
 import com.realcasualgames.words.ScreenMainMenu;
 import com.realcasualgames.words.ScreenOnlineChallengeDetails;
@@ -143,23 +144,28 @@ public class EpicSocialImplementation {
 		
 		for(int i = 0; i < EpicMarketplace.iosProducts.length; ++i) {
 			if(EpicMarketplace.iosProducts[i].sku.equals(productId)) {
-				EpicLog.v("Purchased item " + productId + " == " + EpicMarketplace.iosProducts[i].sku);
-				PlayerState.updateLocalTokens(EpicMarketplace.iosProducts[i].tokens);
-				EpicPlatform.changeScreen(new ScreenMainMenu());
-				EpicBitmap img = null;
-				
-				if(productId.equals("wf_tokens_small")) {
-					img = EpicImages.icon_tokens_small;
-				} else if(productId.equals("wf_tokens_medium")) {
-					img = EpicImages.icon_tokens_medium;
-				} else {
-					img = EpicImages.icon_tokens_large;
+				if(productId.contains("tokens")) {
+					EpicLog.v("Purchased item " + productId + " == " + EpicMarketplace.iosProducts[i].sku);
+					PlayerState.updateLocalTokens(EpicMarketplace.iosProducts[i].tokens);
+					EpicPlatform.changeScreen(new ScreenMainMenu());
+					EpicBitmap img = null;
+					
+					if(productId.equals("wf_tokens_small")) {
+						img = EpicImages.icon_tokens_small;
+					} else if(productId.equals("wf_tokens_medium")) {
+						img = EpicImages.icon_tokens_medium;
+					} else {
+						img = EpicImages.icon_tokens_large;
+					}
+					
+					EpicNotification n = new EpicNotification("Your purchase is complete!", new String[] { (productId.equals("wf_tokens_unlimited") ? "Unlimited" : EpicMarketplace.iosProducts[i].tokens) + " tokens have been awarded immediately." }, img, 5);
+					EpicPlatform.doToastNotification(n);
+					EpicLog.i("Awarded " + EpicMarketplace.iosProducts[i].tokens + " tokens");
+					return;
+				} else if(productId.contains("unlock")){
+					PlayerState.unlockAllSeeds();
+					return;
 				}
-				
-				EpicNotification n = new EpicNotification("Your purchase is complete!", new String[] { (productId.equals("wf_tokens_unlimited") ? "Unlimited" : EpicMarketplace.iosProducts[i].tokens) + " tokens have been awarded immediately." }, img, 5);
-				EpicPlatform.doToastNotification(n);
-				EpicLog.i("Awarded " + EpicMarketplace.iosProducts[i].tokens + " tokens");
-				return;
 			}
 		}
 		

@@ -287,6 +287,7 @@
                                                                                         @"com.realcasualgames.WordFarm.wf_tokens_medium",
                                                                                         @"com.realcasualgames.WordFarm.wf_tokens_large",
                                                                                         @"com.realcasualgames.WordFarm.wf_tokens_unlimited",
+                                                                                        @"com.realcasualgames.WordFarm.wf_unlock_specials",
                                                                                         nil]];
     request.delegate = self;
     [request start];
