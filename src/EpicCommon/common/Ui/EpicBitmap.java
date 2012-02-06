@@ -3,12 +3,14 @@ package com.epic.framework.common.Ui;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.epic.framework.common.Ui2.ClassEpicBitmap;
+import com.epic.framework.common.Ui2.EpicObject;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.framework.implementation.EpicBitmapImplementation;
 
-public class EpicBitmap {
+public class EpicBitmap extends EpicObject {
 	public final String name;
 	public final String extension;
 	public final int android_id;
@@ -50,6 +52,7 @@ public class EpicBitmap {
 	}
 	public EpicBitmap(String name, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad, boolean register) {
 		this.name = name;
+		this.type = ClassEpicBitmap.singleton;
 		this.extension = extension;
 		this.android_id = android_id;
 		this.width = width;

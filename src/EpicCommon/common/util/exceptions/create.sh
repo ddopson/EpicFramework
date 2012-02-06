@@ -3,6 +3,7 @@ CLASSES="
   EpicFrameworkException
   EpicInvalidArgumentException
   EpicJSONException
+  EpicObjectInflationException
   EpicMissingImageException
   EpicMissingSoundException
   EpicMissingFileException
