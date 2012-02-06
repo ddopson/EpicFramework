@@ -3,9 +3,11 @@ package com.epic.framework.common.util;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicNotification;
 import com.epic.framework.common.Ui.EpicPlatform;
+import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.implementation.EpicSocialImplementation;
 import com.epic.resources.EpicImages;
 import com.realcasualgames.words.PlayerState;
+import com.realcasualgames.words.ScreenMainMenu;
 import com.realcasualgames.words.WordsHttp;
 
 public class EpicSocial {
@@ -157,5 +159,9 @@ public class EpicSocial {
 
 	public static void viewChallenges(int defaultListLength) {
 		EpicSocialImplementation.viewChallenges(defaultListLength);
+	}
+
+	public static void promptFacebookLogin(EpicScreen screen) {
+		EpicSocialImplementation.promptFacebookLogin(screen);
 	}
 }

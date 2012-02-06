@@ -85,9 +85,9 @@ public class DesktopUiCoverage {
 	}
 
 	private static void testScreenNursery() {
-		ScreenNursery sn = new ScreenNursery();
-		EpicPlatform.changeScreen(sn);
-		sleep(200);
+//		ScreenNursery sn = new ScreenNursery();
+//		EpicPlatform.changeScreen(sn);
+//		sleep(200);
 	}
 
 	private static void testScreenScores() {

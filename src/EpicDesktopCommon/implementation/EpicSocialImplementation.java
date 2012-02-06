@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import com.epic.framework.common.Ui.EpicClickListener;
+import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
 
@@ -104,5 +105,8 @@ public class EpicSocialImplementation {
 	public static void viewChallenges(int defaultListLength, String response) {
 		// TODO Auto-generated method stub
 		
+	}
+	public static void promptFacebookLogin(EpicScreen screen) {
+		// TODO Auto-generated method stub
 	}
 }
