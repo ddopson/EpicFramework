@@ -1,8 +1,9 @@
 package com.epic.framework.common.Ui;
 
+import com.epic.framework.common.Ui2.EpicObject;
 import com.epic.framework.common.util.EpicHttpResponse;
 
-public abstract class EpicScreen {
+public abstract class EpicScreen extends EpicObject {
 	protected abstract boolean onKeyPress(int c);
 	protected abstract boolean onBackKey();
 	protected abstract boolean onNavigationMovement(int x, int y);
