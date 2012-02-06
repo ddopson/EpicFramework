@@ -96,16 +96,19 @@ public abstract class HexGrid<T> implements Iterable<T> {
 	public static class HexGridPosition {
 		public final int x;
 		public final int y;
+		public final int ly;
 		public final int i;
 		protected HexGridPosition(int x, int y, int i) {
 			this.x = x;
 			this.y = y;
 			this.i = i;
+			this.ly = getRenderY();
 		}
 		public HexGridPosition(HexGridPosition other) {
 			this.x = other.x;
 			this.y = other.y;
 			this.i = other.i;
+			this.ly = other.ly;
 		}
 		
 		public int getRenderY() {
