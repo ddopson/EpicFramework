@@ -11,7 +11,7 @@ public abstract class EpicUiWidget {
 		this.right = right;
 		this.bottom = bottom;
 	}
-	protected abstract void render(EpicCanvas canvas, int left, int top, int right, int bottom);
+	protected abstract void render(EpicCanvas canvas, int left, int top, int width, int height);
 	public void render(EpicCanvas canvas) {
 		render(
 				canvas,
