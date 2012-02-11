@@ -66,10 +66,10 @@ public class EpicCanvasImplementation {
 	}
 
 	private static Rectangle rrr = new Rectangle();
-	public static void applyFill(Object graphicsObject, int left, int top, int right, int bottom, int color) {
+	public static void applyFill(Object graphicsObject, int left, int top, int width, int height, int color) {
 		Graphics2D graphics = (Graphics2D)graphicsObject;
 		graphics.setPaint(getColor(color));
-		rrr.setBounds(left, top, right - left, bottom - top);
+		rrr.setBounds(left, top, width, height);
 		graphics.fill(rrr);
 	}
 
@@ -126,6 +126,6 @@ public class EpicCanvasImplementation {
 
 
 	public static void drawTextBox(Object graphicsObject, String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
-		EpicFail.not_supported();
+		throw EpicFail.not_supported();
 	}
 }
