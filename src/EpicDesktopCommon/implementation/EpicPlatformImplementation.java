@@ -18,7 +18,7 @@ public class EpicPlatformImplementation {
 
 	public static boolean isTouchEnabledDevice() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public static String getApplicationVersion() {
