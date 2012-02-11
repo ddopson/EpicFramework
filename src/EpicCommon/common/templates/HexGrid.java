@@ -57,7 +57,7 @@ public abstract class HexGrid<T> implements Iterable<T> {
 	}
 	
 	public T getNeighbor(HexGridPosition pos, HexDirection d) {
-		return get(pos.x + d.delta_x, (pos.getRenderY() + d.delta_y) / 2);
+		return get(pos.x + d.delta_x, (pos.ly + d.delta_y) / 2);
 	}
 
 	public Collection<T> getNeighbors(HexGridPosition pos) {
@@ -102,7 +102,7 @@ public abstract class HexGrid<T> implements Iterable<T> {
 			this.x = x;
 			this.y = y;
 			this.i = i;
-			this.ly = getRenderY();
+			this.ly = getRenderY(x, y);
 		}
 		public HexGridPosition(HexGridPosition other) {
 			this.x = other.x;
@@ -111,10 +111,6 @@ public abstract class HexGrid<T> implements Iterable<T> {
 			this.ly = other.ly;
 		}
 		
-		public int getRenderY() {
-			return 2*y + (x % 2);
-		}
-
 		public static int getRenderY(int x, int y) {
 			return 2*y + (x % 2);
 		}
