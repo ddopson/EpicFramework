@@ -1,10 +1,9 @@
 package com.epic.framework.implementation;
 
+import com.epic.framework.common.Ui.EpicPlatform;
+
 public class EpicPlatformConfig {
-	public static final int PLATFORM_ANDROID = 0;
-	public static final int PLATFORM_BLACKBERRY = 1;
-	public static final int PLATFORM_IOS = 2;
+	public static int platform = EpicPlatform.PLATFORM_IOS;
 
-	public static int platform = PLATFORM_IOS;
-
+	public static boolean USE_LETTER_IMAGES = true;
 }
