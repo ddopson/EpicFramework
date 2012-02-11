@@ -141,28 +141,16 @@ public class EpicCanvas {
 		if((tcrop + bcrop) > height || (lcrop + rcrop) > width) {
 			throw EpicFail.invalid_argument(StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop));
 		}
-		//		EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
-		int lpad = image.lpad;
-		int tpad = image.tpad;
-		int rpad = image.rpad;
-		int bpad = image.bpad;
-		Object bitmapObject = image.getPlatformObject(width, height);
-
-		if(image.width != width || image.height != height) {
-			lpad = (lpad * width + (image.width>>1)) / image.width;
-			tpad = (tpad * height + (image.height>>1)) / image.height;
-			rpad = (rpad * width + (image.width>>1)) / image.width;
-			bpad = (bpad * height + (image.height>>1)) / image.height;
-			bitmapObject = image.getPlatformObject(width, height);
-		}
+				EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
+		EpicBitmapInstance b = image.getInstance(width, height);
 
 		boolean isCropped = lcrop > 0 || tcrop > 0 || rcrop > 0 || bcrop > 0;
-		int sx = max(lcrop - lpad, 0);
-		int sy = max(tcrop - tpad, 0);
-		int dlp = max(lcrop, lpad);
-		int dtp = max(tcrop, tpad);
-		int drp = max(rcrop, rpad);
-		int dbp = max(bcrop, bpad);
+		int sx = max(lcrop - b.lpad, 0);
+		int sy = max(tcrop - b.tpad, 0);
+		int dlp = max(lcrop, b.lpad);
+		int dtp = max(tcrop, b.tpad);
+		int drp = max(rcrop, b.rpad);
+		int dbp = max(bcrop, b.bpad);
 
 		int sw = width - dlp - drp;
 		int sh = height - dtp - dbp;
@@ -179,7 +167,7 @@ public class EpicCanvas {
 			return;
 		}
 		EpicStopwatch.reportPixelsPushed(image, width, height, sw * sh);
-		EpicCanvasImplementation.drawBitmapImpl(graphicsObject, bitmapObject, left + dlp, top + dtp, alpha, sx, sy, sw, sh, isCropped);
+		EpicCanvasImplementation.drawBitmapImpl(graphicsObject, b.platformObject, left + dlp, top + dtp, alpha, sx, sy, sw, sh, isCropped);
 		if(debugRendering) {
 			EpicCanvasImplementation.drawBorder(graphicsObject, left + sx, top + sy, sw, sh, EpicColor.RED, 1);
 		}

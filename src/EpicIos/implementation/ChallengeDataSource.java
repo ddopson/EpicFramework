@@ -47,7 +47,7 @@ class ChallengeDataSource extends UITableViewDataSource {
 		UIImageView img = cell.getImageView();
 		img.setTransform(CGAffineTransform.makeScale(1, -1));
 		img.setLocation(padding, padding);
-		img.setImage((UIImage) images[idx.getRow()].getPlatformObject(imageDims, imageDims));
+		img.setImage((UIImage) images[idx.getRow()].getInstance(imageDims, imageDims).platformObject);
 		int height = 28;
 		
 		UILabel subtitle = new UILabel(new CGRect(imageDims + (2*padding), padding + (EpicPlatform.getPlatformWidth() <= 480 ? 21 : 25), textWidth, height));

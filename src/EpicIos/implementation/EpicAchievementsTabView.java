@@ -56,7 +56,7 @@ public class EpicAchievementsTabView extends UITabBarController {
         		});
         
         completed.setTitle("Completed");
-        completed.getTabBarItem().setImage((UIImage) EpicImages.game_tomato_gray_tab.getPlatformObject(iconSize , iconSize));
+        completed.getTabBarItem().setImage((UIImage) EpicImages.game_tomato_gray_tab.getInstance(iconSize , iconSize).platformObject);
                 
         incomplete = new UITableViewController(UITableViewStyle.Plain);
         UITableView table2 = incomplete.getTableView();
@@ -72,7 +72,7 @@ public class EpicAchievementsTabView extends UITabBarController {
         		});
         
         incomplete.setTitle("Incomplete");
-        incomplete.getTabBarItem().setImage((UIImage) EpicImages.close_button.getPlatformObject(iconSize , iconSize));
+        incomplete.getTabBarItem().setImage((UIImage) EpicImages.close_button.getInstance(iconSize , iconSize).platformObject);
         list.add(incomplete);
         list.add(completed);
 

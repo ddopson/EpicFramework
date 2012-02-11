@@ -7,7 +7,7 @@ public class EpicBitmapPreloader {
 	public boolean prepareOnly = false;
 	public void preload(EpicBitmap bitmap, int width, int height) {
 		if(!prepareOnly) {
-			bitmap.getPlatformObject(EpicPlatform.scaleLogicalToRenderX(width), EpicPlatform.scaleLogicalToRenderY(height));
+			bitmap.getInstance(EpicPlatform.scaleLogicalToRenderX(width), EpicPlatform.scaleLogicalToRenderY(height));
 		}
 		sum += EpicPlatform.scaleLogicalToRenderX(width) * EpicPlatform.scaleLogicalToRenderY(height);
 	}

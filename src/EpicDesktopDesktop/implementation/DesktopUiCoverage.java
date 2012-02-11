@@ -191,14 +191,14 @@ public class DesktopUiCoverage {
 		ArrayList<String> bitmapsMultiple = new ArrayList<String>();
 		ArrayList<String> bitmapsSingle = new ArrayList<String>();
 		for(EpicBitmap bitmap : EpicBitmap.getAllBitmaps()) {
-			int stockSize = bitmap.internal_width * bitmap.internal_height;
+			int stockSize = bitmap.iwidth * bitmap.iheight;
 			int myTotalSize = 0;
 			int n = 0;
 			int biggest = 0;
 			ArrayList<String> lines = new ArrayList<String>();
 			if(bitmap.defaultSizeTouched) {
-				lines.add("BITMAP_SIZE\t" + bitmap.name + "\t" + bitmap.internal_width + "\t" + bitmap.internal_height);
-				int s = bitmap.internal_width * bitmap.internal_height;
+				lines.add("BITMAP_SIZE\t" + bitmap.name + "\t" + bitmap.iwidth + "\t" + bitmap.iheight);
+				int s = bitmap.iwidth * bitmap.iheight;
 				myTotalSize += s;
 				n++;
 				if(s > biggest) biggest = s;

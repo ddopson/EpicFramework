@@ -8,53 +8,33 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicBitmapInstance;
 import com.epic.framework.common.util.EpicFail;
 
 
 public class EpicBitmapImplementation {
 	static String magicBaseDirectory = null; // will be set during Main()
 	
-	public static void loadBitmap(EpicBitmap epicBitmap) {
-		String path = epicBitmap.getFilename(magicBaseDirectory);
+	private static BufferedImage _loadBitmap(EpicBitmapInstance eb) {
+		String path = eb.parent.getFilename(magicBaseDirectory);
 		File file = new File(path);
 		if(!file.exists()) {
-			String cwd;
-			try {
-				cwd = new java.io.File( "." ).getCanonicalPath();
-			} catch (IOException e) {
-				cwd = "ERROR";
-			}
-
-			throw EpicFail.invalid_argument("Image file for '" + epicBitmap.getFilename() + "' does not exist at '"+path+"'");
+			throw EpicFail.invalid_argument("Image file for '" + eb.parent.getFilename() + "' does not exist at '"+path+"'");
 		}
-		BufferedImage nativeImage;
 		try {
-			nativeImage = ImageIO.read(file);
+			return ImageIO.read(file);
 		} catch (IOException e) {
-			throw EpicFail.framework("caught IOException while trying to read '" + epicBitmap.getFilename() + "'", e);
+			throw EpicFail.framework("caught IOException while trying to read '" + eb.parent.getFilename() + "'", e);
 		}
-		epicBitmap.setPlatformObject(nativeImage);
-	}
-	
-	public static Object resize(Object platformObject, int neededInternalWidth, int neededInternalHeight) {
-		BufferedImage original = (BufferedImage)platformObject;
-		BufferedImage scaled = new BufferedImage(neededInternalWidth, neededInternalHeight, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = scaled.createGraphics();
-		graphics.drawImage(original, 0, 0, neededInternalWidth, neededInternalHeight, null);
-		graphics.dispose();
-		return scaled;
 	}
 
-	public static Object loadBitmap(EpicBitmap epicBitmap, int neededInternalWidth, int neededInternalHeight) {
-		if(epicBitmap.platformObject == null) {
-			loadBitmap(epicBitmap);
-		}
-		BufferedImage original = (BufferedImage)epicBitmap.platformObject;
+	public static Object loadBitmap(EpicBitmapInstance eb) {
+		BufferedImage original = _loadBitmap(eb);
 
-		if(original.getWidth() != neededInternalWidth || original.getHeight() != neededInternalHeight) {
-			BufferedImage scaled = new BufferedImage(neededInternalWidth, neededInternalHeight, BufferedImage.TYPE_INT_ARGB);
+		if(original.getWidth() != eb.iwidth || original.getHeight() != eb.iheight) {
+			BufferedImage scaled = new BufferedImage(eb.iwidth, eb.iheight, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = scaled.createGraphics();
-			graphics.drawImage(original, 0, 0, neededInternalWidth, neededInternalHeight, null);
+			graphics.drawImage(original, 0, 0, eb.iwidth, eb.iheight, null);
 			graphics.dispose();
 			return scaled;
 		}
