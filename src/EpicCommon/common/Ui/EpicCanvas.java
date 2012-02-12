@@ -14,6 +14,8 @@ public class EpicCanvas {
 	public static final int defaultVAlign = EpicFont.VALIGN_TOP;
 
 	public static final int OPAQUE = 255;
+	public static final int TRANSPARENT = 0;
+	public static final int BLIT = -1;
 	public static boolean debugRendering = false;
 
 	Object graphicsObject;

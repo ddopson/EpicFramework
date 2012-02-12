@@ -17,8 +17,8 @@
   CGContextRef context = xcontext->context;
   CGSize size = [image size];
   CGRect rect = CGRectMake(left, top, size.width, size.height);
-  bool opaque = (alpha == 255 && CGImageGetAlphaInfo(cgimage) != kCGImageAlphaPremultipliedFirst);
-  CGContextSetBlendMode(context, opaque ? kCGBlendModeCopy : kCGBlendModeNormal);
+  bool blitMode = (alpha == -1) || (alpha == 255 && CGImageGetAlphaInfo(cgimage) != kCGImageAlphaPremultipliedFirst);
+  CGContextSetBlendMode(context, blitMode ? kCGBlendModeCopy : kCGBlendModeNormal);
   //NSLog(@"Drawing image to (%f, %f) - %fx%f, or is it %dx%d", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, CGImageGetWidth(cgimage), CGImageGetHeight(cgimage));
   if(alpha == 255) {
   	CGContextDrawImage(context, rect, cgimage);
