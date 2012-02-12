@@ -16,19 +16,29 @@ import java.io.File;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
+import javax.swing.JTextArea;
+
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.StringHelper;
 import com.epic.resources.EpicFiles;
 
 
 public class EpicCanvasImplementation {
-	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int left, int top, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
+	public static boolean hack = false;
+	
+	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
 		Graphics2D graphics = (Graphics2D)graphicsObject;
 		Image bitmap = (Image)bitmapObject;
-		Composite originalAlpha = (alpha > 0) ? setAlpha(graphics, alpha) : null;
-		graphics.drawImage(bitmap, left, top, left+sw, top+sh, sx, sy, sx+sw, sy+sh, null);
+		if(hack) {
+			int bw = bitmap.getWidth(null);
+			int bh = bitmap.getHeight(null);
+			EpicLog.i("drawBitmapImpl(" + StringHelper.namedArgList("x", x, "y", y, "alpha", alpha, "sx", sx, "sy", sy, "sw", sw, "sh", sh, "i.w", bw, "i.h", bh) + ")");
+		}
+	Composite originalAlpha = (alpha > 0) ? setAlpha(graphics, alpha) : null;
+		graphics.drawImage(bitmap, x, y, x+sw, y+sh, sx, sy, sx+sw, sy+sh, null);
 		if(alpha > 0) unsetAlpha(graphics, originalAlpha);
 	}
 
@@ -126,6 +136,19 @@ public class EpicCanvasImplementation {
 
 
 	public static void drawTextBox(Object graphicsObject, String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
-		throw EpicFail.not_supported();
+		JTextArea ta = new JTextArea(text);
+		Graphics2D graphics = (Graphics2D)graphicsObject;
+		ta.setLocation(left, top);
+		ta.setSize(width, height);
+		ta.setOpaque(false);
+		ta.setBackground(new Color(Color.TRANSLUCENT));
+		ta.setForeground(new Color(color));
+		ta.setFont((Font)font.fontObject);
+		graphics.translate(left, top);
+		graphics.rotate(RADIANS_PER_DEGREE * rotateBy, 0, 0);
+		ta.paint(graphics);
+		graphics.rotate(-1 * RADIANS_PER_DEGREE * rotateBy, 0, 0);
+		graphics.translate(-left, -top);
+//		throw EpicFail.not_supported();
 	}
 }

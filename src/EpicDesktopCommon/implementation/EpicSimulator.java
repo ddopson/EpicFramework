@@ -16,7 +16,7 @@ public class EpicSimulator {
 		new Dimension(1024, 768) // iPad, iPad2
 	};
 
-	private static Dimension currentScreenSize = supportedScreenSizes[0];
+	static Dimension currentScreenSize = supportedScreenSizes[0];
 
 	public static Dimension getCurrentScreenSize() {
 		return currentScreenSize;

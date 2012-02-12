@@ -1,6 +1,7 @@
 package com.epic.framework.implementation;
 
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -71,7 +72,13 @@ public class DesktopMain {
 		loc.x += mainFrame.getWidth();
 		statsFrame.setLocation(loc);
 		statsFrame.setLayout(new FlowLayout());
-		final JTextArea statsData = new JTextArea();
+		final JTextArea statsData = new JTextArea() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(400, 400);
+			}
+		};
+		statsData.setWrapStyleWord(true);
 		statsData.setText("Hello World");
 		statsFrame.add(statsData);
 
