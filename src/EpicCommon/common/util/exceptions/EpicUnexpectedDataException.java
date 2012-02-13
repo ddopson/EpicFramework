@@ -12,6 +12,6 @@ public class EpicUnexpectedDataException extends EpicRuntimeException {
 		super("EpicUnexpectedDataException", msg, null);
 	}
 	public EpicUnexpectedDataException(String msg, Throwable cause) {
-		super("EpicUnexpectedDataException", msg, null);
+		super("EpicUnexpectedDataException", msg, cause);
 	}
 }

@@ -12,6 +12,6 @@ public class EpicAssertionFailedException extends EpicRuntimeException {
 		super("EpicAssertionFailedException", msg, null);
 	}
 	public EpicAssertionFailedException(String msg, Throwable cause) {
-		super("EpicAssertionFailedException", msg, null);
+		super("EpicAssertionFailedException", msg, cause);
 	}
 }

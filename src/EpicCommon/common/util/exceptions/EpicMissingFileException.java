@@ -12,6 +12,6 @@ public class EpicMissingFileException extends EpicRuntimeException {
 		super("EpicMissingFileException", msg, null);
 	}
 	public EpicMissingFileException(String msg, Throwable cause) {
-		super("EpicMissingFileException", msg, null);
+		super("EpicMissingFileException", msg, cause);
 	}
 }

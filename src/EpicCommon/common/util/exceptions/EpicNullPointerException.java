@@ -12,6 +12,6 @@ public class EpicNullPointerException extends EpicRuntimeException {
 		super("EpicNullPointerException", msg, null);
 	}
 	public EpicNullPointerException(String msg, Throwable cause) {
-		super("EpicNullPointerException", msg, null);
+		super("EpicNullPointerException", msg, cause);
 	}
 }

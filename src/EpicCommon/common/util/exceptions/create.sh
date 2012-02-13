@@ -32,7 +32,7 @@ public class __CLASSNAME__ extends EpicRuntimeException {
 		super("__CLASSNAME__", msg, null);
 	}
 	public __CLASSNAME__(String msg, Throwable cause) {
-		super("__CLASSNAME__", msg, null);
+		super("__CLASSNAME__", msg, cause);
 	}
 }' | perl -pe "s/__CLASSNAME__/$CLASSNAME/g" > $CLASSNAME.java
 

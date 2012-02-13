@@ -12,6 +12,6 @@ public class EpicFrameworkException extends EpicRuntimeException {
 		super("EpicFrameworkException", msg, null);
 	}
 	public EpicFrameworkException(String msg, Throwable cause) {
-		super("EpicFrameworkException", msg, null);
+		super("EpicFrameworkException", msg, cause);
 	}
 }

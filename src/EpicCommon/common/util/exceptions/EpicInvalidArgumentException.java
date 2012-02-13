@@ -12,6 +12,6 @@ public class EpicInvalidArgumentException extends EpicRuntimeException {
 		super("EpicInvalidArgumentException", msg, null);
 	}
 	public EpicInvalidArgumentException(String msg, Throwable cause) {
-		super("EpicInvalidArgumentException", msg, null);
+		super("EpicInvalidArgumentException", msg, cause);
 	}
 }

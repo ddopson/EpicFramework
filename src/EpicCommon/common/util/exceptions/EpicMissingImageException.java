@@ -12,6 +12,6 @@ public class EpicMissingImageException extends EpicRuntimeException {
 		super("EpicMissingImageException", msg, null);
 	}
 	public EpicMissingImageException(String msg, Throwable cause) {
-		super("EpicMissingImageException", msg, null);
+		super("EpicMissingImageException", msg, cause);
 	}
 }

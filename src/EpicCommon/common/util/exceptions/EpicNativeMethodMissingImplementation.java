@@ -12,6 +12,6 @@ public class EpicNativeMethodMissingImplementation extends EpicRuntimeException 
 		super("EpicNativeMethodMissingImplementation", msg, null);
 	}
 	public EpicNativeMethodMissingImplementation(String msg, Throwable cause) {
-		super("EpicNativeMethodMissingImplementation", msg, null);
+		super("EpicNativeMethodMissingImplementation", msg, cause);
 	}
 }

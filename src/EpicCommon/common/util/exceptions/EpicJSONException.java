@@ -12,6 +12,6 @@ public class EpicJSONException extends EpicRuntimeException {
 		super("EpicJSONException", msg, null);
 	}
 	public EpicJSONException(String msg, Throwable cause) {
-		super("EpicJSONException", msg, null);
+		super("EpicJSONException", msg, cause);
 	}
 }

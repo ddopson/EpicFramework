@@ -12,6 +12,6 @@ public class EpicSerializationException extends EpicRuntimeException {
 		super("EpicSerializationException", msg, null);
 	}
 	public EpicSerializationException(String msg, Throwable cause) {
-		super("EpicSerializationException", msg, null);
+		super("EpicSerializationException", msg, cause);
 	}
 }

@@ -12,6 +12,6 @@ public class EpicNoSuchElementException extends EpicRuntimeException {
 		super("EpicNoSuchElementException", msg, null);
 	}
 	public EpicNoSuchElementException(String msg, Throwable cause) {
-		super("EpicNoSuchElementException", msg, null);
+		super("EpicNoSuchElementException", msg, cause);
 	}
 }

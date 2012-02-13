@@ -12,6 +12,6 @@ public class EpicUnhandledCaseException extends EpicRuntimeException {
 		super("EpicUnhandledCaseException", msg, null);
 	}
 	public EpicUnhandledCaseException(String msg, Throwable cause) {
-		super("EpicUnhandledCaseException", msg, null);
+		super("EpicUnhandledCaseException", msg, cause);
 	}
 }

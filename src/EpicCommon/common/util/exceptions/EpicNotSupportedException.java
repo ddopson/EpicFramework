@@ -12,6 +12,6 @@ public class EpicNotSupportedException extends EpicRuntimeException {
 		super("EpicNotSupportedException", msg, null);
 	}
 	public EpicNotSupportedException(String msg, Throwable cause) {
-		super("EpicNotSupportedException", msg, null);
+		super("EpicNotSupportedException", msg, cause);
 	}
 }

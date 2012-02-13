@@ -12,6 +12,6 @@ public class EpicMissingSoundException extends EpicRuntimeException {
 		super("EpicMissingSoundException", msg, null);
 	}
 	public EpicMissingSoundException(String msg, Throwable cause) {
-		super("EpicMissingSoundException", msg, null);
+		super("EpicMissingSoundException", msg, cause);
 	}
 }

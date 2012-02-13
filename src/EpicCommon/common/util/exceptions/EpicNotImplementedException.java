@@ -12,6 +12,6 @@ public class EpicNotImplementedException extends EpicRuntimeException {
 		super("EpicNotImplementedException", msg, null);
 	}
 	public EpicNotImplementedException(String msg, Throwable cause) {
-		super("EpicNotImplementedException", msg, null);
+		super("EpicNotImplementedException", msg, cause);
 	}
 }

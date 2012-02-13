@@ -12,6 +12,6 @@ public class EpicStringFormatException extends EpicRuntimeException {
 		super("EpicStringFormatException", msg, null);
 	}
 	public EpicStringFormatException(String msg, Throwable cause) {
-		super("EpicStringFormatException", msg, null);
+		super("EpicStringFormatException", msg, cause);
 	}
 }
