@@ -16,13 +16,12 @@ public class EpicBitmapImplementation {
 		// see http://developer.apple.com/library/ios/#qa/qa1708/_index.html
 		// DDOPSON-2012-01-14 - also, note that during the scaling, the bitmap gets converted from kCGImageAlphaLast ==> kCGImageAlphaPremultipliedFirst
 
-		boolean ipad = false; //EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() > 480;
-		UIImage src = UIImage.imageNamed(eb.parent.name + (ipad ? "_ipad" : "") + "." + eb.parent.extension);	
+		UIImage src = UIImage.imageNamed(eb.parent.getFilename());
 		EpicFail.assertNotNull(src, "src");
 		UIImage scaled = EpicBitmapImplementationNative.resizeImage(src, eb.iwidth, eb.iheight);//, epicBitmap.opaque);
 		EpicFail.assertNotNull(scaled, "scaled");
 //		EpicLog.i("Image: " + epicBitmap.name);
-//		EpicCanvasImplementationNative.inspectImage(src);
+		EpicCanvasImplementationNative.inspectImage(src);
 //		EpicCanvasImplementationNative.inspectImage(scaled);
 		return scaled;
 	}

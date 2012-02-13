@@ -24,7 +24,8 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 	public EpicUiView(CGRect rect) {
 		super(rect);
 		this.setOpaque(true);
-		EpicPlatform.initialize(this, null, null);
+		CGRect bounds = this.getBounds();
+		EpicPlatform.initialize(this, (int)bounds.size.width, (int)bounds.size.height, null, null);
 		EpicPlatformImplementationNative.setupDebugHandlers();
 	}
 

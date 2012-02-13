@@ -19,7 +19,7 @@ public class EpicPlatform {
 	public static final int PLATFORM_BLACKBERRY = 1;
 	public static final int PLATFORM_IOS = 2;
 
-	public static String[] platformPrecedence = new String[] { "ipad", "iphone" };
+	public static String[] platformPrecedence = null; // set in init()
 	
 	public static final int TIMER_HZ = 20;
 	public static final boolean RMODE_FULLSCREEN = true;
@@ -109,11 +109,19 @@ public class EpicPlatform {
 		return (System.currentTimeMillis() - timeAtScreenChange) / 1000.0f;
 	}
 
-	public static void initialize(EpicPlatformInterface platformInterface, String screen, String extra) {
+	public static void initialize(EpicPlatformInterface platformInterface, int width, int height, String screen, String extra) {
 		ArchPlatform.logMemoryStats();
 		if(DEBUG) EpicLog.d("EpicPlatform.initialize(" + platformInterface + ")");
 		if(initialized) {
 			throw EpicFail.framework("EpicPlatform.initialize() is being called twice!!!");
+		}
+		setRenderBounds(width, height);
+		if(isIpad()) {
+			platformPrecedence = new String[] { "ipad", "iphone" };
+		} else if(isIphone()) {
+			platformPrecedence = new String[] { "iphone", "ipad" };
+		} else {
+			platformPrecedence = new String[] { };
 		}
 		EpicImages.init();
 		EpicPlatform.epicPlatformInterface = platformInterface;
@@ -503,6 +511,25 @@ public class EpicPlatform {
 			}
 		}
 	}
+	
+	public static void setRenderBounds(int width, int height) {
+		if(RMODE_FULLSCREEN) {
+			renderWidth = width;
+			renderHeight = height;
+			truePlatformWidth = width;
+			truePlatformHeight = height;
+		} else if(RMODE_STRETCH) {
+			renderWidth = letterboxWidth;
+			renderHeight = letterboxHeight;
+			truePlatformWidth = width;
+			truePlatformHeight = height;
+		} else if(RMODE_LETTERBOX) {
+			renderWidth = letterboxWidth;
+			renderHeight = letterboxHeight;
+			truePlatformWidth = letterboxWidth;
+			truePlatformHeight = letterboxHeight;				
+		}	
+	}
 
 	public static void onPlatformLayoutRequest(int width, int height, boolean invertWidgetOrder) {
 		// DDOPSON-2011-10-15 - this is a ghetto hack to deal with some BB phones that inexplicably load us first as profile and then switch to landscape.  
@@ -518,22 +545,7 @@ public class EpicPlatform {
 			if(!initialized) {
 				throw EpicFail.framework("EpicPlatform has NOT been initialized!!!");
 			}
-			if(RMODE_FULLSCREEN) {
-				renderWidth = width;
-				renderHeight = height;
-				truePlatformWidth = width;
-				truePlatformHeight = height;
-			} else if(RMODE_STRETCH) {
-				renderWidth = letterboxWidth;
-				renderHeight = letterboxHeight;
-				truePlatformWidth = width;
-				truePlatformHeight = height;
-			} else if(RMODE_LETTERBOX) {
-				renderWidth = letterboxWidth;
-				renderHeight = letterboxHeight;
-				truePlatformWidth = letterboxWidth;
-				truePlatformHeight = letterboxHeight;				
-			}
+			setRenderBounds(width, height);
 			epicPercentLayout.doTheLayout(width, height, invertWidgetOrder);
 		}
 	}
