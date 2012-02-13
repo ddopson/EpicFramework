@@ -24,7 +24,7 @@
   	CGContextDrawImage(context, rect, cgimage);
   } else {
   	float falpha = alpha / 255.0f;
-  	CGContextSetAlpha(context, falpha);
+  	if(!blitMode) CGContextSetAlpha(context, falpha);
   	CGContextDrawImage(context, rect, cgimage);
   	CGContextSetAlpha(context, 1.0f);
   }
