@@ -20,7 +20,7 @@
   bool blitMode = (alpha == -1) || (alpha == 255 && CGImageGetAlphaInfo(cgimage) != kCGImageAlphaPremultipliedFirst);
   CGContextSetBlendMode(context, blitMode ? kCGBlendModeCopy : kCGBlendModeNormal);
   //NSLog(@"Drawing image to (%f, %f) - %fx%f, or is it %dx%d", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, CGImageGetWidth(cgimage), CGImageGetHeight(cgimage));
-  if(alpha == 255) {
+  if(alpha == 255 || alpha == -1) {
   	CGContextDrawImage(context, rect, cgimage);
   } else {
   	float falpha = alpha / 255.0f;
