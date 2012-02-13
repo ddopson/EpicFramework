@@ -16,6 +16,7 @@ public class EpicBitmap extends EpicBitmapInstance {
 
 	// Instance Data
 	public final String name;
+	public final String plat;
 	public final String extension;
 	public final int android_id;
 	public final boolean opaque;
@@ -24,22 +25,30 @@ public class EpicBitmap extends EpicBitmapInstance {
 	public int lastRender = -1;
 
 
-	public EpicBitmap(String name, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad) {
-		this(name, extension, android_id, width, height, lpad, tpad, rpad, bpad, true);
+	public static void register(String name, String plat, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad) {
+		EpicBitmap existing = allBitmaps.get(name);
+		if(existing != null) {
+			String[] pp = EpicPlatform.platformPrecedence;
+			int l = pp.length;
+			for(int i = 0; i < l; i++) {
+				if(pp[i].equals(plat)) {
+					break;
+				} else if(pp[i].equals(existing.plat)) {
+					return;
+				}
+			}
+		}
+		
+		allBitmaps.put(name, new EpicBitmap(name, plat, extension, android_id, width, height, lpad, tpad, rpad, bpad));
 	}
-
-	public EpicBitmap(String name, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad, boolean register) {
+	
+	public EpicBitmap(String name, String plat, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad) {
 		super(null, width, height, lpad, tpad, rpad, bpad);
 		this.name = name;
+		this.plat = plat;
 		this.extension = extension;
 		this.android_id = android_id;
 		this.opaque = extension.equals("jpg") ? true : false;
-		if(register) {
-			if(allBitmaps.containsKey(name)) {
-				throw EpicFail.framework("Two bitmaps, same name. name=" + name);
-			}
-			allBitmaps.put(name, this);
-		}
 	}
 
 	public static EpicBitmap lookupByName(String name) {
@@ -59,11 +68,11 @@ public class EpicBitmap extends EpicBitmapInstance {
 	}
 
 	public String getFilename() {
-		return this.name + "." + this.extension;
+		return this.name + "_" + this.plat + "." + this.extension;
 	}
 
 	public String getFilename(String baseDirectory) {
-		return baseDirectory + "/" + this.name + "." + this.extension;
+		return baseDirectory + "/" + this.name + "_" + this.plat + "." + this.extension;
 	}
 
 	public String getExtension() {
@@ -149,15 +158,6 @@ public class EpicBitmap extends EpicBitmapInstance {
 
 	}
 
-	//	private int width_from_key(int key) {
-	//		return key & 0x3FFF;
-	//	}
-	//	private int height_from_key(int key) {
-	//		return key >> 15;
-	//	}
-	//	private Integer make_key(int w, int h) {
-	//		return Integer.valueOf((h << 15) + w);
-	//	}
 	public int recycle() {
 		synchronized(loadingLock) {
 			EpicLog.w("Recycling bitmap '" + name + "'");

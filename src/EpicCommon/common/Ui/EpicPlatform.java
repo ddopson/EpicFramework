@@ -12,13 +12,14 @@ import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.framework.implementation.EpicPlatformImplementation;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
+import com.epic.resources.EpicImages;
 
 public class EpicPlatform {
 	public static final int PLATFORM_ANDROID = 0;
 	public static final int PLATFORM_BLACKBERRY = 1;
 	public static final int PLATFORM_IOS = 2;
 
-
+	public static String[] platformPrecedence = new String[] { "ipad", "iphone" };
 	
 	public static final int TIMER_HZ = 20;
 	public static final boolean RMODE_FULLSCREEN = true;
@@ -114,6 +115,7 @@ public class EpicPlatform {
 		if(initialized) {
 			throw EpicFail.framework("EpicPlatform.initialize() is being called twice!!!");
 		}
+		EpicImages.init();
 		EpicPlatform.epicPlatformInterface = platformInterface;
 		EpicPlatform.epicPercentLayout = new EpicPercentLayout(EpicProjectConfig.getDesignDimensions(), platformInterface);
 		EpicPlatform.currentScreen = EpicProjectConfig.getInitialScreenObject(screen, extra);

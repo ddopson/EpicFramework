@@ -17,7 +17,7 @@ public class EpicImageBuffer extends EpicBitmap {
 	}
 	
 	public EpicImageBuffer(String name, int iwidth, int iheight, boolean opaque, int lpad, int tpad, int rpad, int bpad) {
-		super(name, "BUFFER", -1, iwidth+lpad+rpad, iheight+tpad+bpad, lpad, tpad, rpad, bpad);
+		super(name, "BUFFER", "BUFFER", -1, iwidth+lpad+rpad, iheight+tpad+bpad, lpad, tpad, rpad, bpad);
 		EpicImageBufferImplementation implementation = new EpicImageBufferImplementation(iwidth, iheight, opaque);
 		this.platformObject = implementation.getPlatformBitmapObject();
 		canvas.graphicsObject = implementation.getPlatformGraphicsObject();
