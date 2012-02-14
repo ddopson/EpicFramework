@@ -78,7 +78,7 @@ public class EpicCanvas {
 	
 
 	public final void drawFullscreenBitmap(EpicBitmap image) {
-		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, BLIT, 0, 0, 0, 0);
+		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, OPAQUE, 0, 0, 0, 0);
 	}
 	public final void drawFullscreenBitmap(EpicBitmap image, int alpha) {
 		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, alpha, 0, 0, 0, 0);

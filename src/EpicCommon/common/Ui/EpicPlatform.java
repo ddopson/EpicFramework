@@ -397,9 +397,9 @@ public class EpicPlatform {
 						alpha = EpicCanvas.calculateTranslationAnimation(0, 255, 0, TIMER_HZ / 2, timeNotificationDisplayed);
 					}
 					
-					if(EpicProjectConfig.toastBackground != null) {
-						epicCanvas.drawBitmapWithGlobalAlpha(EpicProjectConfig.toastBackground, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, alpha);
-					}
+//					if(EpicProjectConfig.toastBackground != null) {
+						epicCanvas.drawBitmapWithGlobalAlpha(EpicImages.toast_bg_dark, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, alpha);
+//					}
 					//					epicCanvas.applyFill(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.BLACK));
 //					epicCanvas.drawBorder(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.GREEN), 4);
 					
