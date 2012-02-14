@@ -21,7 +21,7 @@ public class EpicBitmapImplementation {
 		UIImage scaled = EpicBitmapImplementationNative.resizeImage(src, eb.iwidth, eb.iheight);//, epicBitmap.opaque);
 		EpicFail.assertNotNull(scaled, "scaled");
 //		EpicLog.i("Image: " + epicBitmap.name);
-		EpicCanvasImplementationNative.inspectImage(src);
+//		EpicCanvasImplementationNative.inspectImage(src);
 //		EpicCanvasImplementationNative.inspectImage(scaled);
 		return scaled;
 	}
