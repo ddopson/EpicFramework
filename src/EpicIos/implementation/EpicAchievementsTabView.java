@@ -38,8 +38,8 @@ public class EpicAchievementsTabView extends UITabBarController {
 			}
 		}
 		
-		ChallengeDataSource ds = getDataSource(completedChallenges);
-		ChallengeDataSource ids = getDataSource(incompleteChallenges);
+		ChallengeDataSource ds = getDataSource(completedChallenges, true);
+		ChallengeDataSource ids = getDataSource(incompleteChallenges, false);
 		
 		
 		completed = new UITableViewController(UITableViewStyle.Plain);
@@ -80,14 +80,14 @@ public class EpicAchievementsTabView extends UITabBarController {
 	}
 	
 	
-	private ChallengeDataSource getDataSource(ArrayList<Challenge> challenges) {
+	private ChallengeDataSource getDataSource(ArrayList<Challenge> challenges, boolean completedList) {
 		String[] titles = new String[challenges.size()];
 		String[] subtitles = new String[challenges.size()];
 		EpicBitmap[] images = new EpicBitmap[challenges.size()];
 		boolean[] completed = new boolean[challenges.size()];
 		
 		for(int i = 0; i < challenges.size(); ++i) {
-			titles[i] = challenges.get(i).getTitle();
+			titles[i] = challenges.get(i).getTitle() + (!completedList && challenges.get(i).getProgress().length() > 0 ? " (" + challenges.get(i).getProgress() + ")" : "");
 			subtitles[i] = challenges.get(i).getDescription();
 			images[i] = challenges.get(i).getImage();
 			completed[i] = challenges.get(i).isComplete();
