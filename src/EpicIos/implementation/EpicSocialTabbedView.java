@@ -228,7 +228,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 	private void exitAndToast() {
 		EpicLog.i("Exiting and toasting connection failure.");
 		Main.navc.popToRootViewControllerAnimated(true);
-		EpicPlatform.doToastNotification(new EpicNotification("Unable to Connect", new String[] { "There was a problem connecting to our servers.", "Please ensure you have internet connectivity and try again later." }, EpicImages.icon, 4));
+		EpicPlatform.doToastNotification(new EpicNotification("Unable to Connect", new String[] { "There was a problem connecting to our servers.", "Please ensure you have internet connectivity and try again later." }, EpicImages.icon_cow, 4));
 	}
 	
 	private void processRepsonses(String[] pieces) {

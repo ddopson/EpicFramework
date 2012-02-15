@@ -57,7 +57,7 @@ public class EpicSocial {
 			un = identity;
 		}
 		
-		EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now logged in." }, EpicImages.icon);
+		EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now logged in." }, EpicImages.icon_cow);
 		// EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
 		EpicPlatform.doToastNotification(n);
 		PlayerState.setIdentityWithFacebookId(identity, displayName, fbid);
@@ -89,7 +89,7 @@ public class EpicSocial {
 		EpicSocialImplementation.beginLogin(new EpicSocialSignInCompletionHandler() {
 			public void onSignedIn(String identity) {
 				EpicLog.i("NEW PLAYER IDENTITY CHOSEN: '" + identity + "'");
-				EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now logged in." }, EpicImages.icon);
+				EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now logged in." }, EpicImages.icon_cow);
 				//EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
 				EpicPlatform.doToastNotification(n);
 				PlayerState.setIdentity(identity);
@@ -134,10 +134,10 @@ public class EpicSocial {
 		if(PlayerState.canLogOut()) {
 			PlayerState.logOut();
 			EpicLog.i("PLAYER LOGGED OUT");
-			EpicPlatform.doToastNotification(new EpicNotification("Logged Out", new String[] { "You have successfully logged out." }, EpicImages.icon));
+			EpicPlatform.doToastNotification(new EpicNotification("Logged Out", new String[] { "You have successfully logged out." }, EpicImages.icon_cow));
 			EpicPlatform.repaintScreen();
 		} else {
-			EpicPlatform.doToastNotification(new EpicNotification("Problem Logging Out", new String[] { "You cannot log out until you sync your latest scores.", "Please complete a game and try again." }, EpicImages.icon, 5));
+			EpicPlatform.doToastNotification(new EpicNotification("Problem Logging Out", new String[] { "You cannot log out until you sync your latest scores.", "Please complete a game and try again." }, EpicImages.icon_cow, 5));
 		}
 	}
 
