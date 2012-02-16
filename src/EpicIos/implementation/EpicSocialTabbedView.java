@@ -56,6 +56,8 @@ public class EpicSocialTabbedView extends UITabBarController {
 	int iconSize = 30;
 
 	private String[] opponentIds;
+
+	private boolean challengeInFlight;
 	
 	public EpicSocialTabbedView(String cachedResponse) {
 		displayed = true;		
@@ -558,6 +560,12 @@ public class EpicSocialTabbedView extends UITabBarController {
 //	
 	
 	public void sendChallengeTo(final String opponent_id, final String opponent_name) {
+		if(challengeInFlight) {
+			return;
+		}
+		
+		challengeInFlight = true;
+		
 		if(opponent_id == null) {
 			
 			if(PlayerState.getState().currentChallenge != null) {
@@ -574,7 +582,6 @@ public class EpicSocialTabbedView extends UITabBarController {
 						PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);									
 						if(PlayerState.getState().setCurrentChallengeId(response.body, 0)) {
 							EpicPlatform.doToastNotification(new EpicNotification("Challenge Begun!", new String[] { "Your next game will be your entry in this challenge."}, EpicImages.challenge_icon, 5));
-							Main.navc.popToRootViewControllerAnimated(true);
 							ScreenGame.startGame();
 						}
 					} else {
@@ -589,6 +596,8 @@ public class EpicSocialTabbedView extends UITabBarController {
 				}
 			});
 			
+			Main.navc.popToRootViewControllerAnimated(true);
+
 			PlayerState.onChallengeComplete(65);
 						
 		} else {
@@ -600,7 +609,7 @@ public class EpicSocialTabbedView extends UITabBarController {
 				return;
 			}
 
-			WordsHttp.sendChallenge(opponent_id, 0, new EpicHttpResponseHandler() {
+			WordsHttp.sendChallenge(opponent_id, 100, new EpicHttpResponseHandler() {
 				public void handleResponse(EpicHttpResponse response) {
 					if(response.responseCode == 200) {
 						PlayerState.getState().setOpenChallengeCount(PlayerState.getState().getOpenChallengeCount()+1);
