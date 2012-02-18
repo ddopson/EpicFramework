@@ -38,7 +38,7 @@ public class DesktopMain {
 		Dictionary.test();
 		mainFrame = new JFrame();
 		mainFrame.setContentPane(EpicNativeGameFrame.get());
-		EpicPlatform.initialize(EpicNativeGameFrame.get(), null, null);
+		EpicPlatform.initialize(EpicNativeGameFrame.get(), EpicSimulator.currentScreenSize.width, EpicSimulator.currentScreenSize.height, null, null);
 		mainFrame.setJMenuBar(new EpicSimulatorMenuBar());
 		mainFrame.pack();
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

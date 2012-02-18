@@ -60,7 +60,7 @@ public class DesktopUiCoverage {
 		});
 		mainFrame = new JFrame();
 		mainFrame.setContentPane(EpicNativeGameFrame.get());
-		EpicPlatform.initialize(EpicNativeGameFrame.get(), null, null);
+		EpicPlatform.initialize(EpicNativeGameFrame.get(), EpicSimulator.currentScreenSize.width, EpicSimulator.currentScreenSize.height, null, null);
 		EpicPlatform.epicTestHook = new EpicTestHook() {
 			public void onPaintFinished() {
 				hasRepainted = true;
