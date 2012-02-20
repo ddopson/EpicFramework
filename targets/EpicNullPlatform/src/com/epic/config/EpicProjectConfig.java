@@ -21,6 +21,8 @@ import com.epic.framework.common.types.Dimension;
 	
 	public static boolean isReleaseMode = true;
 
+	public static EpicSound screenTransitionSound;
+
 	public static final Dimension designDimensions = new Dimension(800, 480);
 	public static Dimension getDesignDimensions() {
 		return designDimensions;

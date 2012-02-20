@@ -18,12 +18,23 @@ public class EpicPlatformImplementation {
 	}
 
 	public static String getListingId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public static String getApplicationVersion() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public static void setAppBadge(int newCount) {
+	}
+
+	public static String getUniqueDeviceId() {
+		return null;
+	}
+
+	public static void requestFacebookFriends(String string) {
+	}
+
+	public static void deepLinkToMarket(String string) {
 	}
 }

@@ -25,11 +25,16 @@ public class EpicFontImplementation {
 	public static int measureAdvance(Object graphicsObject, EpicFont font, String text) {
 		return -1;
 	}
-	public static int measureAdvance(Object graphicsObject, EpicFont font, char[] chars, int offset, int length) {
+	public static int measureAdvance(Object graphicsObject, char[] chars, int offset, int length) {
 		return -1;
 	}
 	public static int measureAdvance(EpicFont epicFont, String text) {
-		// TODO Auto-generated method stub
-		return 0;
+		return -1;
+	}
+	public static Object getFontObjectFromFile(EpicFile file, int size) {
+		return null;
+	}
+	public static Object getFontObjectFromName(String name, int size) {
+		return null;
 	}
 }

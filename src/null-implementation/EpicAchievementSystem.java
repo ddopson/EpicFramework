@@ -15,9 +15,9 @@ public class EpicAchievementSystem {
 		return false;
 	}
 
-	public static void unlockAchievement(final EpicAchievement achievement, final EpicAchievementFallbackMethod fallback) {
-		fallback.popupAchievement(achievement, false);
-	}
+//	public static void unlockAchievement(final EpicAchievement achievement, final EpicAchievementFallbackMethod fallback) {
+//		fallback.popupAchievement(achievement, false);
+//	}
 
 	public static void submitScore(String leaderboardId, int value) {
 		// No high scores on BB

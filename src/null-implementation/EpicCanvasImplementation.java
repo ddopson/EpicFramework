@@ -3,7 +3,7 @@ package com.epic.framework.implementation;
 import com.epic.framework.common.Ui.EpicFont;
 
 public class EpicCanvasImplementation {
-	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh) {
+	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
 	}
 
 	public static void drawCircle(Object graphicsObject, int color, int alpha, int x_center, int y_center, int radius) {
@@ -26,5 +26,8 @@ public class EpicCanvasImplementation {
 
 	public static void init(Object graphicsObject) {
 		// optional.  Doesn't need to do anything
+	}
+
+	public static void drawTextBox(Object graphicsObject, String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
 	}
 }
