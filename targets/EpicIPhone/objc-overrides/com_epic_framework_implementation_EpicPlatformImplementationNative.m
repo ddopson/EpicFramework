@@ -124,7 +124,7 @@ void uncaught_exception_handler(NSException *exception) {
 
 + (java_lang_String*) getDeviceName__
 {
-	return [[[UIDevice currentDevice].model] retain];
+	return [[UIDevice currentDevice].model retain];
 }
 
 + (void) runOnUiThread___java_lang_Runnable :(java_lang_Runnable*) callback;
