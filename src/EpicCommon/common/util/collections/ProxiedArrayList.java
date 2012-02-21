@@ -35,7 +35,7 @@ public class ProxiedArrayList<T> implements List<T> {
 	}
 
 	@Override
-	public <T> T[] toArray(T[] paramArrayOfT) {
+	public <A> A[] toArray(A[] paramArrayOfT) {
 		return proxy.toArray(paramArrayOfT);
 	}
 

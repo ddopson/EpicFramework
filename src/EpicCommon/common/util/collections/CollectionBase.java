@@ -74,6 +74,8 @@ public abstract class CollectionBase<T> implements Collection<T>{
 		return array;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
 	public <A> A[] toArray(A[] array) {
 		if(array.length != size()) {
 			// Blackberry doesn't support dynamically creating arrays
