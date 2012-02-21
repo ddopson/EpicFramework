@@ -13,14 +13,12 @@ import android.graphics.Typeface;
 
 public class EpicFontImplementation {
 	private final Typeface typeface;
-	private final int textSize;
 	
 	private static HashMap<String, Typeface> fontMap = new HashMap<String, Typeface>();
 	private static final int defaultTextSize = 99;
 	
 	private EpicFontImplementation(Typeface typeface, int textSize) {
 		this.typeface = typeface;
-		this.textSize = textSize;
 	}
 	
 	private static Paint fakePaint = new Paint();
@@ -30,54 +28,49 @@ public class EpicFontImplementation {
 		return new EpicFontImplementation(baseFont.typeface, textSize);
 	}
 
-	private static Rect _bounds = new Rect();;
-	public static int measureHeight(Object fontObject) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		fakePaint.setTypeface(font.typeface);
-		fakePaint.setTextSize(font.textSize);
+	public static int measureHeight(EpicFont epicFont) {
+		fakePaint.setTypeface((Typeface)epicFont.fontObject);
+		fakePaint.setTextSize(epicFont.size_absolute);
 		return (int)(-fakePaint.ascent() + fakePaint.descent());
 	}
 	
-	public static int measureAscent(Object fontObject) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		fakePaint.setTypeface(font.typeface);
-		fakePaint.setTextSize(font.textSize);
+	public static int measureAscent(EpicFont epicFont) {
+		fakePaint.setTypeface((Typeface)epicFont.fontObject);
+		fakePaint.setTextSize(epicFont.size_absolute);
 		return (int)(-fakePaint.ascent());
 	}
+	
+	public static int measureDescent(EpicFont epicFont) {
+		fakePaint.setTypeface((Typeface)epicFont.fontObject);
+		fakePaint.setTextSize(epicFont.size_absolute);
+		return (int)(-fakePaint.descent());
+	}
 
-	public static int measureAdvance(Object fontObject, String text) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		fakePaint.setTypeface(font.typeface);
-		fakePaint.setTextSize(font.textSize);
+	public static int measureAdvance(EpicFont epicFont, String text) {
+		fakePaint.setTypeface((Typeface)epicFont.fontObject);
+		fakePaint.setTextSize(epicFont.size_absolute);
 		return (int)fakePaint.measureText(text);
 	}
 
-	public static int measureAdvance(Object fontObject, char[] chars, int offset, int length) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		fakePaint.setTypeface(font.typeface);
-		fakePaint.setTextSize(font.textSize);
+	public static int measureAdvance(EpicFont epicFont, char[] chars, int offset, int length) {
+		fakePaint.setTypeface((Typeface)epicFont.fontObject);
+		fakePaint.setTextSize(epicFont.size_absolute);
 		return (int)fakePaint.measureText(chars, offset, length);
 	}
 
-	public static Object getFontObjectFromFile(EpicFile file) {
+	public static Object getFontObjectFromFile(EpicFile file, int size) {
 		if(!fontMap.containsKey(file.getFilename())) {
 			fontMap.put(file.getFilename(), Typeface.createFromAsset(EpicAndroidActivity.getCurrentAndroidActivity().getAssets(), file.getFilename()));
 		}
-		return new EpicFontImplementation(fontMap.get(file.getFilename()), defaultTextSize);
-	}
-
-	public static int getSize(Object fontObject) {
-		EpicFontImplementation font = (EpicFontImplementation)fontObject;
-		return font.textSize;
+		return new EpicFontImplementation(fontMap.get(file.getFilename()), size);
 	}
 
 	public static void setAndroidFont(Paint paint, EpicFont epicFont) {
-		EpicFontImplementation font = (EpicFontImplementation)epicFont.fontObject;
-		paint.setTypeface(font.typeface);
-		paint.setTextSize(font.textSize);
+		paint.setTypeface((Typeface)epicFont.fontObject);
+		paint.setTextSize(epicFont.size_absolute);
 	}
 
-	public static Object getFontObjectFromName(String systemName) {
+	public static Object getFontObjectFromName(String name, int size) {
 		return null;
 	}
 }

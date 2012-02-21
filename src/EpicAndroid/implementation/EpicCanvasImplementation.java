@@ -44,7 +44,7 @@ public class EpicCanvasImplementation {
 		return _paint;
 	}
 	
-	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh) {
+	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
 		Canvas canvas = (Canvas)graphicsObject;
 		Bitmap bitmap = (Bitmap)bitmapObject;
 		src.set(sx, sy, sx+sw, sy+sh);
@@ -97,13 +97,13 @@ public class EpicCanvasImplementation {
 	
 	public static void drawText(Object graphicsObject, String text, int left, int top, EpicFont font, int color, int rotateBy) {
 		Canvas canvas = _drawTextSetup(graphicsObject, left, top, font, color, rotateBy);
-		canvas.drawText(text, left, top + font.measureAscent(), paintText);
+		canvas.drawText(text, left, top + font.ascent, paintText);
 		canvas.rotate(-1 * rotateBy, left, top);
 	}
 
 	public static void drawText(Object graphicsObject, char[] chars, int offset, int length, int left, int top, EpicFont font, int color, int rotateBy) {
 		Canvas canvas = _drawTextSetup(graphicsObject, left, top, font, color, rotateBy);
-		canvas.drawText(chars, offset, length, left, top + font.measureAscent(), paintText);
+		canvas.drawText(chars, offset, length, left, top + font.ascent, paintText);
 		canvas.rotate(-1 * rotateBy, left, top);
 	}
 
@@ -112,5 +112,11 @@ public class EpicCanvasImplementation {
 		paintText.setStrokeWidth(strokeWidth);
 		paintText.setColor(color);
 		canvas.drawLine(x, y, x2, y2, paintText);
+	}
+
+	public static void init(Object graphicsObject) {
+	}
+
+	public static void drawTextBox(Object graphicsObject, String text, int left, int top, int width, int height, EpicFont font, int color, int rotateBy) {
 	}
 }
