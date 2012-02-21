@@ -122,6 +122,11 @@ void uncaught_exception_handler(NSException *exception) {
   return [[[UIDevice currentDevice] uniqueDeviceIdentifier] retain];
 }
 
++ (java_lang_String*) getDeviceName__
+{
+	return [[[UIDevice currentDevice].model] retain];
+}
+
 + (void) runOnUiThread___java_lang_Runnable :(java_lang_Runnable*) callback;
 {
   dispatch_async(dispatch_get_main_queue(), ^{

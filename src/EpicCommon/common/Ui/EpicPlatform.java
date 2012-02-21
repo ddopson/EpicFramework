@@ -10,6 +10,7 @@ import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.implementation.ArchPlatform;
 import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.framework.implementation.EpicPlatformImplementation;
+import com.epic.framework.implementation.EpicPlatformImplementationNative;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.resources.EpicImages;
@@ -130,7 +131,7 @@ public class EpicPlatform {
 		currentScreen.onCreateUi(epicPercentLayout);
 		currentScreen.onShow();
 		epicTimer.scheduleAtFixedRate(1000 / TIMER_HZ);
-		EpicLog.d("EpicPlatform.initialize is done.");
+		EpicLog.d("EpicPlatform.initialize is done for device type: " + EpicPlatformImplementation.getDeviceName());
 		initialized = true;
 	}
 
@@ -636,5 +637,9 @@ public class EpicPlatform {
 	
 	public static boolean isIpad() {
 		return EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() > 480;
+	}
+
+	public static String getDeviceName() {
+		return EpicPlatformImplementation.getDeviceName();
 	}
 }
