@@ -1,5 +1,7 @@
 package com.epic.framework.common.Ui2;
 
+import java.text.Annotation;
+
 
 public abstract class EpicObject {
 	public EpicClass type;
@@ -9,5 +11,7 @@ public abstract class EpicObject {
 	public static final int FIELD_NULLABLE = 0x2;
 	public static final int FIELD_OPTIONAL = 0x0;
 	public static final int FIELDMASK_REQUIRED = 0x1;
-	public static final int FIELDMASK_NULLABLE = 0x1;
+	public static final int FIELDMASK_NULLABLE = 0x2;
+	
+	public static Annotation RequiredField = new Annotation(null);
 }

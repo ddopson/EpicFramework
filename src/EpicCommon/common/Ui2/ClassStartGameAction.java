@@ -14,5 +14,4 @@ public class ClassStartGameAction extends EpicClass {
 	public static void register() {
 		Registry.register("com.epic.framework.common.Ui2.StartGameAction", singleton);
 	}
-
 }

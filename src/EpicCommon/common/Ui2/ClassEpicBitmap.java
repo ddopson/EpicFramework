@@ -5,7 +5,6 @@ import com.epic.framework.common.Ui2.JSON.JSONArray;
 import com.epic.framework.common.Ui2.JSON.JSONObject;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
-import com.epic.resources.EpicImages;
 
 public class ClassEpicBitmap extends EpicClass {
 
@@ -35,21 +34,6 @@ public class ClassEpicBitmap extends EpicClass {
 			}
 		}
 		return realArray;
-	}
-	
-	public static EpicBitmap inflateField(JSONObject data, String fieldName, int flags) {
-		Object fieldData = data.opt(fieldName);
-
-		if (fieldData instanceof String) {
-			return EpicBitmap.lookupByNameOrThrow((String)fieldData);
-		} else {
-			EpicObject fieldObject = Registry.inflateField(data, fieldName, flags);
-			if(fieldObject instanceof EpicBitmap) {
-				return (EpicBitmap)fieldObject;
-			} else {
-				throw new EpicObjectInflationException("Field '" + fieldName + "' must be of type 'EpicBitmap'");
-			}			
-		}
 	}
 	
 	public static void register() {

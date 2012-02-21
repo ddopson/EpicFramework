@@ -4,12 +4,12 @@
 	widgets: [
 		{
 			type: "com.epic.framework.common.Ui2.EpicBackgroundWidget",
-			bitmap: "bg_main_menu"
+			bitmap: "images/bg_main_menu"
 		},{
 			type: "com.epic.framework.common.Ui2.EpicButtonWidget",
-			bitmap_default: "game_word_puzzle_title_button_play_default",
-			bitmap_focused: "game_word_puzzle_title_button_play_focused",
-			bitmap_pressed: "game_word_puzzle_title_button_play_pressed",
+			bitmap_default: "images/game_word_puzzle_title_button_play_default",
+			bitmap_focused: "images/game_word_puzzle_title_button_play_focused",
+			bitmap_pressed: "images/game_word_puzzle_title_button_play_pressed",
 			x: 240, 
 			y: 244, 
 			width: 339,

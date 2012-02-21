@@ -6,9 +6,9 @@ import com.epic.framework.common.Ui.EpicPercentLayout;
 import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.Ui.MouseTrail;
 import com.epic.framework.common.Ui2.EpicWidget.Clickable;
+import com.epic.framework.common.Ui2.EpicObject;
 
 public class EpicScreenObject extends EpicScreen {
-
 	EpicWidget[] widgets;
 	
 	protected void onPaint(EpicCanvas canvas, int width, int height, MouseTrail mouseTrail) { 

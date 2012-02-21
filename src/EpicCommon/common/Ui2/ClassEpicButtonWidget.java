@@ -19,10 +19,10 @@ public class ClassEpicButtonWidget extends EpicClass {
 			throw new EpicObjectInflationException("suberror", e);
 		}
 		
-		object.action = ClassEpicAction.inflateField(data, "action", EpicObject.FIELD_NULLABLE);
-		object.bitmap_default = ClassEpicBitmap.inflateField(data, "bitmap_default", EpicObject.FIELD_REQUIRED);
-		object.bitmap_focused = ClassEpicBitmap.inflateField(data, "bitmap_focused", EpicObject.FIELD_NULLABLE);
-		object.bitmap_pressed = ClassEpicBitmap.inflateField(data, "bitmap_pressed", EpicObject.FIELD_REQUIRED);
+		object.action = (EpicAction) Registry.inflateField(data, "action", ClassEpicAction.singleton, EpicObject.FIELD_NULLABLE);
+		object.bitmap_default = (EpicBitmap) Registry.inflateField(data, "bitmap_default", ClassEpicBitmap.singleton, EpicObject.FIELD_REQUIRED);
+		object.bitmap_focused = (EpicBitmap) Registry.inflateField(data, "bitmap_focused", ClassEpicBitmap.singleton, EpicObject.FIELD_NULLABLE);
+		object.bitmap_pressed = (EpicBitmap) Registry.inflateField(data, "bitmap_pressed", ClassEpicBitmap.singleton, EpicObject.FIELD_REQUIRED);
 		
 		return object;
 	}
@@ -30,5 +30,4 @@ public class ClassEpicButtonWidget extends EpicClass {
 	public static void register() {
 		Registry.register("com.epic.framework.common.Ui2.EpicButtonWidget", singleton);
 	}
-
 }

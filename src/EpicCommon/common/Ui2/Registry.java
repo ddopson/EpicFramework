@@ -42,9 +42,9 @@ public class Registry {
 	}
 
 	
-	public static EpicObject inflateField(JSONObject data, String fieldName, int flags) {
+	public static EpicObject inflateField(JSONObject data, String fieldName, EpicClass type, int flags) {
 		Object fieldData = data.opt(fieldName);
-		
+
 		if(fieldData == null) {
 			if((flags & EpicObject.FIELDMASK_REQUIRED) > 0) {
 				throw new EpicObjectInflationException("Field '" + fieldName + "' must be specified");
@@ -56,11 +56,27 @@ public class Registry {
 				throw new EpicObjectInflationException("Field '" + fieldName + "' must be non-null");
 			} else {
 				return null;
-			}			
+			}
 		} else if (fieldData instanceof JSONObject) {
 			return Registry.inflate((JSONObject)fieldData);
+		} else if (fieldData instanceof String) {
+			String name = (String)fieldData;
+			EpicObject object = get(name);
+			if(object == null) {
+				// TODO: loading order ..... how to handle loading A and B where A.other = "B", and B.other = "A". 
+				// We might need a lazy load of object contents or something else "interesting".
+				// option 1) we load all objects into the registry uninitialized. only then do we run the actual inflation logic
+				// option 2) we insert placeholders for missing references
+				// goal 1) good error messages when a name is fat-fingered
+				// goal 2) support the {A.other = "B", B.other = "A"} scenario
+				throw new EpicObjectInflationException("Error inflating field '" + fieldName + "': No object named '" + name + "' was found in the registry");
+			} else if (!type.isInstanceOf(object)) {
+				throw new EpicObjectInflationException("Error inflating field '" + fieldName + "': Field expected type '" + type.getName() + "'. The object named '" + name + "' was of type '" + object.type.getName() + "'");				
+			}
+			return object;
 		} else {
-			throw new EpicObjectInflationException("Field '" + fieldName + "' was expected to be an object");			
+			String actualType = fieldData.getClass().getName();
+			throw new EpicObjectInflationException("Field '" + fieldName + "' was expected to be an object of type '" + type.getName() + "'. Data was of type '" + actualType + "'");
 		}
 	}
 	

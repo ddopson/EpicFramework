@@ -10,8 +10,8 @@ public class ClassEnsureLoginAction extends EpicClass {
 	public EpicObject inflate(JSONObject data) {
 		EnsureLoginAction object = new EnsureLoginAction();
 		
-		object.failure = ClassEpicAction.inflateField(data, "failure", EpicObject.FIELD_OPTIONAL);
-		object.success = ClassEpicAction.inflateField(data, "success", EpicObject.FIELD_OPTIONAL);
+		object.failure = (EpicAction) Registry.inflateField(data, "failure", ClassEpicAction.singleton, EpicObject.FIELD_OPTIONAL);
+		object.success = (EpicAction) Registry.inflateField(data, "success", ClassEpicAction.singleton, EpicObject.FIELD_OPTIONAL);
 		
 		return object;
 	}

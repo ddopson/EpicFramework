@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.epic.framework.common.Ui2.ClassEpicBitmap;
 import com.epic.framework.common.Ui2.EpicObject;
+import com.epic.framework.common.Ui2.Registry;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicStopwatch;
@@ -40,15 +41,15 @@ public class EpicBitmap extends EpicBitmapInstance {
 				}
 			}
 		}
-		
-		allBitmaps.put(name, new EpicBitmap(name, plat, extension, android_id, width, height, lpad, tpad, rpad, bpad));
+		EpicBitmap epicBitmap = new EpicBitmap(name, plat, extension, android_id, width, height, lpad, tpad, rpad, bpad);
+		allBitmaps.put(name, epicBitmap);
+		Registry.register("images/" + name, epicBitmap);
 	}
 	
 	public EpicBitmap(String name, String plat, String extension, int android_id, int width, int height, int lpad, int tpad, int rpad, int bpad) {
 		super(null, width, height, lpad, tpad, rpad, bpad);
 		this.name = name;
 		this.plat = plat;
-		this.type = ClassEpicBitmap.singleton;
 		this.extension = extension;
 		this.android_id = android_id;
 		this.opaque = extension.equals("jpg") ? true : false;

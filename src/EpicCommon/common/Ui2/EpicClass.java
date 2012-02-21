@@ -8,4 +8,8 @@ public abstract class EpicClass extends EpicObject {
 	}
 	
 	public abstract EpicObject inflate(JSONObject data);
+
+	public String getName() { return ""; }
+
+	public boolean isInstanceOf(EpicObject object) { return true; }
 }

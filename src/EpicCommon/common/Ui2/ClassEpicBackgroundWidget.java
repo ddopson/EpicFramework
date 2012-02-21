@@ -12,7 +12,7 @@ public class ClassEpicBackgroundWidget extends EpicClass {
 	public EpicObject inflate(JSONObject data) {
 		EpicBackgroundWidget object = new EpicBackgroundWidget();
 
-		object.bitmap = ClassEpicBitmap.inflateField(data, "bitmap", EpicObject.FIELD_REQUIRED);
+		object.bitmap = (EpicBitmap) Registry.inflateField(data, "bitmap", ClassEpicBitmap.singleton, EpicObject.FIELD_REQUIRED);
 		
 		return object;
 	}

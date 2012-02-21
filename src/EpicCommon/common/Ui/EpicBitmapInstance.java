@@ -1,6 +1,8 @@
 package com.epic.framework.common.Ui;
 
-public class EpicBitmapInstance {
+import com.epic.framework.common.Ui2.EpicObject;
+
+public class EpicBitmapInstance extends EpicObject {
 	public final EpicBitmap parent;
 	public final int width;
 	public final int height;

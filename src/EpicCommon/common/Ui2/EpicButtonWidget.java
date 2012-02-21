@@ -8,6 +8,7 @@ public class EpicButtonWidget extends EpicWidget implements EpicWidget.Clickable
 	EpicBitmap bitmap_default;
 	EpicBitmap bitmap_focused;
 	EpicBitmap bitmap_pressed;
+	static EpicBitmap foo;
 	public void onPaint(EpicCanvas canvas) {
 		EpicBitmap bitmap = bitmap_default;
 		canvas.drawBitmap(bitmap, x, y, width, height);

@@ -20,7 +20,7 @@ public class EpicPlatform {
 	public static final int PLATFORM_BLACKBERRY = 1;
 	public static final int PLATFORM_IOS = 2;
 
-	public static String[] platformPrecedence = null; // set in init()
+	public static String[] platformPrecedence = new String[] { }; // set in init()
 	
 	public static final int TIMER_HZ = 20;
 	public static final boolean RMODE_FULLSCREEN = true;

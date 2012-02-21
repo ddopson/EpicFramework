@@ -14,14 +14,12 @@ public class InitRoutine {
 		ClassEpicAction.register();
 		ClassEpicClass.register();
 		ClassEnsureLoginAction.register();
-		ClassActionChangeScreen.register();
 		ClassStartGameAction.register();
 		ClassEpicScreenObject.register();
 		ClassEpicWidget.register();
 		ClassEpicBackgroundWidget.register();
 		
-		
-		EpicBitmap b = EpicImages.rare_seed_chain_reaction; // trigger static init
+		EpicImages.init();
 		
 		InputStream in = FakeMainMenu.class.getResourceAsStream("testdata.json");
 		JSONTokener tokenizer = new JSONTokener(in);
