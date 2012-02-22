@@ -14,6 +14,7 @@ import com.epic.framework.implementation.EpicPlatformImplementationNative;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.resources.EpicImages;
+import com.realcasualgames.words.ScreenGame;
 
 public class EpicPlatform {
 	public static final int PLATFORM_ANDROID = 0;
@@ -362,10 +363,10 @@ public class EpicPlatform {
 		}
 	}
 
-	public static void doToastNotification(EpicNotification notification) {
+	public static void doToastNotification(EpicNotification n) {
 		synchronized (singleThreadingLock) {
-			notifications.add(notification);
-			EpicLog.i("Toasting for: " + notification.title);
+			notifications.add(n);
+			EpicLog.i("Toasting for: " + n.title);
 			repaintScreen();
 			// EpicPlatformImplementation.doToastNotification(text, duration);
 		}
@@ -398,25 +399,44 @@ public class EpicPlatform {
 						alpha = EpicCanvas.calculateTranslationAnimation(0, 255, 0, TIMER_HZ / 2, timeNotificationDisplayed);
 					}
 					
-//					if(EpicProjectConfig.toastBackground != null) {
-						epicCanvas.drawBitmapWithGlobalAlpha(EpicImages.toast_bg_dark, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, alpha);
-//					}
-					//					epicCanvas.applyFill(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.BLACK));
-//					epicCanvas.drawBorder(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.GREEN), 4);
-					
-					int textWidth = n.icon == null ? 640 : 510;
-					int textLeftPad = n.icon == null ? 20 : 100;
-					
-					epicCanvas.drawTextBox(n.title, EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 5, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.title, textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
-					
-					if(n.messages != null && n.messages.length > 0) {
-						int whichMessage = timeNotificationDisplayed / (n.duration * TIMER_HZ / n.messages.length);
-						if(whichMessage >= n.messages.length) whichMessage = n.messages.length - 1;
-						epicCanvas.drawTextBox(n.messages[whichMessage], EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 40, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.messages[whichMessage], textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.LTGRAY));
-					}
-					
-					if(n.icon != null) {
-						epicCanvas.drawBitmapWithGlobalAlpha(n.icon, EpicNotification.NOTIFICATION_LEFT_PAD + 20, EpicNotification.NOTIFICATION_TOP_PAD + 10, 64, 64, alpha);
+					if(n.minimized) {
+//						if(EpicProjectConfig.toastBackground != null) {
+							epicCanvas.drawBitmapWithGlobalAlpha(EpicImages.toast_bg_dark, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD-7, EpicNotification.NOTIFICATION_WIDTH, (EpicNotification.NOTIFICATION_HEIGHT / 2), alpha);
+//						}
+						
+						int textWidth = n.icon == null ? 640 : 540;
+						int textLeftPad = n.icon == null ? 20 : 100;
+
+						if(n.messages != null && n.messages.length > 0) {
+							int whichMessage = timeNotificationDisplayed / (n.duration * TIMER_HZ / n.messages.length);
+							if(whichMessage >= n.messages.length) whichMessage = n.messages.length - 1;
+							epicCanvas.drawTextBox(n.messages[whichMessage], EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD-4, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.messages[whichMessage], textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
+						}
+						 
+						if(n.icon != null) {
+							epicCanvas.drawBitmapWithGlobalAlpha(n.icon, EpicNotification.NOTIFICATION_LEFT_PAD + 25, EpicNotification.NOTIFICATION_TOP_PAD-4, 32, 32, alpha);
+						}
+					} else {
+	//					if(EpicProjectConfig.toastBackground != null) {
+							epicCanvas.drawBitmapWithGlobalAlpha(EpicImages.toast_bg_dark, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, alpha);
+	//					}
+						//					epicCanvas.applyFill(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.BLACK));
+	//					epicCanvas.drawBorder(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.GREEN), 4);
+						
+						int textWidth = n.icon == null ? 640 : 510;
+						int textLeftPad = n.icon == null ? 20 : 100;
+						
+						epicCanvas.drawTextBox(n.title, EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 5, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.title, textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
+						
+						if(n.messages != null && n.messages.length > 0) {
+							int whichMessage = timeNotificationDisplayed / (n.duration * TIMER_HZ / n.messages.length);
+							if(whichMessage >= n.messages.length) whichMessage = n.messages.length - 1;
+							epicCanvas.drawTextBox(n.messages[whichMessage], EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 40, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.messages[whichMessage], textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.LTGRAY));
+						}
+						
+						if(n.icon != null) {
+							epicCanvas.drawBitmapWithGlobalAlpha(n.icon, EpicNotification.NOTIFICATION_LEFT_PAD + 20, EpicNotification.NOTIFICATION_TOP_PAD + 5, 64, 64, alpha);
+						}
 					}
 				}
 			}
