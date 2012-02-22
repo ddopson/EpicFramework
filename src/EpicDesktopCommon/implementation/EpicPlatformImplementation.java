@@ -53,4 +53,8 @@ public class EpicPlatformImplementation {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static String getDeviceName() {
+		return "device_name";
+	}
 }
