@@ -37,7 +37,7 @@ public class EpicCanvasImplementation {
 			int bh = bitmap.getHeight(null);
 			EpicLog.i("drawBitmapImpl(" + StringHelper.namedArgList("x", x, "y", y, "alpha", alpha, "sx", sx, "sy", sy, "sw", sw, "sh", sh, "i.w", bw, "i.h", bh) + ")");
 		}
-	Composite originalAlpha = (alpha > 0) ? setAlpha(graphics, alpha) : null;
+		Composite originalAlpha = (alpha > 0) ? setAlpha(graphics, alpha) : null;
 		graphics.drawImage(bitmap, x, y, x+sw, y+sh, sx, sy, sx+sw, sy+sh, null);
 		if(alpha > 0) unsetAlpha(graphics, originalAlpha);
 	}

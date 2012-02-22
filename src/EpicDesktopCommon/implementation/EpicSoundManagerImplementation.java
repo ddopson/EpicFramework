@@ -14,34 +14,45 @@ import com.epic.framework.common.util.EpicLog;
 import com.epic.resources.EpicFiles;
 
 public class EpicSoundManagerImplementation {
-
+	private static Player music = null;
 	public static void playMusic(final EpicSound sound) {
-		playSound(sound, true);
+		if(music != null) {
+			music.close();
+		}
+//		music = playSound(sound, true);
 	}
 
 	public static void playSound(EpicSound sound) {
 		playSound(sound, false);
 	}
 	
-	public static void playSound(final EpicSound sound, boolean isMusic) {
+	public static Player playSound(final EpicSound sound, boolean isMusic) {
+		final Player p = getPlayer(sound);
 		EpicPlatform.runInBackground(new Runnable() {
 			public void run() {
-				// TODO Auto-generated method stub
-
 				EpicLog.i("Playing Sound: '" + sound.name + "'");
-				String filename = "./resources/" + sound.getFilename();
-				javazoom.jl.player.Player p;
 				try {
-					p = new Player(new FileInputStream(filename));
 					p.play();
-				} catch (FileNotFoundException e) {
-					throw EpicFail.missing_image(sound.name, e);
-				}
-				catch (JavaLayerException e) {
+				} catch (JavaLayerException e) {
 					EpicLog.e("SOUND_ERROR: playing sound '" + sound.name + "', got ", e);
 				}
 			}
 		});
+		return p;
+	}
+	
+	private static Player getPlayer(final EpicSound sound) {
+		try {
+			String filename = "./resources/" + sound.getFilename();
+			Player p = new Player(new FileInputStream(filename));
+			return p;
+		} catch (FileNotFoundException e) {
+			throw EpicFail.missing_image(sound.name, e);
+		}
+		catch (JavaLayerException e) {
+			EpicLog.e("SOUND_ERROR: playing sound '" + sound.name + "', got ", e);
+			return null;
+		}
 	}
 
 	public static void preload(EpicSound[] soundsToPreload) {

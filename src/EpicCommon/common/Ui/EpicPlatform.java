@@ -10,7 +10,6 @@ import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.implementation.ArchPlatform;
 import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.framework.implementation.EpicPlatformImplementation;
-import com.epic.framework.implementation.EpicPlatformImplementationNative;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.resources.EpicImages;
