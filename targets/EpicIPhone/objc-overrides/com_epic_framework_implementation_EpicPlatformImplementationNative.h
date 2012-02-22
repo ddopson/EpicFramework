@@ -22,6 +22,7 @@
 + (void) requestFacebookFriends___java_lang_String : (java_lang_String*) message;
 + (void) launchBrowserTo___java_lang_String : (java_lang_String*) url;
 + (int) isNetworkAvailable__;
++ (java_lang_String*) getDeviceName__;
 
 + (org_xmlvm_iphone_UIImage*) resizeImage___org_xmlvm_iphone_UIImage_int_int
   : (org_xmlvm_iphone_UIImage*) src 

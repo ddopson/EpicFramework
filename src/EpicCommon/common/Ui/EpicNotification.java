@@ -11,6 +11,7 @@ public class EpicNotification {
 	public String[] messages;
 	public EpicBitmap icon;
 	public int duration;
+	public boolean minimized;
 	
 	public EpicNotification(String title, String[] messages, EpicBitmap icon, int duration) {
 		this.title = title;

@@ -44,4 +44,8 @@ public class EpicPlatformImplementation {
 	public static void requestFacebookFriends(String message) {
 		EpicPlatformImplementationNative.requestFacebookFriends(message);
 	}
+
+	public static String getDeviceName() {
+		return EpicPlatformImplementationNative.getDeviceName();
+	}
 }

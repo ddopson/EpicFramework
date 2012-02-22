@@ -9,6 +9,9 @@ public abstract class EpicPlatformImplementationNative {
 	public static String getUniqueDeviceId() {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
+	public static String getDeviceName() {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
 	public static void runOnUiThread(Runnable runnable) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
