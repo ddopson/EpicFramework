@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 import com.epic.framework.common.util.ArrayIterator;
 import com.epic.framework.common.util.EpicFail;
-import com.realcasualgames.words.WordsCell;
 
 public abstract class HexGrid<T> implements Iterable<T> {
 	// The grid looks like this:
