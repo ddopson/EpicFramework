@@ -409,7 +409,7 @@ public class EpicPlatform {
 						if(n.messages != null && n.messages.length > 0) {
 							int whichMessage = timeNotificationDisplayed / (n.duration * TIMER_HZ / n.messages.length);
 							if(whichMessage >= n.messages.length) whichMessage = n.messages.length - 1;
-							epicCanvas.drawTextBox(n.messages[whichMessage], EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD-4, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.messages[whichMessage], textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
+							epicCanvas.drawTextBox(n.messages[whichMessage], EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD-(EpicPlatform.isIpad() ? 4 : 6), textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.messages[whichMessage], textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
 						}
 						 
 						if(n.icon != null) {
