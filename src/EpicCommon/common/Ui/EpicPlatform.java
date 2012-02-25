@@ -10,6 +10,7 @@ import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.implementation.ArchPlatform;
 import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.framework.implementation.EpicPlatformImplementation;
+import com.epic.framework.implementation.EpicSocialImplementation;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 
@@ -622,5 +623,10 @@ public class EpicPlatform {
 	
 	public static boolean isIpad() {
 		return EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() > 480;
+	}
+	
+	public static String getPlatformId() {
+		/* Returns a single character describing the platform (i = iOS, a = Android, b = BlackBerry, w = Web) */
+		return EpicSocialImplementation.getPlatformId();
 	}
 }

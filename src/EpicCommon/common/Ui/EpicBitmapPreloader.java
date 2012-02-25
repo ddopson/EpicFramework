@@ -1,6 +1,5 @@
 package com.epic.framework.common.Ui;
 
-import java.util.LinkedList;
 
 public class EpicBitmapPreloader {
 	public int sum = 0;
@@ -19,52 +18,4 @@ public class EpicBitmapPreloader {
 	public int getSum() {
 		return sum;
 	}
-
-
-
-	//	private static LinkedList<EpicBitmap> preloadQueueBitmap = new LinkedList<EpicBitmap>();
-	//	private static LinkedList<Integer> preloadQueueWidth = new LinkedList<Integer>();
-	//	private static LinkedList<Integer> preloadQueueHeight = new LinkedList<Integer>();
-	//	static Runnable bgThread = null;
-	//
-	//	private void _preload(int width, int height) {
-	//		EpicLog.i("preloading SOON: " + this.name);
-	//		synchronized(preloadQueueBitmap) {
-	//			preloadQueueBitmap.add(this);
-	//			preloadQueueWidth.add(width);
-	//			preloadQueueHeight.add(height);
-	//		}
-	//		if(bgThread == null) {
-	//			bgThread = new Runnable() {
-	//				public void run() {
-	//					boolean done = false;
-	//					do {
-	//						EpicBitmap bitmap;
-	//						Integer width;
-	//						Integer height;
-	//						synchronized(preloadQueueBitmap) {
-	//							bitmap = preloadQueueBitmap.poll();
-	//							width = preloadQueueWidth.poll();
-	//							height = preloadQueueHeight.poll();
-	//							if(bitmap == null) {
-	//								// we are going to exit
-	//								bgThread = null;
-	//								done = true;
-	//							}
-	//						}
-	//						if(bitmap != null) {
-	//							bitmap.getPlatformObject(width, height);
-	//							if(preloadQueueBitmap.peek() == null) {
-	//								try {
-	//									Thread.sleep(20);
-	//								} catch (InterruptedException e) { }
-	//							}
-	//						}
-	//					} while(!done);
-	//					EpicLog.i("SOON loader finished.");
-	//				}
-	//			};
-	//			EpicPlatform.runInBackground(bgThread);
-	//		}
-	//	}
 }

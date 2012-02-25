@@ -3,7 +3,6 @@ package com.epic.framework.common.util;
 import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicSound;
 import com.epic.framework.implementation.EpicSoundManagerImplementation;
-import com.epic.resources.EpicSounds;
 import com.realcasualgames.words.PlayerState;
 
 public class EpicSoundManager {

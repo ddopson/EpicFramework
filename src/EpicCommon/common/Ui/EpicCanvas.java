@@ -1,10 +1,11 @@
 package com.epic.framework.common.Ui;
 
 import com.epic.config.EpicProjectConfig;
-import com.epic.framework.common.util.*;
+import com.epic.framework.common.util.EpicFail;
+import com.epic.framework.common.util.EpicStopwatch;
+import com.epic.framework.common.util.StringHelper;
 import com.epic.framework.implementation.EpicCanvasImplementation;
 import com.epic.framework.implementation.EpicFontImplementation;
-import com.epic.framework.implementation.EpicPlatformConfig;
 
 public class EpicCanvas {
 

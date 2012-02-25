@@ -18,7 +18,6 @@ public class EpicFeaturedOffer {
 	
 	public void onClickOffer() {
 		EpicLog.i("Launching " + storeUrl);
-		// EpicApplication.androidLaunchMarketplace(storeUrl);
 		EpicMarketplace.onClickOffer(this);
 	}
 

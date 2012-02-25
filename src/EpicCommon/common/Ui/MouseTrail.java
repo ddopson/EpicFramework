@@ -44,33 +44,4 @@ public class MouseTrail {
 	public boolean isADrag() {
 		return l > MIN_DRAG_LENGTH;
 	}
-
-//	private EpicBitmap renderCache = null;
-//	private int lastRenderCacheIndex = 0;
-//	public void render(EpicCanvas canvas, int width, int height, int color) {
-//		long currentTime = ArchPlatform.getMilliseconds();
-//
-//		if(renderCache == null) {
-//			// TODO: need to create a bitmap to drow into here.  ideally a 1-bit-per-pixel stencil map
-//			renderCache = new 
-//		}
-//		for(int i = lastRenderCacheIndex; i < size(); i++) {
-//
-//			int alpha = 248 - age(i, currentTime);
-//			if(alpha < 64) {
-//				EpicCanvas bitmapCanvas;
-//				canvas.drawLine(x[i-1], y[i-1], x[i], y[i], 6, EpicColor.BLACK);
-//			}
-//			else {
-//				lastRenderCacheIndex = i;
-//				// TODO // blit the bitmap modulated by the color
-//				canvas.dr
-//				break;
-//			}
-//		}
-//		for(int i = lastRenderCacheIndex; i < size(); i++) {
-//			int alpha = 248 - age(i, currentTime);
-//			canvas.drawLine(x[i-1], y[i-1], x[i], y[i], 6, EpicColor.withAlpha(alpha, color));
-//		}
-//	}
 }

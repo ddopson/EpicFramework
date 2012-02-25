@@ -1,7 +1,6 @@
 package com.epic.framework.common.Ui2;
 
 import com.epic.framework.common.util.EpicSocial;
-import com.epic.framework.common.util.EpicSocial.EpicSocialSignInCompletionHandler;
 
 public class EnsureLoginAction extends EpicAction implements EpicSocialSignInCompletionHandler {
 

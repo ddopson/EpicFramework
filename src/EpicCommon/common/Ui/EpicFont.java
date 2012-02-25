@@ -1,11 +1,11 @@
 
 package com.epic.framework.common.Ui;
 
+import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.StringHelper;
 import com.epic.framework.implementation.EpicFontImplementation;
-import com.epic.resources.EpicFiles;
 
 public class EpicFont {
 	//	private static final HashMap<Integer, EpicFont> sizedFonts = new HashMap<Integer, EpicFont>();
@@ -19,8 +19,8 @@ public class EpicFont {
 
 	public static final int MAX_SIZE = 120;
 
-	public static final EpicFont FONT_MAIN = EpicPlatform.isBlackberry() ? EpicFont.fromName("BBAlpha Sans", 12) : EpicFont.fromFile(EpicFiles.Nunito, 12);
-	public static final EpicFont FONT_GAME = EpicFont.fromFile(EpicFiles.LuckiestGuy, 12);
+	public static final EpicFont FONT_MAIN = EpicPlatform.isBlackberry() ? EpicFont.fromName("BBAlpha Sans", 12) : EpicProjectConfig.mainFont;
+	public static final EpicFont FONT_GAME = EpicProjectConfig.gameFont;
 
 	public final String name;
 	public final int size_absolute, size_relative, height, ascent, descent;
