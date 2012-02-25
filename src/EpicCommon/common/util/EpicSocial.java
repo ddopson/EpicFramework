@@ -11,21 +11,57 @@ import com.realcasualgames.words.ScreenMainMenu;
 import com.realcasualgames.words.WordsHttp;
 
 public class EpicSocial {
-	public static String getIdentity() {
-		return PlayerState.getIdentity();
-	}
-
+	
+	// True framework functions
+	
 	public interface EpicSocialSignInCompletionHandler {
 		void onSignedIn(String identity);
 	}
 	
+	/*
+	 * FACEBOOK FUNCTIONS
+	 */
+	
 	public static boolean supportsFacebookPost() {
+		/* Determines if Facebook is available on the device. Set in each platform implementation file */
 		return EpicSocialImplementation.supportsFacebookPost();
 	}
 	
 	public static void postToFacebook(String title, String url, String caption, String imageUrl, EpicClickListener callback) {
 		if(supportsFacebookPost()) EpicSocialImplementation.postToFacebook(title, url, caption, imageUrl, callback);
 	}
+	
+	/*
+	 * END FACEBOOK FUNCTIONS
+	 */
+	
+	public static String getEmailList() {
+		/* Returns a comma delimited list of all users email contacts */
+		// NOTE: Users of this are highly encouraged/required to ensure users give
+		//		 permission before using this.
+		
+		return EpicSocialImplementation.getEmailList();
+	}
+
+	public static String getPlatformId() {
+		/* Returns a single character describing the platform (i = iOS, a = Android, b = BlackBerry, w = Web) */
+		
+		return EpicSocialImplementation.getPlatformId();
+	}
+	
+	// Belong in game delegate
+	
+	// Belong fully in game
+	
+	public static String getIdentity() {
+		return PlayerState.getIdentity();
+	}
+
+	
+	
+	
+	
+	
 
 	public static void signIn(final EpicSocialSignInCompletionHandler doAfter) {
 		if(PlayerState.getIdentity() == null) {
@@ -103,31 +139,6 @@ public class EpicSocial {
 	
 	public static boolean isLoggedIn() {
 		return PlayerState.getIdentity() != null;
-	}
-
-	public static String getEmailList() {
-		return EpicSocialImplementation.getEmailList();
-	}
-
-	public static String getPlatformId() {
-		return EpicSocialImplementation.getPlatformId();
-	}
-	
-	public static String getDisplayNameFromEmail(String email) {
-		return EpicSocialImplementation.getDisplayNameFromEmail(email);
-	}
-
-	public static String[] getDisplayNamesFromEmails(String[] names_to_lookup) {
-		return names_to_lookup;
-		// return EpicSocialImplementation.getDisplayNamesFromEmails(names_to_lookup);
-	}
-
-//	public static String chooseContact() {
-//		return EpicSocialImplementation.chooseContact();
-//	}
-
-	public static void onContactEmailReturned(String[] strings) {
-		EpicSocialImplementation.selectFromEmailList(strings);
 	}
 
 	public static void signOut() {
