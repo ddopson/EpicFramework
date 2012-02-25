@@ -1,11 +1,9 @@
 package com.epic.framework.common.Ui;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.util.*;
 import com.epic.framework.implementation.EpicCanvasImplementation;
 import com.epic.framework.implementation.EpicFontImplementation;
-import com.epic.framework.implementation.EpicPlatformConfig;
-
+import static com.epic.framework.common.EpicConfig.*;
 public class EpicCanvas {
 
 	//	public static final int defaultTextFont = EpicFont.FONT_MAIN;
@@ -22,8 +20,6 @@ public class EpicCanvas {
 
 	private static final int BUFFER_SIZE = 8192;
 	private static final char[] buffer = new char[BUFFER_SIZE];
-	public static final int DESIGN_WIDTH = EpicProjectConfig.getDesignDimensions().width;
-	public static final int DESIGN_HEIGHT = EpicProjectConfig.getDesignDimensions().height;
 
 	static EpicCanvas staticCanvas = new EpicCanvas();
 
@@ -57,11 +53,11 @@ public class EpicCanvas {
 	////////////////////////////////////////////////////////////////////////////////
 
 	static final int sx(int x) {
-		return x * EpicPlatform.renderWidth / EpicPlatform.designWidth;
+		return x * EpicPlatform.renderWidth / DESIGN_WIDTH;
 	}
 
 	static final int sy(int y) {
-		return y * EpicPlatform.renderHeight / EpicPlatform.designHeight;
+		return y * EpicPlatform.renderHeight / DESIGN_HEIGHT;
 	}
 
 	private static int max(int a, int b) {

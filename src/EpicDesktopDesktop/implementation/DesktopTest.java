@@ -30,7 +30,6 @@ public class DesktopTest {
 	
 	public static void testLetterPools() {
 		//		EpicRandomImplementation.random.setSeed(78)v;
-		EpicRandom.SHOULD_LOG = false;
 		WordCollection classicWords  = new WordCollection("Classic");
 		WordCollection weightedWords = new WordCollection("Weightd");
 		ScreenGame fakeScreen = new ScreenGame();

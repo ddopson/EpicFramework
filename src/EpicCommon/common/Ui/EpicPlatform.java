@@ -2,7 +2,9 @@ package com.epic.framework.common.Ui;
 
 import java.util.Collection;
 import java.util.LinkedList;
+
 import com.epic.config.EpicProjectConfig;
+import com.epic.framework.common.EpicConfig;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
@@ -13,7 +15,10 @@ import com.epic.framework.implementation.EpicPlatformImplementation;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.resources.EpicImages;
-import com.realcasualgames.words.ScreenGame;
+
+import static com.epic.framework.common.EpicConfig.DEBUG_EPICPLAT;
+import static com.epic.framework.common.EpicConfig.DESIGN_WIDTH;
+import static com.epic.framework.common.EpicConfig.DESIGN_HEIGHT;
 
 public class EpicPlatform {
 	public static final int PLATFORM_ANDROID = 0;
@@ -21,7 +26,7 @@ public class EpicPlatform {
 	public static final int PLATFORM_IOS = 2;
 
 	public static String[] platformPrecedence = new String[] { }; // set in init()
-	
+
 	public static final int TIMER_HZ = 20;
 	public static final boolean RMODE_FULLSCREEN = true;
 	public static final boolean RMODE_STRETCH = false;
@@ -33,22 +38,19 @@ public class EpicPlatform {
 	static int truePlatformWidth = -99;
 	static int truePlatformHeight = -99;
 
-	
-	
-	private static final boolean DEBUG = EpicProjectConfig.isReleaseMode ? false : false;
+
+
 	private static final int NOT_DISPLAYED = -1;
 	public static boolean initialized = false;
 	public static EpicScreen currentScreen;
 	private static EpicPercentLayout epicPercentLayout;
 	private static EpicPlatformInterface epicPlatformInterface;
 	public static MouseTrail mouseTrail = new MouseTrail();
-	static final int designWidth = EpicProjectConfig.designDimensions.width;
-	static final int designHeight = EpicProjectConfig.designDimensions.height;
 	private static Object singleThreadingLock = new Object();
 	private static long lastInputTime = System.currentTimeMillis();
 	public static boolean userDragInputEnabled = true;
 	private static int timer_slow_factor = 1;
-	
+
 	public static LinkedList<EpicNotification> notifications = new LinkedList<EpicNotification>();
 	public static LinkedList<EpicScreen> dialogs = new LinkedList<EpicScreen>();
 	public static int timeNotificationDisplayed = -1;
@@ -56,7 +58,7 @@ public class EpicPlatform {
 	// DDOPSON-2011-09-03 - this timer does NOT run on the ui thread.  thus when ui thread is hung, we still run
 	public static void onKillTimerTick() {
 		EpicLog.i("kill timer tick");
-		if(DEBUG && System.currentTimeMillis() > lastInputTime + 60000) {
+		if(DEBUG_EPICPLAT && System.currentTimeMillis() > lastInputTime + 60000) {
 			EpicLog.w("KILL_KILL_KILL - kill timer has expired, so nuking the process.");
 			System.exit(1); // this kills off hung processes after a minute
 		}
@@ -65,7 +67,7 @@ public class EpicPlatform {
 	private static long t0;
 	private static long tslow_last = -1;
 	private static int n_skipped = 0;
-	
+
 	private static EpicTimer epicTimer = new EpicTimer() {
 		protected void onTimerTick(int n) {
 			if(n == 0) {
@@ -112,7 +114,7 @@ public class EpicPlatform {
 
 	public static void initialize(EpicPlatformInterface platformInterface, int width, int height, String screen, String extra) {
 		ArchPlatform.logMemoryStats();
-		if(DEBUG) EpicLog.d("EpicPlatform.initialize(" + platformInterface + ")");
+		if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.initialize(" + platformInterface + ")");
 		if(initialized) {
 			throw EpicFail.framework("EpicPlatform.initialize() is being called twice!!!");
 		}
@@ -124,10 +126,15 @@ public class EpicPlatform {
 		} else {
 			platformPrecedence = new String[] { };
 		}
+		
+		// DDOPSON-2012-02-23 - Init Routine....  - a bunch of this stuff needs for the screen width to be set.
 		EpicImages.init();
+		EpicProjectConfig.onApplicationStart();
+
+		
 		EpicPlatform.epicPlatformInterface = platformInterface;
-		EpicPlatform.epicPercentLayout = new EpicPercentLayout(EpicProjectConfig.getDesignDimensions(), platformInterface);
-		EpicPlatform.currentScreen = EpicProjectConfig.getInitialScreenObject(screen, extra);
+		EpicPlatform.epicPercentLayout = new EpicPercentLayout(platformInterface);
+		EpicPlatform.currentScreen = EpicConfig.INITIAL_SCREEN;
 		currentScreen.onCreateUi(epicPercentLayout);
 		currentScreen.onShow();
 		epicTimer.scheduleAtFixedRate(1000 / TIMER_HZ);
@@ -145,15 +152,15 @@ public class EpicPlatform {
 		return EpicPlatformConfig.platform == PLATFORM_IOS;
 
 	}
-	
+
 	public static void changeScreen(EpicScreen screen) {
-		if(DEBUG) EpicLog.d("EpicPlatform.changeScreen(" + screen + ")");
+		if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.changeScreen(" + screen + ")");
 		EpicFail.assertNotNull(currentScreen);
 		EpicFail.assertNotNull(screen);
 
 		EpicPlatformImplementation.dismissNotifications();
-		if(EpicProjectConfig.screenTransitionSound != null) {
-			EpicSoundManager.playSound(EpicProjectConfig.screenTransitionSound);
+		if(EpicConfig.RESOURCES_SCREEN_TRANSITION_SOUND != null) {
+			EpicSoundManager.playSound(EpicConfig.RESOURCES_SCREEN_TRANSITION_SOUND);
 		}
 
 		// Destroy old Ui
@@ -169,7 +176,7 @@ public class EpicPlatform {
 		currentScreen.onShow();
 		repaintScreen();
 		userDragInputEnabled = true;
-		
+
 		EpicPlatform.repaintScreen();
 		EpicSoundManager.resumeMusic();
 	}
@@ -203,7 +210,7 @@ public class EpicPlatform {
 	public static boolean onPlatformKeyPress(int c) {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformKeyPress(" + c + " '" + (char)c + "')");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformKeyPress(" + c + " '" + (char)c + "')");
 			if(dialogs.isEmpty()) {
 				return currentScreen.onKeyPress(c);
 			} else {
@@ -215,7 +222,7 @@ public class EpicPlatform {
 	static boolean onPlatformNavigationClick() {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformNavigationClick()");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformNavigationClick()");
 			if(dialogs.isEmpty()) {
 				return currentScreen.onKeyPress(EpicKeys.ENTER);
 			} else {
@@ -227,7 +234,7 @@ public class EpicPlatform {
 	public static boolean onPlatformNavigationMovement(int x, int y) {
 		lastInputTime = System.currentTimeMillis();
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformNavigationMovement(" + x + ", " + y + ")");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformNavigationMovement(" + x + ", " + y + ")");
 			if(dialogs.isEmpty()) {
 				return currentScreen.onNavigationMovement(x, y);
 			} else {
@@ -238,7 +245,7 @@ public class EpicPlatform {
 
 	public static void onPlatformShow() {
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformShow()");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformShow()");
 			EpicSoundManager.resumeMusic();
 			if(dialogs.isEmpty()) {
 				currentScreen.onShow();
@@ -250,7 +257,7 @@ public class EpicPlatform {
 
 	public static void onPlatformHide() {
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformHide()");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformHide()");
 
 			EpicSoundManager.pauseMusic();
 
@@ -264,14 +271,14 @@ public class EpicPlatform {
 
 	public static void onPlatformDestroy() {
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformDestroy()");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformDestroy()");
 			// any finalization to be done???  literally, anything???  this can be called more than once, so what does it even mean?  prob nothing
 		}
 	}
 
 	public static boolean onPlatformBackKey() {
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformBackKey()");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformBackKey()");
 			if(dialogs.isEmpty()) {
 				return currentScreen.onBackKey();
 			} else {
@@ -282,8 +289,8 @@ public class EpicPlatform {
 
 	public static void repaintScreen() {
 		synchronized (singleThreadingLock) {
-			//			if(DEBUG) EpicLog.d("EpicPlatform.repaintScreen()");
-			 epicPlatformInterface.requestRepaint();
+			//			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.repaintScreen()");
+			epicPlatformInterface.requestRepaint();
 		}
 	}
 
@@ -292,14 +299,14 @@ public class EpicPlatform {
 			// dont support menus in dialogs
 			return null;
 		}
-		
+
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("Platform.getMenuItems(" + menuType + ")");
+			if(DEBUG_EPICPLAT) EpicLog.d("Platform.getMenuItems(" + menuType + ")");
 			EpicMenu menu = new EpicMenu();
 			EpicMenu debugMenu = new EpicMenu();
 			currentScreen.onMenuOpened(menu, debugMenu);
-			if(! EpicProjectConfig.isReleaseMode) {
-				debugMenu.addItem("DEBUG Rendering", new EpicMenuItem() {
+			if(EpicConfig.DEBUG_MENUS) {
+				debugMenu.addItem("DEBUG_EPICPLAT Rendering", new EpicMenuItem() {
 					public void onClicked() {
 						EpicCanvas.toggleDebugRendering();
 					}
@@ -343,9 +350,9 @@ public class EpicPlatform {
 			case EpicMenu.MENU_GAME:
 				return menu.items;
 			case EpicMenu.MENU_ALL:
-				if(! EpicProjectConfig.isReleaseMode) {
+				if(EpicConfig.DEBUG_MENUS) {
 					for(EpicMenuItem menuItem : debugMenu.items) {
-						menu.addItem("DEBUG - " + menuItem.name, menuItem);
+						menu.addItem("DEBUG_EPICPLAT - " + menuItem.name, menuItem);
 					}
 				}
 				return menu.items;
@@ -357,7 +364,7 @@ public class EpicPlatform {
 
 	public static void onPlatformMenuDismissed() {
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("Platform.onPlatformMenuDismissed()");
+			if(DEBUG_EPICPLAT) EpicLog.d("Platform.onPlatformMenuDismissed()");
 			currentScreen.onMenuClosed();
 		}
 	}
@@ -371,76 +378,98 @@ public class EpicPlatform {
 		}
 	}
 
+	private static void drawNotification(EpicCanvas epicCanvas, EpicNotification notification) {
+		if(timeNotificationDisplayed == NOT_DISPLAYED) {
+			if(DEBUG_EPICPLAT) EpicLog.i("Displaying notification with title " + notification.title);
+			timeNotificationDisplayed++;
+		} else if(timeNotificationDisplayed >= notification.duration * EpicPlatform.TIMER_HZ) {
+			notifications.remove(0);
+			timeNotificationDisplayed = NOT_DISPLAYED;
+		} else {
+			int alpha, x, y, w, h, tx, ty, tw, th, ix, iy, iw, ih;
+
+			if(timeNotificationDisplayed > notification.duration * TIMER_HZ - (TIMER_HZ / 2)) {
+				alpha = EpicCanvas.calculateTranslationAnimation(255, 0, notification.duration * TIMER_HZ - (TIMER_HZ / 2), TIMER_HZ / 2, timeNotificationDisplayed);
+			} else {
+				alpha = EpicCanvas.calculateTranslationAnimation(0, 255, 0, TIMER_HZ / 2, timeNotificationDisplayed);
+			}
+
+			if(notification.minimized) {
+				x = EpicNotification.NOTIFICATION_LEFT_PAD;
+				y = EpicNotification.NOTIFICATION_TOP_PAD - 7;
+				w = EpicNotification.NOTIFICATION_WIDTH;
+				h = EpicNotification.NOTIFICATION_HEIGHT / 2;
+				tx = EpicNotification.NOTIFICATION_LEFT_PAD + (notification.icon == null ? 20 : 100);
+				ty = EpicNotification.NOTIFICATION_TOP_PAD - (EpicPlatform.isIpad() ? 4 : 6);
+				tw = (notification.icon == null ? 640 : 540);
+				th = 30;
+				ix = EpicNotification.NOTIFICATION_LEFT_PAD + 25;
+				iy = EpicNotification.NOTIFICATION_TOP_PAD - 4;
+				iw = 32;
+				ih = 32;
+			} else {
+				x = EpicNotification.NOTIFICATION_LEFT_PAD;
+				y = EpicNotification.NOTIFICATION_TOP_PAD;
+				w = EpicNotification.NOTIFICATION_WIDTH;
+				h = EpicNotification.NOTIFICATION_HEIGHT;			
+				tx = EpicNotification.NOTIFICATION_LEFT_PAD + (notification.icon == null ? 20 : 100);
+				ty = EpicNotification.NOTIFICATION_TOP_PAD + 40;
+				tw = (notification.icon == null ? 640 : 510);
+				th = 30;
+				ix = EpicNotification.NOTIFICATION_LEFT_PAD + 20;
+				iy = EpicNotification.NOTIFICATION_TOP_PAD + 5;
+				iw = 64;
+				ih = 64;
+			}
+
+			if(EpicConfig.RESOURCES_TOAST_BG != null) {
+				epicCanvas.drawBitmapWithGlobalAlpha(EpicConfig.RESOURCES_TOAST_BG, x, y, w, h, alpha);
+			} else {
+				epicCanvas.applyFill(x, y, w, h, EpicColor.withAlpha(alpha, EpicColor.BLACK));
+				epicCanvas.drawBorder(x, y, w, h, EpicColor.withAlpha(alpha, EpicColor.GREEN), 4);
+			}
+
+			if(EpicConfig.RESOURCES_TOAST_FONT != null) {
+				if(!notification.minimized) {
+					EpicFont font = EpicConfig.RESOURCES_TOAST_FONT.findBestFittingFont(notification.title, tw, th);
+					epicCanvas.drawTextBox(notification.title, tx, (ty - 35), tw, th, font, EpicColor.withAlpha(alpha, EpicColor.WHITE));
+				}
+
+				if(notification.messages != null && notification.messages.length > 0) {
+					int whichMessage = timeNotificationDisplayed / (notification.duration * TIMER_HZ / notification.messages.length);
+					if(whichMessage >= notification.messages.length) {
+						whichMessage = notification.messages.length - 1;
+					}
+					String notificationText = notification.messages[whichMessage];
+					EpicFont font = EpicConfig.RESOURCES_TOAST_FONT.findBestFittingFont(notification.messages[whichMessage], tw, th);
+					epicCanvas.drawTextBox(notificationText, tx, ty, tw, th, font, EpicColor.withAlpha(alpha, EpicColor.WHITE));
+				}
+			}
+
+			if(notification.icon != null) {
+				epicCanvas.drawBitmapWithGlobalAlpha(notification.icon, ix, iy, iw, ih, alpha);
+			}
+		}
+	}
+
 	public static void onPlatformPaint(EpicCanvas epicCanvas) {
 		synchronized (singleThreadingLock) {
-			//			if(DEBUG) EpicLog.d("Platform.paint()");
+			//			if(DEBUG_EPICPLAT) EpicLog.d("Platform.paint()");
 			EpicStopwatch.paintStart();
 			currentScreen.onPaint(epicCanvas, renderWidth, renderHeight, mouseTrail);
-			
+
 			if(!dialogs.isEmpty()) {
 				dialogs.get(0).onPaint(epicCanvas, renderWidth, renderHeight, mouseTrail);
 			}
-			
+
 			EpicPlatformImplementation.dismissNotifications();
 			if(!notifications.isEmpty()) {
-				EpicNotification n = notifications.peek();
-				if(timeNotificationDisplayed == NOT_DISPLAYED) {
-					if(DEBUG) EpicLog.i("Displaying notification with title " + n.title);
-					timeNotificationDisplayed++;
-				} else if(timeNotificationDisplayed >= n.duration * EpicPlatform.TIMER_HZ) {
-					notifications.remove(0);
-					timeNotificationDisplayed = NOT_DISPLAYED;
-				} else {
-					int alpha;
-					if(timeNotificationDisplayed > n.duration * TIMER_HZ - (TIMER_HZ / 2)) {
-						alpha = EpicCanvas.calculateTranslationAnimation(255, 0, n.duration * TIMER_HZ - (TIMER_HZ / 2), TIMER_HZ / 2, timeNotificationDisplayed);
-					} else {
-						alpha = EpicCanvas.calculateTranslationAnimation(0, 255, 0, TIMER_HZ / 2, timeNotificationDisplayed);
-					}
-					
-					if(n.minimized) {
-//						if(EpicProjectConfig.toastBackground != null) {
-							epicCanvas.drawBitmapWithGlobalAlpha(EpicImages.toast_bg_dark, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD-7, EpicNotification.NOTIFICATION_WIDTH, (EpicNotification.NOTIFICATION_HEIGHT / 2), alpha);
-//						}
-						
-						int textWidth = n.icon == null ? 640 : 540;
-						int textLeftPad = n.icon == null ? 20 : 100;
-
-						if(n.messages != null && n.messages.length > 0) {
-							int whichMessage = timeNotificationDisplayed / (n.duration * TIMER_HZ / n.messages.length);
-							if(whichMessage >= n.messages.length) whichMessage = n.messages.length - 1;
-							epicCanvas.drawTextBox(n.messages[whichMessage], EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD-(EpicPlatform.isIpad() ? 4 : 6), textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.messages[whichMessage], textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
-						}
-						 
-						if(n.icon != null) {
-							epicCanvas.drawBitmapWithGlobalAlpha(n.icon, EpicNotification.NOTIFICATION_LEFT_PAD + 25, EpicNotification.NOTIFICATION_TOP_PAD-4, 32, 32, alpha);
-						}
-					} else {
-	//					if(EpicProjectConfig.toastBackground != null) {
-							epicCanvas.drawBitmapWithGlobalAlpha(EpicImages.toast_bg_dark, EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, alpha);
-	//					}
-						//					epicCanvas.applyFill(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.BLACK));
-	//					epicCanvas.drawBorder(EpicNotification.NOTIFICATION_LEFT_PAD, EpicNotification.NOTIFICATION_TOP_PAD, EpicNotification.NOTIFICATION_WIDTH, EpicNotification.NOTIFICATION_HEIGHT, EpicColor.withAlpha(alpha, EpicColor.GREEN), 4);
-						
-						int textWidth = n.icon == null ? 640 : 510;
-						int textLeftPad = n.icon == null ? 20 : 100;
-						
-						epicCanvas.drawTextBox(n.title, EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 5, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.title, textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.WHITE));
-						
-						if(n.messages != null && n.messages.length > 0) {
-							int whichMessage = timeNotificationDisplayed / (n.duration * TIMER_HZ / n.messages.length);
-							if(whichMessage >= n.messages.length) whichMessage = n.messages.length - 1;
-							epicCanvas.drawTextBox(n.messages[whichMessage], EpicNotification.NOTIFICATION_LEFT_PAD + textLeftPad, EpicNotification.NOTIFICATION_TOP_PAD + 40, textWidth, 30, EpicFont.FONT_MAIN.findBestFittingFont(n.messages[whichMessage], textWidth, 30), EpicColor.withAlpha(alpha, EpicColor.LTGRAY));
-						}
-						
-						if(n.icon != null) {
-							epicCanvas.drawBitmapWithGlobalAlpha(n.icon, EpicNotification.NOTIFICATION_LEFT_PAD + 20, EpicNotification.NOTIFICATION_TOP_PAD + 5, 64, 64, alpha);
-						}
-					}
-				}
+				EpicNotification notification = notifications.peek();
+				drawNotification(epicCanvas, notification);
 			}
-			
+
 			EpicStopwatch.paintFinish();
+
 			if(epicTestHook != null) {
 				epicTestHook.onPaintFinished();
 			}
@@ -449,29 +478,29 @@ public class EpicPlatform {
 
 	public static void onPlatformTouchEvent(int _x, int _y) {
 		lastInputTime = System.currentTimeMillis();
-		int x = _x * EpicPlatform.designWidth / EpicPlatform.truePlatformWidth;
-		int y = _y * EpicPlatform.designHeight / EpicPlatform.truePlatformHeight;
-		
+		int x = _x * DESIGN_WIDTH / EpicPlatform.truePlatformWidth;
+		int y = _y * DESIGN_HEIGHT / EpicPlatform.truePlatformHeight;
+
 		if(timeNotificationDisplayed > TIMER_HZ * 1 && notifications.peek() != null &&
 				x >= EpicNotification.NOTIFICATION_LEFT_PAD && x <= EpicNotification.NOTIFICATION_LEFT_PAD + EpicNotification.NOTIFICATION_WIDTH &&
 				y >= EpicNotification.NOTIFICATION_TOP_PAD && y <= EpicNotification.NOTIFICATION_HEIGHT) {
 			timeNotificationDisplayed = (notifications.peek().duration * TIMER_HZ) - (TIMER_HZ / 3);
 		}
-		
-		
+
+
 		if(userDragInputEnabled) {
 			synchronized (singleThreadingLock) {
-				if(DEBUG) EpicLog.d("Platform.onPlatformTouchEvent(" + _x + ", " + _y + ") => (" + x + ", " + y + ")");
+				if(DEBUG_EPICPLAT) EpicLog.d("Platform.onPlatformTouchEvent(" + _x + ", " + _y + ") => (" + x + ", " + y + ")");
 				mouseTrail.add(x, y);
 			}
 		}
 	}
-	
+
 	public static void showDialog(EpicScreen dialog) {
 		dialogs.add(dialog);
 		repaintScreen();
 	}
-	
+
 	public static void dismissDialog() {
 		// Dismiss current dialog
 		dialogs.removeLast();
@@ -481,8 +510,8 @@ public class EpicPlatform {
 	public static void onPlatformTouchFinished(int _x, int _y) {
 		lastInputTime = System.currentTimeMillis();
 
-		int x = _x * EpicPlatform.designWidth / EpicPlatform.truePlatformWidth;
-		int y = _y * EpicPlatform.designHeight / EpicPlatform.truePlatformHeight;
+		int x = _x * DESIGN_WIDTH / EpicPlatform.truePlatformWidth;
+		int y = _y * DESIGN_HEIGHT / EpicPlatform.truePlatformHeight;
 
 		if(timeNotificationDisplayed > TIMER_HZ * 1 && notifications.peek() != null &&
 				x >= EpicNotification.NOTIFICATION_LEFT_PAD && x <= EpicNotification.NOTIFICATION_LEFT_PAD + EpicNotification.NOTIFICATION_WIDTH &&
@@ -490,12 +519,12 @@ public class EpicPlatform {
 			if(notifications.peek().clickCallback != null) {
 				notifications.peek().clickCallback.onClick();
 			}
-			
+
 			return;
 		}
-		
+
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("Platform.onPlatformTouchFinished(" + x + ", " + y + ")");
+			if(DEBUG_EPICPLAT) EpicLog.d("Platform.onPlatformTouchFinished(" + x + ", " + y + ")");
 			if(mouseTrail.size() > 5) {
 				if(userDragInputEnabled) {
 					if(dialogs.isEmpty()) {
@@ -531,7 +560,7 @@ public class EpicPlatform {
 			}
 		}
 	}
-	
+
 	public static void setRenderBounds(int width, int height) {
 		if(RMODE_FULLSCREEN) {
 			renderWidth = width;
@@ -561,7 +590,7 @@ public class EpicPlatform {
 			height = t;
 		}
 		synchronized (singleThreadingLock) {
-			if(DEBUG) EpicLog.d("EpicPlatform.onPlatformLayoutRequest(" + width + ", " + height + ", " + invertWidgetOrder + ")");
+			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.onPlatformLayoutRequest(" + width + ", " + height + ", " + invertWidgetOrder + ")");
 			if(!initialized) {
 				throw EpicFail.framework("EpicPlatform has NOT been initialized!!!");
 			}
@@ -579,35 +608,35 @@ public class EpicPlatform {
 	}
 
 	public static final int scaleLogicalToRenderX(int x) {
-		return x * renderWidth / designWidth;
+		return x * renderWidth / DESIGN_WIDTH;
 	}
 	public static final int scaleLogicalToRenderY(int y) {
-		return y * renderHeight / designHeight;
+		return y * renderHeight / DESIGN_HEIGHT;
 	}
 	public static final int scaleLogicalToRealX(int x) {
-		return x * truePlatformWidth / designWidth;
+		return x * truePlatformWidth / DESIGN_WIDTH;
 	}
 	public static final int scaleLogicalToRealY(int y) {
-		return y * truePlatformHeight / designHeight;
+		return y * truePlatformHeight / DESIGN_HEIGHT;
 	}
-	
+
 	public static final int scaleRenderToLogicalX(int x) {
-		return x * designWidth / renderWidth;
+		return x * DESIGN_WIDTH / renderWidth;
 	}
 	public static final int scaleRenderToLogicalY(int y) {
-		return y * designHeight / renderHeight;
+		return y * DESIGN_HEIGHT / renderHeight;
 	}
 	public static final int scaleRealToLogicallX(int x) {
-		return x * designWidth / truePlatformWidth;
+		return x * DESIGN_WIDTH / truePlatformWidth;
 	}
 	public static final int scaleRealToLogicalY(int y) {
-		return y * designHeight / truePlatformHeight;
+		return y * DESIGN_HEIGHT / truePlatformHeight;
 	}
 
 	public static void pauseTimer() {
 		epicTimer.pause();
 	}
-	
+
 	public static void resumeTimer() {
 		epicTimer.resume();
 	}
@@ -653,7 +682,7 @@ public class EpicPlatform {
 	public static boolean isIphone() {
 		return EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() <= 480;
 	}
-	
+
 	public static boolean isIpad() {
 		return EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() > 480;
 	}

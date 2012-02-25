@@ -1,12 +1,11 @@
 package com.epic.framework.common.util;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.implementation.EpicTimeImplementation;
+import static com.epic.framework.common.EpicConfig.DEBUG_EPICSTOPWATCH;
 
 public class EpicStopwatch {
-	public static final boolean ENABLED = EpicProjectConfig.isReleaseMode ? false : true;
 	private static class Counter {
 		public final String name;
 		public long value = 0;
@@ -113,59 +112,71 @@ public class EpicStopwatch {
 	}
 
 	public static String getDebugString() {
-		return StringHelper.join("\n", getDebugStringArray());
+		if(DEBUG_EPICSTOPWATCH) {
+			return StringHelper.join("\n", getDebugStringArray());
+		} else {
+			return "";
+		}
 	}
 
 	public static String[] getDebugStringArray() {
-		long totalTime = EpicTimeImplementation.getMicroTime() - startTime;
-		if(totalTime == 0) {
-			return new String[] {" --- "};
+		if(DEBUG_EPICSTOPWATCH) {
+			long totalTime = EpicTimeImplementation.getMicroTime() - startTime;
+			if(totalTime == 0) {
+				return new String[] {" --- "};
+			}
+			long totalTime2 = 1000 * (System.currentTimeMillis() - startTimeSystem);
+			StringBuffer buff = new StringBuffer(nFramesRendered * 5);
+			for(int i = 0; i < nFramesRendered; i++) {
+				buff.append(i > 0 ? ", " : "");
+				buff.append(frameTimes[i]);
+			}
+			String[] debugStrings = new String[] {
+					"TotTime=" + _seconds(totalTime) + " vs. " + _seconds(totalTime2),
+					"FramesR=" + nFramesRendered + " (" + _fps(nFramesRendered, totalTime) + ")",
+					"FramesC=" + nFramesComputed + " (" + _fps(nFramesComputed, totalTime) + ")",
+					"BgClear=" + _pct(buckets[BUCKET_BG_CLEAR], totalTime),
+					"AppRend=" + _pct(buckets[BUCKET_APP_RENDER], totalTime),
+					"BlitScr=" + _pct(buckets[BUCKET_BLIT_SCREEN], totalTime),
+					"DbugRdr=" + _pct(buckets[BUCKET_DEBUG_RENDER], totalTime),
+					"AppCode=" + _pct(buckets[BUCKET_APP_CODE], totalTime),
+					"OtherTm=" + _pct(buckets[BUCKET_OTHER], totalTime),
+					"PixelsPerFrame=" + _mil(4*pixelsPushed.frameValue) + "MB (" + _mil(4*pixelsPushed.frameMax) + "MB max, " + _mil(4*pixelsPushed.value / nFramesRendered) + "MB avg)",
+					"AllocPerFrame=" + (bytesAllocated.value / nFramesRendered),
+					"AllocTotal=" + _mil(bytesAllocated.value),
+					"AllocTotal2=" + _mil(bytesAllocated2.value),
+					"ObjAlloc=" + _mil(1000*objectsAllocated.value) + "k (" + objectsAllocated.pctFromRender() + ") apf=" + objectsAllocated.valueFromPaint / nFramesRendered,
+					"PixelsLoaded=" + _mil(4*EpicBitmap.getGlobalPixelCount()) + "MB (" + _mil(4*EpicBitmap.getGlobalPixelCountScaled()) + "MB scaled)",
+					"RenderTimes=" + buff.toString()
+			};
+			return debugStrings;
+		} else {
+			return new String[] { "EpicStopwatch[DISABLED]" };
 		}
-		long totalTime2 = 1000 * (System.currentTimeMillis() - startTimeSystem);
-		StringBuffer buff = new StringBuffer(nFramesRendered * 5);
-		for(int i = 0; i < nFramesRendered; i++) {
-			buff.append(i > 0 ? ", " : "");
-			buff.append(frameTimes[i]);
-		}
-		String[] debugStrings = new String[] {
-				"TotTime=" + _seconds(totalTime) + " vs. " + _seconds(totalTime2),
-				"FramesR=" + nFramesRendered + " (" + _fps(nFramesRendered, totalTime) + ")",
-				"FramesC=" + nFramesComputed + " (" + _fps(nFramesComputed, totalTime) + ")",
-				"BgClear=" + _pct(buckets[BUCKET_BG_CLEAR], totalTime),
-				"AppRend=" + _pct(buckets[BUCKET_APP_RENDER], totalTime),
-				"BlitScr=" + _pct(buckets[BUCKET_BLIT_SCREEN], totalTime),
-				"DbugRdr=" + _pct(buckets[BUCKET_DEBUG_RENDER], totalTime),
-				"AppCode=" + _pct(buckets[BUCKET_APP_CODE], totalTime),
-				"OtherTm=" + _pct(buckets[BUCKET_OTHER], totalTime),
-				"PixelsPerFrame=" + _mil(4*pixelsPushed.frameValue) + "MB (" + _mil(4*pixelsPushed.frameMax) + "MB max, " + _mil(4*pixelsPushed.value / nFramesRendered) + "MB avg)",
-				"AllocPerFrame=" + (bytesAllocated.value / nFramesRendered),
-				"AllocTotal=" + _mil(bytesAllocated.value),
-				"AllocTotal2=" + _mil(bytesAllocated2.value),
-				"ObjAlloc=" + _mil(1000*objectsAllocated.value) + "k (" + objectsAllocated.pctFromRender() + ") apf=" + objectsAllocated.valueFromPaint / nFramesRendered,
-				"PixelsLoaded=" + _mil(4*EpicBitmap.getGlobalPixelCount()) + "MB (" + _mil(4*EpicBitmap.getGlobalPixelCountScaled()) + "MB scaled)",
-				"RenderTimes=" + buff.toString()
-		};
-		return debugStrings;
 	}
 
 	public static String[] getDebugStringArray2() {
-		long totalTime = EpicTimeImplementation.getMicroTime() - startTime;
-		if(totalTime == 0) {
-			return new String[] {" --- "};
+		if(DEBUG_EPICSTOPWATCH) {
+			long totalTime = EpicTimeImplementation.getMicroTime() - startTime;
+			if(totalTime == 0) {
+				return new String[] {" --- "};
+			}
+			long totalTime2 = 1000 * (System.currentTimeMillis() - startTimeSystem);
+			String[] debugStrings = new String[] {
+					"TotTime=" + _seconds(totalTime) + " vs. " + _seconds(totalTime2),
+					"FramesR=" + nFramesRendered + " (" + _fps(nFramesRendered, totalTime) + ")",
+					"FramesC=" + nFramesComputed + " (" + _fps(nFramesComputed, totalTime) + ")",
+					"BgClear=" + _combined(buckets[BUCKET_BG_CLEAR], totalTime),
+					"AppRend=" + _combined(buckets[BUCKET_APP_RENDER], totalTime),
+					"BlitScr=" + _combined(buckets[BUCKET_BLIT_SCREEN], totalTime),
+					"DbugRdr=" + _combined(buckets[BUCKET_DEBUG_RENDER], totalTime),
+					"AppCode=" + _combined(buckets[BUCKET_APP_CODE], totalTime),
+					"OtherTm=" + _combined(buckets[BUCKET_OTHER], totalTime),
+			};
+			return debugStrings;
+		} else {
+			return new String[] { "EpicStopwatch[DISABLED]" };
 		}
-		long totalTime2 = 1000 * (System.currentTimeMillis() - startTimeSystem);
-		String[] debugStrings = new String[] {
-				"TotTime=" + _seconds(totalTime) + " vs. " + _seconds(totalTime2),
-				"FramesR=" + nFramesRendered + " (" + _fps(nFramesRendered, totalTime) + ")",
-				"FramesC=" + nFramesComputed + " (" + _fps(nFramesComputed, totalTime) + ")",
-				"BgClear=" + _combined(buckets[BUCKET_BG_CLEAR], totalTime),
-				"AppRend=" + _combined(buckets[BUCKET_APP_RENDER], totalTime),
-				"BlitScr=" + _combined(buckets[BUCKET_BLIT_SCREEN], totalTime),
-				"DbugRdr=" + _combined(buckets[BUCKET_DEBUG_RENDER], totalTime),
-				"AppCode=" + _combined(buckets[BUCKET_APP_CODE], totalTime),
-				"OtherTm=" + _combined(buckets[BUCKET_OTHER], totalTime),
-		};
-		return debugStrings;
 	}
 
 	private static String _mil(long n) {
@@ -203,7 +214,7 @@ public class EpicStopwatch {
 	private static long allocBytes = 0;
 	private static long startJavaHeapUsed;
 	public static void paintStart() {
-		if(ENABLED) {
+		if(DEBUG_EPICSTOPWATCH) {
 			for(Counter counter : allCounters) {
 				counter.paintStart();
 			}
@@ -213,7 +224,7 @@ public class EpicStopwatch {
 		}
 	}
 	public static void paintFinish() {
-		if(ENABLED) {
+		if(DEBUG_EPICSTOPWATCH) {
 			long time = System.currentTimeMillis();
 			frameTimes[nFramesRendered] = (short)(time - frameStartTime);
 			EpicStopwatch.attribute(BUCKET_APP_RENDER);
@@ -247,7 +258,7 @@ public class EpicStopwatch {
 
 	// DDOPSON-2011-07-10 - note that "pixels" != width * height due to cropping and padding and such.  It's the actual pixel work
 	public static void reportPixelsPushed(EpicBitmap image, int width, int height, int pixels) {
-		if(ENABLED) {
+		if(DEBUG_EPICSTOPWATCH) {
 			pixelsPushed.value += pixels;
 			if(image.lastRender != monotonicN) {
 				if(image.lastRender < pixelsInPlay_lastReset) {
@@ -263,10 +274,12 @@ public class EpicStopwatch {
 	}
 
 	public static void reportAllocation(int count, String desc, Object newObj, long size) {
-		if(count > 100) {
-			System.out.println("ALLOC: type='" + desc + "', count=" + count + ", sz=" + size + ", obj=" + newObj);
+		if(DEBUG_EPICSTOPWATCH) {
+			if(count > 100) {
+				System.out.println("ALLOC: type='" + desc + "', count=" + count + ", sz=" + size + ", obj=" + newObj);
+			}
+			objectsAllocated.value += 1;
+			bytesAllocated2.value += size;
 		}
-		objectsAllocated.value += 1;
-		bytesAllocated2.value += size;
 	}
 }

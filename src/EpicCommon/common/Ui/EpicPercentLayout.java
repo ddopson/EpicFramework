@@ -1,25 +1,19 @@
 package com.epic.framework.common.Ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicRuntimeException;
 import com.epic.framework.implementation.EpicNativeWidget;
-
+import static com.epic.framework.common.EpicConfig.*;
 public class EpicPercentLayout {
 	ArrayList<LayoutChild> children = new ArrayList<LayoutChild>();
 	EpicPlatformInterface implementation = null;
 	private boolean firstLayout = true;
-	private int bgWidth;
-	private int bgHeight;
 
-	public EpicPercentLayout(Dimension designDimension, EpicPlatformInterface implementation) {
-		this.bgWidth = designDimension.width;
-		this.bgHeight = designDimension.height;
+	public EpicPercentLayout(EpicPlatformInterface implementation) {
 		this.implementation = implementation;
 	}
 
@@ -51,7 +45,7 @@ public class EpicPercentLayout {
 	}
 
 	public EpicNativeWidget addFullscreenChild(EpicNativeWidget child) {
-		return addChild(0, 0, bgWidth, bgHeight, child);
+		return addChild(0, 0, DESIGN_WIDTH, DESIGN_HEIGHT, child);
 	}
 
 	private EpicNativeWidget addChild(int left, int top, int right, int bottom, EpicNativeWidget child, boolean maintainAspect, boolean absolute) {
@@ -61,7 +55,7 @@ public class EpicPercentLayout {
 		else if(left > right) {
 			throw EpicFail.invalid_argument("left > right");
 		}
-		else if(right > bgWidth) {
+		else if(right > DESIGN_WIDTH) {
 			throw EpicFail.invalid_argument("right out of bounds", right);
 		}
 		else if (top < 0) {
@@ -70,7 +64,7 @@ public class EpicPercentLayout {
 		else if (top > bottom) {
 			throw EpicFail.invalid_argument("top > bottom");
 		}
-		else if (bottom > bgHeight) {
+		else if (bottom > DESIGN_HEIGHT) {
 			throw EpicFail.invalid_argument("bottom out of bounds", bottom);
 		}
 		children.add(new LayoutChild(left, top, right, bottom, child, absolute));
@@ -113,10 +107,10 @@ public class EpicPercentLayout {
 			b = child.bottom;
 		}
 		else {
-			l = (int) (child.left * width / bgWidth);
-			t = (int) (child.top * height / bgHeight);
-			r = (int) (child.right * width / bgWidth);
-			b = (int) (child.bottom * height / bgHeight);
+			l = (int) (child.left * width / DESIGN_WIDTH);
+			t = (int) (child.top * height / DESIGN_HEIGHT);
+			r = (int) (child.right * width / DESIGN_WIDTH);
+			b = (int) (child.bottom * height / DESIGN_HEIGHT);
 		}
 		//		if(layoutParams.maintainAspect) {
 		//			float desiredAspect = (layoutParams.right - layoutParams.left) / (layoutParams.bottom - layoutParams.top);

@@ -1,11 +1,9 @@
 package com.epic.framework.common.util;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.implementation.EpicRandomImplementation;
-
+import static com.epic.framework.common.EpicConfig.DEBUG_EPICRAND;
 
 public class EpicRandom {
-	public static boolean SHOULD_LOG = !EpicProjectConfig.isReleaseMode;
 	private static int[] fakeData = null;
 	private static int fakeDataPos = -1;
 
@@ -25,7 +23,7 @@ public class EpicRandom {
 		}
 		else {
 			int result = EpicRandomImplementation.nextInt(n);
-			if(SHOULD_LOG) EpicLog.vf("EPIC_RANDOM %d, %d,", n, result);
+			if(DEBUG_EPICRAND) EpicLog.vf("EPIC_RANDOM %d, %d,", n, result);
 			return result;
 		}
 	}

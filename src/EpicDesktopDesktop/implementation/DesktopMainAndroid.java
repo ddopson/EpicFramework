@@ -6,7 +6,6 @@ import com.epic.framework.common.Ui.EpicPlatform;
 
 public class DesktopMainAndroid {
 	public static void main(String[] args) throws InterruptedException {
-		EpicProjectConfig.isReleaseMode = false;
 		EpicPlatformConfig.platform = EpicPlatform.PLATFORM_ANDROID;
 		EpicBitmapImplementation.magicBaseDirectory = "./resources";
 		DesktopMain.MainMethod(args);

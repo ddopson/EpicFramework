@@ -13,7 +13,6 @@ import com.epic.framework.common.Ui2.JSON.JSONException;
 public class DesktopMainUiV2 {
 	public static void main(String[] args) throws InterruptedException, JSONException {
 		InitRoutine.init();
-		EpicProjectConfig.isReleaseMode = false;
 		EpicPlatformConfig.platform = EpicPlatform.PLATFORM_IOS;
 		EpicBitmapImplementation.magicBaseDirectory = "./resources";
 		EpicSimulator.currentScreenSize = new Dimension(1024, 768);

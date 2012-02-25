@@ -11,7 +11,6 @@ import com.epic.framework.common.Ui2.JSON.JSONException;
 import com.epic.framework.common.Ui2.JSON.JSONObject;
 import com.epic.framework.common.Ui2.JSON.JSONTokener;
 import com.epic.framework.common.util.EpicLog;
-import com.epic.resources.EpicImages;
 
 public class FakeMainMenu {
 	
