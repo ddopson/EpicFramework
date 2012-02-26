@@ -10,14 +10,13 @@ import java.io.IOException;
 import com.epic.framework.common.Ui.EpicFile;
 import com.epic.framework.common.Ui.EpicFont;
 import com.epic.framework.common.util.EpicFail;
-import com.epic.resources.EpicFiles;
 
 public class EpicFontImplementation {
 	private static final BufferedImage fakeBitmap = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
 	private static final Graphics2D fakeGraphics = fakeBitmap.createGraphics();
 
 	public static Object getFontObjectFromName(String name, int size) {
-		return EpicFontImplementation.getFontObjectFromFile(EpicFiles.Nunito, size);
+		throw EpicFail.not_implemented();
 	}
 	
 	public static Object getFontObjectFromFile(EpicFile file, int size) {

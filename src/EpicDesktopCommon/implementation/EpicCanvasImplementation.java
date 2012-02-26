@@ -23,8 +23,6 @@ import com.epic.framework.common.Ui.EpicFont;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.StringHelper;
-import com.epic.resources.EpicFiles;
-
 
 public class EpicCanvasImplementation {
 	public static boolean hack = false;

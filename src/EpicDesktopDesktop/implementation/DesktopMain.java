@@ -15,15 +15,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.implementation.ArchPlatform;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.framework.common.util.StringHelper;
-import com.realcasualgames.words.Dictionary;
-import com.realcasualgames.words.PlayerState;
 //import com.google.monitoring.runtime.instrumentation.AllocationRecorder;
 //import com.google.monitoring.runtime.instrumentation.Sampler;
 
@@ -35,8 +32,6 @@ public class DesktopMain {
 		//				EpicStopwatch.reportAllocation(count, desc, newObj, size);
 		//			}
 		//		});
-		Dictionary.ensure_initialized();
-		Dictionary.test();
 		mainFrame = new JFrame();
 		mainFrame.setContentPane(EpicNativeGameFrame.get());
 		EpicPlatform.initialize(EpicNativeGameFrame.get(), EpicSimulator.currentScreenSize.width, EpicSimulator.currentScreenSize.height, null, null);
@@ -63,8 +58,7 @@ public class DesktopMain {
 					}
 				}
 		);
-		PlayerState.disableTheFuckingTutorial = true;
-		createStatsWindow();
+//		createStatsWindow();
 	}
 
 	public static void createStatsWindow() {

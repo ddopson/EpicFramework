@@ -11,22 +11,10 @@ import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.Ui.EpicSound;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
-import com.epic.resources.EpicFiles;
 
 public class EpicSoundManagerImplementation {
-	private static Player music = null;
-	public static void playMusic(final EpicSound sound) {
-		if(music != null) {
-			music.close();
-		}
-//		music = playSound(sound, true);
-	}
-
-	public static void playSound(EpicSound sound) {
-		playSound(sound, false);
-	}
 	
-	public static Player playSound(final EpicSound sound, boolean isMusic) {
+	public static Player playSound(final EpicSound sound, int loops) {
 		final Player p = getPlayer(sound);
 		EpicPlatform.runInBackground(new Runnable() {
 			public void run() {
@@ -41,6 +29,11 @@ public class EpicSoundManagerImplementation {
 		return p;
 	}
 	
+	public static void stopSound(Object playerObject) {
+		Player player = (Player)playerObject;
+		player.close();
+	}
+	
 	private static Player getPlayer(final EpicSound sound) {
 		try {
 			String filename = "./resources/" + sound.getFilename();
@@ -53,25 +46,5 @@ public class EpicSoundManagerImplementation {
 			EpicLog.e("SOUND_ERROR: playing sound '" + sound.name + "', got ", e);
 			return null;
 		}
-	}
-
-	public static void preload(EpicSound[] soundsToPreload) {
-	
-	}
-
-	public static void stopMusic() {
-	}
-
-	public static void pauseMusic() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public static boolean resumeMusic() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public static void preload(EpicSound musicToPreload, EpicSound[] soundsToPreload) {
 	}
 }

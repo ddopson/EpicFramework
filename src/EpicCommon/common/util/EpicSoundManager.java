@@ -1,51 +1,41 @@
 package com.epic.framework.common.util;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicSound;
 import com.epic.framework.implementation.EpicSoundManagerImplementation;
-import com.epic.resources.EpicSounds;
-import com.realcasualgames.words.PlayerState;
 
 public class EpicSoundManager {
+	private static Object currentMusicObject = null;
+	private static EpicSound currentMusic = null;
 	
 	public static void playMusic(EpicSound sound) {
-		if(PlayerState.soundsEnabled()) {
-			EpicSoundManagerImplementation.playMusic(sound);
+		if(currentMusicObject != null) {
+			if(currentMusic == sound) {
+				return;
+			}
+			EpicSoundManagerImplementation.stopSound(currentMusicObject);
 		}
+		currentMusicObject = EpicSoundManagerImplementation.playSound(sound, -1);
+		currentMusic = sound;
 	}
 	
 	public static void playSound(EpicSound sound) {		
-		if(PlayerState.soundsEnabled()) {
-			EpicSoundManagerImplementation.playSound(sound);
-		}
+		EpicSoundManagerImplementation.playSound(sound, 1);
 	}
 
-	public static void preload(EpicSound musicToPreload, EpicSound[] soundsToPreload) {
-		EpicSoundManagerImplementation.preload(musicToPreload, soundsToPreload);
+	public static void preload(EpicSound[] soundsToPreload) {
 	}
 	
 	public static void stopMusic() {
-		EpicSoundManagerImplementation.stopMusic();
+		if(currentMusicObject != null) {
+			EpicSoundManagerImplementation.stopSound(currentMusicObject);
+			currentMusic = null;
+			currentMusicObject = null;
+		}
 	}
 	
 	public static void pauseMusic() {
-		EpicSoundManagerImplementation.pauseMusic();
 	}
 	
 	public static void resumeMusic() {
-		if(PlayerState.soundsEnabled()) {
-			EpicSoundManagerImplementation.playMusic(EpicProjectConfig.getBackgroundMusic());
-		}
-	}
-
-	public static void toggleSounds() {
-		if(PlayerState.soundsEnabled()) {
-			EpicLog.v("Now enabling sounds...");
-			EpicSound bg = EpicProjectConfig.getBackgroundMusic();
-			if(bg != null) EpicSoundManager.playMusic(bg);
-		} else {
-			EpicLog.v("Stopping bg track...");
-			stopMusic();
-		}
 	}
 }

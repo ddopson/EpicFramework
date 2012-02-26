@@ -37,4 +37,9 @@ public class EpicPlatformImplementation {
 
 	public static void deepLinkToMarket(String string) {
 	}
+
+	public static String getDeviceName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

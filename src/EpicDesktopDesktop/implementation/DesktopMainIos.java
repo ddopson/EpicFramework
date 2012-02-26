@@ -2,7 +2,6 @@ package com.epic.framework.implementation;
 
 import java.awt.Dimension;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicPlatform;
 
 

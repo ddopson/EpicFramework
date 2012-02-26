@@ -1,9 +1,7 @@
 package com.epic.framework.implementation;
 
+import com.epic.framework.common.Ui.EpicPlatform;
+
 public class EpicPlatformConfig {
-	public static final int PLATFORM_ANDROID = 0;
-	public static final int PLATFORM_BLACKBERRY = 1;
-
-	public static int platform = PLATFORM_ANDROID;
-
+	public static int platform = EpicPlatform.PLATFORM_NULL;
 }

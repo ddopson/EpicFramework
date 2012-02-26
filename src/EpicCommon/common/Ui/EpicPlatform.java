@@ -3,7 +3,6 @@ package com.epic.framework.common.Ui;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.EpicConfig;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
 import com.epic.framework.common.types.Dimension;
@@ -14,13 +13,13 @@ import com.epic.framework.implementation.EpicPlatformConfig;
 import com.epic.framework.implementation.EpicPlatformImplementation;
 import com.epic.framework.common.util.EpicSoundManager;
 import com.epic.framework.common.util.EpicStopwatch;
-import com.epic.resources.EpicImages;
 
 import static com.epic.framework.common.EpicConfig.DEBUG_EPICPLAT;
 import static com.epic.framework.common.EpicConfig.DESIGN_WIDTH;
 import static com.epic.framework.common.EpicConfig.DESIGN_HEIGHT;
 
 public class EpicPlatform {
+	public static final int PLATFORM_NULL = -1;
 	public static final int PLATFORM_ANDROID = 0;
 	public static final int PLATFORM_BLACKBERRY = 1;
 	public static final int PLATFORM_IOS = 2;
@@ -127,11 +126,11 @@ public class EpicPlatform {
 			platformPrecedence = new String[] { };
 		}
 		
-		// DDOPSON-2012-02-23 - Init Routine....  - a bunch of this stuff needs for the screen width to be set.
-		EpicImages.init();
-		EpicProjectConfig.onApplicationStart();
-
-		
+//		// DDOPSON-2012-02-23 - Init Routine....  - a bunch of this stuff needs for the screen width to be set.
+//		EpicImages.init();
+//		EpicProjectConfig.onApplicationStart();
+//
+//		
 		EpicPlatform.epicPlatformInterface = platformInterface;
 		EpicPlatform.epicPercentLayout = new EpicPercentLayout(platformInterface);
 		EpicPlatform.currentScreen = EpicConfig.INITIAL_SCREEN;
