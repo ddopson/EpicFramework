@@ -1,1 +1,0 @@
-../../EpicDesktopCommon/implementation/EpicLicenseChecker.java
