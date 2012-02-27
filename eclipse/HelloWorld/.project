@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name><%=name%></name>
+	<name>Example: HelloWorld</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,11 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources><% _.each(sources, function (source, name) { %>
+	<linkedResources>
 		<link>
-			<name><%=name%></name>
+			<name>src</name>
 			<type>2</type>
-			<locationURI><%=source%></locationURI>
-		</link><% }); %>
+			<locationURI>PARENT-1-WORKSPACE_LOC/examples/HelloWorld/src</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

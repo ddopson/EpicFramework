@@ -1,11 +1,13 @@
 
+PROJECTS  := Desktop Android iOS NullPlat HelloWorld EpicBuilder
+
 UTEMPLATE ?= $(shell PATH=$$PATH:../bin; which underscore-template)
 
 .PHONY: build
-build: Desktop Android iOS NullPlat
+build: $(PROJECTS)
 
-.PHONY: Desktop Android iOS NullPlat
-Desktop Android iOS NullPlat:
+.PHONY: $(PROJECTS)
+$(PROJECTS):
 	@mkdir -p $@
 	@echo "Generating Eclipse project for '$@'"
 	@$(UTEMPLATE) -t template/dot_classpath -d projects.json -s $@ -v -o $@/.classpath
@@ -14,6 +16,6 @@ Desktop Android iOS NullPlat:
 
 .PHONY: clean
 clean:
-	rm -rf Android iOS Desktop NullPlat .metadata
+	rm -rf $(PROJECTS) .metadata
 #!/bin/bash
 

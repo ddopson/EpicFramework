@@ -1,28 +1,56 @@
 {
+  "EpicBuilder": {
+    "name": "EpicBuilder",
+    "sources": {
+      "EpicBuilder": "PARENT-1-WORKSPACE_LOC/EpicBuilder/src"
+    },
+    "libs": []
+  },
   "Android": {
     "name": "Android",
-    "platform": "EpicAndroid",
+    "sources": {
+      "EpicCommon": "PARENT-1-WORKSPACE_LOC/EpicCommon/src",
+      "EpicAndroid": "PARENT-1-WORKSPACE_LOC/EpicAndroid/src"
+    },
     "libs": [
       "/workspace/SDK/android-sdk-r06/platforms/android-11/android.jar"      
     ]
   },
   "iOS": {
     "name": "iOS",
-    "platform": "EpicIos",
+    "sources": {
+      "EpicCommon": "PARENT-1-WORKSPACE_LOC/EpicCommon/src",
+      "EpicIos": "PARENT-1-WORKSPACE_LOC/EpicIos/src"
+    },
     "libs": [
       "../../xmlvm/xmlvm.jar"
     ]
   },
   "Desktop": {
     "name": "Desktop",
-    "platform": "EpicDesktop",
+    "sources": {
+      "EpicCommon": "PARENT-1-WORKSPACE_LOC/EpicCommon/src",
+      "EpicDesktop": "PARENT-1-WORKSPACE_LOC/EpicDesktop/src"
+    },
     "libs": [
       "../../EpicDesktop/lib/jl1.0.1.jar"
     ]
   },
   "NullPlat": {
     "name": "NullPlat",
-    "platform": "EpicNullPlat",
+    "sources": {
+      "EpicCommon": "PARENT-1-WORKSPACE_LOC/EpicCommon/src",
+      "EpicNullPlat": "PARENT-1-WORKSPACE_LOC/EpicNullPlat/src"
+    },
     "libs": []
+  },
+  "HelloWorld": {
+    "name": "Example: HelloWorld",
+    "sources": {
+      "src": "PARENT-1-WORKSPACE_LOC/examples/HelloWorld/src"
+    },
+    "libs": [
+      "../../build/EpicDesktop.jar"
+    ]
   }
 }
