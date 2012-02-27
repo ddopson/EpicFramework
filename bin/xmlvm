@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# DDOPSON-2012-02-26 - Note on getting dir - MacOS readlink is retarded and has no '-f' option.  To support vanilla OSX ...
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
+FRAMEWORK_DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
+
+java -Xmx1G -jar "$FRAMEWORK_DIR/xmlvm/xmlvm.jar" "$@"
