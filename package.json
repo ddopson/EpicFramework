@@ -1,0 +1,10 @@
+{
+  "name": "epicbuild-codegen",
+  "version": "0.1.0",
+
+  "dependencies": {
+    "commander":  "*",
+    "underscore": "*",
+    "java":       "*"
+  }
+}
