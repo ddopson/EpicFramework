@@ -64,7 +64,7 @@ if (program.selector) {
 try {
   var output = _.template(template, data);
 } catch (e) {
-  console.error("Error processing template: %s", e.message);
+  console.error("Error processing template '%s': %s", program.template, e.message);
   if(program.verbose) {
     console.error("Data: ", data);
   }
