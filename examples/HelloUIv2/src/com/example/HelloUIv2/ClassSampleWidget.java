@@ -11,7 +11,9 @@ public class ClassSampleWidget extends EpicClass {
 	
 	@Override
 	public EpicObject inflate(JSONObject data) {
-		return new SampleWidget();
+		SampleWidget object = new SampleWidget();
+		object.size = data.optInt("size");
+		return object;
 	}
 	
 	public static void register() {

@@ -4,8 +4,7 @@
 	widgets: [
 		{
 			type: "com.example.HelloUIv2.SampleWidget",
-			name: "widgets/blah",
-			foo: "blah"
+			size: 150
 		}
 	]
 }
