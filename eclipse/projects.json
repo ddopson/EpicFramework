@@ -9,7 +9,9 @@
   "iOS": {
     "name": "iOS",
     "platform": "EpicIos",
-    "libs": []
+    "libs": [
+      "../../xmlvm/xmlvm.jar"
+    ]
   },
   "Desktop": {
     "name": "Desktop",
