@@ -52,5 +52,14 @@
     "libs": [
       "../../build/EpicDesktop.jar"
     ]
+  },
+  "HelloUIv2": {
+    "name": "Example: HelloUIv2",
+    "sources": {
+      "src": "PARENT-1-WORKSPACE_LOC/examples/HelloUIv2/src"
+    },
+    "libs": [
+      "../../build/EpicDesktop.jar"
+    ]
   }
 }

@@ -1,0 +1,11 @@
+{
+	name: "screens/MainMenu",
+	type: "com.epic.framework.common.Ui2.EpicScreenObject",
+	widgets: [
+		{
+			type: "com.example.HelloUIv2.SampleWidget",
+			name: "widgets/blah",
+			foo: "blah"
+		}
+	]
+}
