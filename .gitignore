@@ -1,9 +1,3 @@
 .metadata
-
-targets/EpicIPhone/objc-overrides/com_epic_framework_implementation_UniqueIdGenerator.h
-
-targets/EpicIPhone/objc-overrides/com_epic_framework_implementation_UniqueIdGenerator.m
-
-targets/EpicIPhone/objc-overrides/com_epic_framework_implementation_EpicImplementationNative.h
-
-targets/EpicIPhone/objc-overrides/com_epic_framework_implementation_EpicImplementationNative.m
+node_modules
+npm-debug.log
