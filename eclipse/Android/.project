@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>EpicAndroid</name>
+	<name>Android</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>EpicCommon</name>
+			<type>2</type>
+			<locationURI>PARENT-1-WORKSPACE_LOC/EpicCommon/src</locationURI>
+		</link>
+		<link>
+			<name>EpicAndroid</name>
+			<type>2</type>
+			<locationURI>PARENT-1-WORKSPACE_LOC/EpicAndroid/src</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

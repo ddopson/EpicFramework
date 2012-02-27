@@ -1,0 +1,26 @@
+{
+  "Android": {
+    "name": "Android",
+    "platform": "EpicAndroid",
+    "libs": [
+      "/workspace/SDK/android-sdk-r06/platforms/android-11/android.jar"      
+    ]
+  },
+  "iOS": {
+    "name": "iOS",
+    "platform": "EpicIos",
+    "libs": []
+  },
+  "Desktop": {
+    "name": "Desktop",
+    "platform": "EpicDesktop",
+    "libs": [
+      "../../EpicDesktop/lib/jl1.0.1.jar"
+    ]
+  },
+  "NullPlat": {
+    "name": "NullPlat",
+    "platform": "EpicNullPlat",
+    "libs": []
+  }
+}

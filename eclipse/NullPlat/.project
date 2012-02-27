@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>EpicNullPlatform</name>
+	<name>NullPlat</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>EpicCommon</name>
+			<type>2</type>
+			<locationURI>PARENT-1-WORKSPACE_LOC/EpicCommon/src</locationURI>
+		</link>
+		<link>
+			<name>EpicNullPlat</name>
+			<type>2</type>
+			<locationURI>PARENT-1-WORKSPACE_LOC/EpicNullPlat/src</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

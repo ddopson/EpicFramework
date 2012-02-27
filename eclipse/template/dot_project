@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Desktop</name>
+	<name><%=name%></name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -21,9 +21,9 @@
 			<locationURI>PARENT-1-WORKSPACE_LOC/EpicCommon/src</locationURI>
 		</link>
 		<link>
-			<name>EpicDesktop</name>
+			<name><%=platform%></name>
 			<type>2</type>
-			<locationURI>PARENT-1-WORKSPACE_LOC/EpicDesktop/src</locationURI>
+			<locationURI>PARENT-1-WORKSPACE_LOC/<%=platform%>/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
