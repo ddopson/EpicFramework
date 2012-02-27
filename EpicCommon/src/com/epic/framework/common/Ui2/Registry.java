@@ -1,5 +1,6 @@
 package com.epic.framework.common.Ui2;
 
+import java.io.InputStream;
 import java.util.HashMap;
 
 import com.epic.framework.common.Ui.EpicBitmap;
@@ -11,6 +12,7 @@ import com.epic.framework.common.Ui.MouseTrail;
 import com.epic.framework.common.Ui2.JSON.JSONArray;
 import com.epic.framework.common.Ui2.JSON.JSONException;
 import com.epic.framework.common.Ui2.JSON.JSONObject;
+import com.epic.framework.common.Ui2.JSON.JSONTokener;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 
@@ -26,6 +28,12 @@ public class Registry {
 		registry.put(name, object);
 	}
 	
+	public static void processJSONStream(InputStream in) throws JSONException {
+		JSONTokener json = new JSONTokener(in);
+		Object o = json.nextValue();
+		processJSON(o);
+		
+	}
 	public static void processJSON(Object o) throws JSONException {
 		if(o instanceof JSONObject) {
 			JSONObject data = (JSONObject)o;
@@ -40,7 +48,6 @@ public class Registry {
 			EpicLog.w("WARNING: unable to interpret " + o.getClass().getCanonicalName());
 		}
 	}
-
 	
 	public static EpicObject inflateField(JSONObject data, String fieldName, EpicClass type, int flags) {
 		Object fieldData = data.opt(fieldName);
