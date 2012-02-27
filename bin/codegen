@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var _ = require('underscore');
+var program = require('commander');
+var reflector = require('../lib/java-reflector');
+var fs = require('fs');
+var version = JSON.parse(fs.readFileSync(__dirname + '/../package.json')).version
+
+program
+  .version(version)
+  .option('-d, --dest <dir>', 'Output dir for generated classes')
+  .option('-s, --src <dir>', 'Input dir with the classfiles')
+  .parse(process.argv);
+
+
+console.log(reflector.reflect('com.epic.framework.build.EpicClassReflector'));
