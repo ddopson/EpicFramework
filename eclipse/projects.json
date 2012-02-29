@@ -4,7 +4,9 @@
     "sources": {
       "EpicBuilder": "PARENT-1-WORKSPACE_LOC/EpicBuilder/src"
     },
-    "libs": []
+    "libs": [
+      "../../EpicBuilder/lib/jcommander-1.24-SNAPSHOT-bundle.jar"
+    ]
   },
   "Android": {
     "name": "Android",
