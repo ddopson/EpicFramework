@@ -1,0 +1,26 @@
+{
+	name: "screens/MainMenu",
+	type: "com.epic.framework.common.Ui2.EpicScreenObject",
+	widgets: [
+		{
+			type: "com.epic.framework.common.Ui2.EpicBackgroundWidget",
+			bitmap: "bg_main_menu"
+		},{
+			type: "com.epic.framework.common.Ui2.EpicButtonWidget",
+			bitmap_default: "game_word_puzzle_title_button_play_default",
+			bitmap_focused: "game_word_puzzle_title_button_play_focused",
+			bitmap_pressed: "game_word_puzzle_title_button_play_pressed",
+			x: 240, 
+			y: 244, 
+			width: 339,
+			height: 62,
+			action: {
+				type: "com.epic.framework.common.Ui2.EnsureLoginAction",
+				success: {
+					type: "com.epic.framework.common.Ui2.StartGameAction"
+				},
+				failure: null
+			}
+		}
+	]
+}

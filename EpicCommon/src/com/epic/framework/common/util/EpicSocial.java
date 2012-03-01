@@ -1,3 +1,43 @@
+/**
+ * @author Derek Johnson
+ * 
+ * EpicSocial provides for a set of social network features for consumers. The initial
+ * implementation focuses on Facebook, and provides simple functions for logging in,
+ * requesting friend lists, posting to a users timeline, and sending app requests.
+ * 
+ * For more advanced users, functions are provided to directly pass commands through 
+ * to the Facebook Graph API, and return raw JSON results.
+ * 
+ */
+
+package com.epic.framework.common.util;
+
+public class EpicSocial {
+	/**
+	 * Begins the asynchronous login process to Facebook, using Single Sign On (SSO), 
+	 * if available. This method should generally not be called directly, as other
+	 * Facebook related utility methods in EpicSocial will handle login transparently.
+	 * 
+	 * For customers without the Facebook client installed, a browser window will appear
+	 * to log in. For users with the client, SSO will be used to log in.
+	 * 
+	 * @param socialDelegate Delegate with a proper implementation of 
+	 * EpicSocialDelegate.onLoggedInToFacebook(EpicFacebookUser facebookUser)
+	 * 
+	 */
+	public void beginLoginToFacebook() {}
+	
+	public void postToFacebookWallDialog() {}
+	
+	public void sendFacebookAppRequestsDialog() {}
+	
+	public void getFacebookFriendList() {}
+	
+	public void sendRawFacebookGraphApiRequest(String action) {}
+	
+}
+
+
 //package com.epic.framework.common.util;
 //
 //import com.epic.framework.common.Ui.EpicClickListener;
