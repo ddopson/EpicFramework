@@ -1,9 +1,7 @@
 package com.epic.framework.common.Ui2;
 
+import org.json.*;
 import com.epic.framework.common.Ui.EpicBitmap;
-import com.epic.framework.common.Ui2.JSON.JSONArray;
-import com.epic.framework.common.Ui2.JSON.JSONException;
-import com.epic.framework.common.Ui2.JSON.JSONObject;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 
@@ -45,5 +43,11 @@ public class ClassEpicWidget extends EpicClass {
 	
 	public static void register() {
 		Registry.register("com.epic.framework.common.Ui2.EpicWidget", singleton);
+	}
+
+	@Override
+	public Object newArray(int length) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

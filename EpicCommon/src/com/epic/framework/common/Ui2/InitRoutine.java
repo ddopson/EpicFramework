@@ -3,8 +3,7 @@ package com.epic.framework.common.Ui2;
 import java.io.InputStream;
 
 import com.epic.framework.common.Ui.EpicBitmap;
-import com.epic.framework.common.Ui2.JSON.JSONException;
-import com.epic.framework.common.Ui2.JSON.JSONTokener;
+import org.json.*;
 
 public class InitRoutine {
 	public static void init() throws JSONException {

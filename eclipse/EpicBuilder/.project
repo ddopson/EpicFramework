@@ -20,5 +20,10 @@
 			<type>2</type>
 			<locationURI>PARENT-1-WORKSPACE_LOC/EpicBuilder/src</locationURI>
 		</link>
+		<link>
+			<name>resources</name>
+			<type>2</type>
+			<locationURI>PARENT-1-WORKSPACE_LOC/EpicBuilder/resources</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

@@ -3,6 +3,7 @@ package com.epic.framework.common.Ui;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.epic.framework.build.EpicInflatableClass;
 import com.epic.framework.common.Ui2.ClassEpicBitmap;
 import com.epic.framework.common.Ui2.EpicObject;
 import com.epic.framework.common.Ui2.Registry;
@@ -11,6 +12,7 @@ import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicStopwatch;
 import com.epic.framework.implementation.EpicBitmapImplementation;
 
+@EpicInflatableClass(inflatable=false)
 public class EpicBitmap extends EpicBitmapInstance {
 	// Statics
 	private static final HashMap<String, EpicBitmap> allBitmaps = new HashMap<String, EpicBitmap>();

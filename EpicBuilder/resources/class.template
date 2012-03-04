@@ -1,0 +1,60 @@
+package <%=package%>;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.epic.framework.common.Ui2.EpicClass;
+import com.epic.framework.common.Ui2.EpicObject;
+import com.epic.framework.common.Ui2.Registry;
+import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
+
+public class Class<%=name%> extends EpicClass {
+     public static final Class<%=name%> singleton = new Class<%=name%>();
+     
+     @Override
+     public String getName() {
+        return "<%=fullname%>"; 
+     }
+     
+     @Override
+     public boolean isInstanceOf(EpicObject object) {
+        return (object instanceof <%=name%>); 
+     }
+
+     @Override
+     public <%=name%>[] newArray(int length) {
+        return new <%=name%>[length];
+     }
+     
+     @Override
+     public EpicObject inflate(JSONObject data) throws JSONException {<%
+if (abstract) { %>
+          throw new EpicObjectInflationException("Can't inflate abstract class <%=fullname%>");<%
+} else if (!inflatable) { %>
+          throw new EpicObjectInflationException("Can't inflate non-inflatable class <%=fullname%>");<%
+} else { %>
+          <%=name%> object = new <%=name%>();
+          
+          object.type = Class<%=name%>.singleton;<%
+ _.each(fields, function (field) {
+  if (field.type === "java.lang.String") { %>
+          object.<%=field.name%> = data.getString("<%=field.name%>");<%
+  } else if (field.type === "int") { %>
+          object.<%=field.name%> = data.getInt("<%=field.name%>");<%
+  } else { %>
+          object.<%=field.name%> = (<%=field.type%>) Registry.inflateField(
+              data,
+              "<%=field.name%>",
+              <%=field.type.replace(/[.]([^.]+)$/, ".Class$1")%>.singleton,
+              EpicObject.FIELD_REQUIRED);<%
+  }
+ }); %>
+          return object;<%
+} %>
+     }
+
+     public static void register() {
+          Registry.register(singleton.getName(), singleton);
+     }
+}
+

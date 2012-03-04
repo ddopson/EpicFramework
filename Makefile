@@ -2,8 +2,8 @@
 ##  Phony Targets
 ####################################################################################################
 
-.PHONY: build
-build: node_modules build/EpicBuilder.jar build/EpicNullPlat.jar build/EpicCommon.jar build/EpicDesktop.jar
+.PHONY: all
+all: node_modules EpicBuilder EpicCommon EpicDesktop.jar
 
 .PHONY: clean
 clean:
@@ -29,59 +29,77 @@ java_src_files_common  := $(shell find EpicCommon/src -name '*.java' -type file 
 java_src_files_desktop := $(shell find EpicDesktop/src -name '*.java' -type file -follow)
 java_src_files_applet  := $(shell find EpicDesktop/src -name '*.java' -type file -follow)
 
-JAROPT_COMMON          := -C build/classes_common com/epic/framework/common
-JAROPT_COMMON_SRC      := -C EpicCommon/src com/epic/framework/common
+JAROPT_COMMON_BIN      := -C build/classes_common com/epic/framework/common -C build/classes_builder com/epic/framework/build 
+JAROPT_COMMON_SRC      := -C EpicCommon/src . -C EpicBuilder/src .
+JAROPT_COMMON_DOC      :=
+JAROPT_COMMON          := $(JAROPT_COMMON_SRC) $(JAROPT_COMMON_BIN) $(JAROPT_COMMON_DOC)
+JAVAC_PROCESSOR        := -processor com.epic.framework.build.EpicAnnotationProcessor
 
+CP_COMM := build/classes_common
+CP_DESK := build/classes_desktop
+CP_BLD  := build/classes_builder
+CP_AND  := build/classes_android
+
+GREEN := \033[32m
+YELLOW := \033[38;5;226m
+NOCOLOR                := \033[39;0m
 
 ####################################################################################################
 ##  Targets
 ####################################################################################################
-
+dbg:
+	echo $(call classpathify,build/EpicCommon.jar EpicDesktop/lib/*.jar)	
 
 node_modules: package.json
 	npm install
 	@touch node_modules
 
-build/EpicBuilder.jar: build/.make.EpicBuilder
+.PHONY: EpicBuilder
+EpicBuilder: build/.make.EpicBuilder
 build/.make.EpicBuilder: $(java_src_files_builder)
 	@mkdir -p build/classes_builder
-	@echo "$(GREEN)javac$(NOCOLOR) - Compiling $(words $(java_src_files_builder)) EpicBuilder source files ..."
-	@javac -sourcepath EpicBuilder/src -d build/classes_builder $(java_src_files_builder)
-	jar cf build/EpicBuilder.jar -C build/classes_builder .
-	jar cf build/EpicBuilder.src.jar -C EpicBuilder/src .
+	@echo "$(GREEN)EpicBuilder$(NOCOLOR) - Compiling $(words $(java_src_files_builder)) source files ..."
+	@javac -d build/classes_builder $(java_src_files_builder)
+	@#@cd build/classes_builder && for j in ../../EpicBuilder/lib/*.jar; do jar xf $$j; done
+	@#@rsync -a EpicBuilder/src/ build/classes_builder/
+	@#@echo "$(GREEN)EpicBuilder$(NOCOLOR) - jar cf build/EpicBuilder.jar -C build/classes_builder ."
+	@#jar cf build/EpicBuilder.jar -C build/classes_builder .
 	@touch build/.make.EpicBuilder
 
-build/EpicNullPlat.jar: build/.make.EpicNullPlat
-build/.make.EpicNullPlat: $(java_src_files_null)
+.PHONY: EpicCommon
+EpicCommon: EpicBuilder build/.make.EpicCommon
+build/.make.EpicCommon: $(java_src_files_common) $(java_src_files_null)
 	@mkdir -p build/classes_common
-	@echo "$(GREEN)javac$(NOCOLOR) - Compiling $(words $(java_src_files_null)) EpicNullPlat source files ..."
-#    javac here will "autobuild" classes from EpicCommon as needed"
-	@javac -sourcepath EpicCommon/src -d build/classes_common $(java_src_files_null)
-	jar cf build/EpicNullPlat.jar -C build/classes_common com/epic/framework/implementation
-	jar cf build/EpicNullPlat.src.jar -C EpicNullPlat/src com/epic/framework/implementation
-	@touch build/.make.EpicNullPlat
-
-build/EpicCommon.jar: build/.make.EpicCommon
-build/.make.EpicCommon: $(java_src_files_common) build/EpicNullPlat.jar
-	@mkdir -p build/classes_common
-	@echo "$(GREEN)javac$(NOCOLOR) - Compiling $(words $(java_src_files_common)) EpicCommon source files ..."
-	@javac -d build/classes_common -classpath build/EpicNullPlat.jar $(java_src_files_common) 
-	@echo "$(GREEN)jar$(NOCOLOR) - EpicCommon.jar"
-	jar cf build/EpicCommon.jar $(JAROPT_COMMON)
-	jar cf build/EpicCommon.src.jar $(JAROPT_COMMON_SRC)
+	@echo "$(GREEN)EpicCommon$(NOCOLOR) - Compiling $(words $(java_src_files_common)) + $(words $(java_src_files_null)) source files ..."
+	@javac -sourcepath EpicNullPlat/src -implicit:class -d $(CP_COMM) -cp $(CP_BLD) $(JAVAC_PROCESSOR) $(java_src_files_common)
+	@rm -rf build/classes_common/com/epic/framework/implementation
 	@touch build/.make.EpicCommon
+	@#	@echo "$(GREEN)EpicCommon$(NOCOLOR) - jar cf build/EpicCommon.jar $(JAROPT_COMMON)"
+	@#	jar cf build/EpicCommon.jar $(JAROPT_COMMON)
 
-# DDOPSON-2012-02-26 - Note on Dependencies - Desktop/Andraid/Ios deliberately "depend" on build/EpicNullPlat.jar rather than build/EpicCommon.jar
-# It has fewer false-positives, yet any changes that affects API will break EpicNullPlat (low false-negative) - making it a better "dependency" for Makfile purposes
-
-build/EpicDesktop.jar: build/.make.EpicDesktop
-build/.make.EpicDesktop: $(java_src_files_desktop) build/EpicNullPlat.jar
-	@mkdir -p build/classes_desktop
-	@echo "$(GREEN)javac$(NOCOLOR) - Compiling $(words $(java_src_files_desktop)) EpicDesktop source files ..."
-	javac -d build/classes_desktop -classpath $(call classpathify,build/EpicCommon.jar EpicDesktop/lib/*.jar) $(java_src_files_desktop)
-	@echo "$(GREEN)unzip$(NOCOLOR) - Merging dependency jars into build/classes_desktop"
-	@cd build/classes_desktop jar xf EpicDesktop/lib/*.jar
-	@echo "$(GREEN)jar$(NOCOLOR) - EpicDesktop.jar"
-	jar cf build/EpicDesktop.jar -C build/classes_desktop . $(JAROPT_COMMON)
-	jar cf build/EpicDesktop.src.jar -C EpicDesktop/src . $(JAROPT_COMMON_SRC)
+.PHONY: EpicDesktop
+EpicDesktop: EpicCommon build/.make.EpicDesktop
+build/.make.EpicDesktop: $(java_src_files_desktop)
+	@mkdir -p $(CP_DESK)
+	@echo "$(GREEN)EpicDesktop$(NOCOLOR) - Compiling $(words $(java_src_files_desktop)) source files ..."
+	javac -d $(CP_DESK) -cp $(CP_BLD):$(CP_COMM):$(call classpathify,EpicDesktop/lib/*.jar) $(JAVAC_PROCESSOR) $(java_src_files_desktop)
 	@touch build/.make.EpicDesktop
+	
+.PHONY: EpicDesktop.jar
+EpicDesktop.jar: EpicDesktop build/EpicDesktop.jar
+build/EpicDesktop.jar: build/.make.EpicDesktop build/.make.EpicCommon build/.make.EpicBuilder $(shell find EpicBuilder/src EpicCommon/src/ EpicDesktop/src/)
+	@echo "$(GREEN)EpicDesktop.jar$(NOCOLOR) - Merging dependency jars into build/classes_desktop"
+	@cd build/classes_desktop && for j in ../../EpicDesktop/lib/*.jar; do jar xf $$j; done
+	rsync -a $(CP_BLD)/ $(CP_DESK)/
+	rsync -a $(CP_COMM)/ $(CP_DESK)/
+	rsync -a EpicBuilder/src/ $(CP_DESK)/
+	rsync -a EpicCommon/src/ $(CP_DESK)/
+	rsync -a EpicDesktop/src/ $(CP_DESK)/
+	@echo "$(GREEN)EpicDesktop.jar$(NOCOLOR) - jar cf build/EpicDesktop.jar -C build/classes_desktop ."
+	@jar cf build/EpicDesktop.jar -C build/classes_desktop .
+
+.PHONY: jcommander
+jcommander: EpicBuilder/lib/jcommander-1.24-SNAPSHOT-bundle.jar
+EpicBuilder/lib/jcommander-1.24-SNAPSHOT-bundle.jar: 
+	third-party/jcommander/build-with-maven
+	cp third-party/jcommander/target/jcommander-*-bundle.jar EpicBuilder/lib/

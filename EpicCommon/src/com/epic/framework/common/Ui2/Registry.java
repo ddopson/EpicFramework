@@ -3,16 +3,17 @@ package com.epic.framework.common.Ui2;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicFont;
 import com.epic.framework.common.Ui.EpicMenu;
 import com.epic.framework.common.Ui.EpicPercentLayout;
 import com.epic.framework.common.Ui.MouseTrail;
-import com.epic.framework.common.Ui2.JSON.JSONArray;
-import com.epic.framework.common.Ui2.JSON.JSONException;
-import com.epic.framework.common.Ui2.JSON.JSONObject;
-import com.epic.framework.common.Ui2.JSON.JSONTokener;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 
@@ -115,7 +116,11 @@ public class Registry {
 				throw new EpicObjectInflationException("Type '" + typeName + "' found in the registry, but was not instanceof EpicClass");
 			}
 			
-			object = typeObject.inflate(data);
+			try {
+				object = typeObject.inflate(data);
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
 			
 			if(name != null) {
 				// case #3

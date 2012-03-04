@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="EpicBuilder"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="../../EpicBuilder/lib/jcommander-1.24-SNAPSHOT-bundle.jar"/>
-	<classpathentry kind="output" path="eclipse-bin"/>
+  <classpathentry kind="src" path="EpicBuilder"/>
+  <classpathentry kind="src" path="resources"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+  <classpathentry kind="lib" path="../../EpicBuilder/lib/jcommander-1.24-SNAPSHOT-bundle.jar"/>
+  <classpathentry kind="output" path="eclipse-bin"/>
 </classpath>

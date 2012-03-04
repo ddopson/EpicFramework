@@ -3,11 +3,12 @@ package com.example.HelloUIv2;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.json.JSONException;
+
 import com.epic.framework.common.EpicConfig;
 import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.Ui2.InitRoutine;
 import com.epic.framework.common.Ui2.Registry;
-import com.epic.framework.common.Ui2.JSON.JSONException;
 import com.epic.framework.implementation.DesktopMainUiV2;
 
 public class Main {

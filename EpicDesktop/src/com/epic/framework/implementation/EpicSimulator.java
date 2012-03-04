@@ -4,7 +4,6 @@ import java.awt.Dimension;
 
 
 
-@SuppressWarnings("serial")
 public class EpicSimulator {
 	private static final long serialVersionUID = 1L;
 
