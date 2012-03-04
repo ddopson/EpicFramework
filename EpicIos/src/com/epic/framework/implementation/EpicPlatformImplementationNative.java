@@ -21,7 +21,7 @@ public abstract class EpicPlatformImplementationNative {
 	public static int isNetworkAvailable() {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
-	public static void postToFacebook(String fbMessage) {
+	public static void postToFacebook(String fbMessage, String description, String imageUrl) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}
 	public static void setAppBadge(int newCount) {
@@ -35,5 +35,8 @@ public abstract class EpicPlatformImplementationNative {
 	}
 	public static void requestPurchase(String whichItem) {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
+	public static void getFacebookFriendList() {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");		
 	}
 }
