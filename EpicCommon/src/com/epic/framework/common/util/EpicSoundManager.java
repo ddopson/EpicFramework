@@ -35,8 +35,10 @@ public class EpicSoundManager {
 	}
 	
 	public static void pauseMusic() {
+		EpicSoundManagerImplementation.pauseMusic();
 	}
 	
 	public static void resumeMusic() {
+		if(currentMusic != null) EpicSoundManagerImplementation.playMusic(currentMusic);
 	}
 }
