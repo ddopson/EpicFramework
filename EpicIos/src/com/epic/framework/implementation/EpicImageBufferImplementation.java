@@ -8,7 +8,6 @@ import org.xmlvm.iphone.UIImage;
 
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
-import com.epic.resources.EpicImages;
 
 public class EpicImageBufferImplementation {
 	CGContext platformGraphicsObject = null;

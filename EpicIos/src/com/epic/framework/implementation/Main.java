@@ -12,11 +12,11 @@ import org.xmlvm.iphone.UIScreen;
 import org.xmlvm.iphone.UIViewController;
 import org.xmlvm.iphone.UIWindow;
 
-import com.epic.config.EpicProjectConfig;
+//import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.Ui.EpicTimer;
 import com.epic.framework.common.util.EpicLog;
-import com.realcasualgames.words.PlayerState;
+//import com.realcasualgames.words.PlayerState;
 
 public class Main extends UIApplicationDelegate {
 	public static UIWindow window;
@@ -34,7 +34,7 @@ public class Main extends UIApplicationDelegate {
         window.addSubview(gameController.getView());
         window.makeKeyAndVisible();
         
-        EpicProjectConfig.onApplicationStart();
+//        EpicProjectConfig.onApplicationStart();
         
         EpicLog.i("Main.applicationDidFinishLaunching() complete");
     }

@@ -12,7 +12,6 @@ import com.epic.framework.common.util.EpicFeaturedAppCallback;
 import com.epic.framework.common.util.EpicFeaturedOffer;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.Product;
-import com.realcasualgames.words.PlayerState;
 
 public class EpicMarketplaceImplementation {
 	

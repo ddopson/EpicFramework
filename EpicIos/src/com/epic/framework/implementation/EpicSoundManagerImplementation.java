@@ -126,4 +126,14 @@ public class EpicSoundManagerImplementation {
     		return null;
     	}
     }
+
+	public static void stopSound(Object currentMusicObject) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static Object playSound(EpicSound sound, int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
