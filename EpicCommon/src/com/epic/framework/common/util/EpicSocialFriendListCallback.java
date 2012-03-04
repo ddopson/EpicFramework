@@ -1,6 +1,5 @@
-package com.epic.framework.implementation;
+package com.epic.framework.common.util;
 
-import com.epic.framework.common.util.EpicFacebookUser;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 
 public interface EpicSocialFriendListCallback {

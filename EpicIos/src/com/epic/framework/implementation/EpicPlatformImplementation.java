@@ -1,5 +1,7 @@
 package com.epic.framework.implementation;
 
+import com.epic.framework.common.util.EpicPushNotificationCallback;
+
 public class EpicPlatformImplementation {
 	public static void doToastNotification(String text, int duration) {
 	}
@@ -47,5 +49,9 @@ public class EpicPlatformImplementation {
 
 	public static String getDeviceName() {
 		return EpicPlatformImplementationNative.getDeviceName();
+	}
+
+	public static String getPushId(EpicPushNotificationCallback callback) {
+		return EpicPlatformImplementationNative.getPushId();
 	}
 }

@@ -39,4 +39,7 @@ public abstract class EpicPlatformImplementationNative {
 	public static void getFacebookFriendList() {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");		
 	}
+	public static String getPushId() {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
 }

@@ -14,7 +14,6 @@ package com.epic.framework.common.util;
 
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 import com.epic.framework.implementation.EpicSocialImplementation;
-import com.epic.framework.implementation.EpicSocialFriendListCallback;
 
 public class EpicSocial {
 	/**

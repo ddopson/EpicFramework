@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.epic.framework.common.util.EpicFacebookUser;
 import com.epic.framework.common.util.EpicSocialDialogCallback;
+import com.epic.framework.common.util.EpicSocialFriendListCallback;
 import com.epic.framework.common.util.EpicSocialSignedInCallback;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 
