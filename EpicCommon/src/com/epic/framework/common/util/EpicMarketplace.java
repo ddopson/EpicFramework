@@ -2,6 +2,7 @@ package com.epic.framework.common.util;
 
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.Ui.EpicScreen;
+import com.epic.framework.common.util.callbacks.EpicFeaturedAppCallback;
 import com.epic.framework.implementation.EpicMarketplaceImplementation;
 import com.epic.framework.implementation.EpicPlatformConfig;
 

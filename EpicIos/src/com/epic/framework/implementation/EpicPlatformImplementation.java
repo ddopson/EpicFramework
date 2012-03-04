@@ -1,6 +1,6 @@
 package com.epic.framework.implementation;
 
-import com.epic.framework.common.util.EpicPushNotificationCallback;
+import com.epic.framework.common.util.callbacks.EpicPushNotificationCallback;
 
 public class EpicPlatformImplementation {
 	public static void doToastNotification(String text, int duration) {

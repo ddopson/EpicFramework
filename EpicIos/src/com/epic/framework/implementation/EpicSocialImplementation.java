@@ -3,9 +3,9 @@ package com.epic.framework.implementation;
 import java.util.HashMap;
 
 import com.epic.framework.common.util.EpicFacebookUser;
-import com.epic.framework.common.util.EpicSocialDialogCallback;
-import com.epic.framework.common.util.EpicSocialFriendListCallback;
-import com.epic.framework.common.util.EpicSocialSignedInCallback;
+import com.epic.framework.common.util.callbacks.EpicSocialDialogCallback;
+import com.epic.framework.common.util.callbacks.EpicSocialFriendListCallback;
+import com.epic.framework.common.util.callbacks.EpicSocialSignedInCallback;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 
 public class EpicSocialImplementation {

@@ -2,6 +2,7 @@ package com.epic.framework.common.util;
 
 import java.util.LinkedList;
 
+import com.epic.framework.common.util.callbacks.EpicPushNotificationCallback;
 import com.epic.framework.implementation.EpicPlatformImplementation;
 
 public class EpicPushNotifications {

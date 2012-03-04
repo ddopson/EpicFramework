@@ -12,6 +12,9 @@
 
 package com.epic.framework.common.util;
 
+import com.epic.framework.common.util.callbacks.EpicSocialDialogCallback;
+import com.epic.framework.common.util.callbacks.EpicSocialFriendListCallback;
+import com.epic.framework.common.util.callbacks.EpicSocialSignedInCallback;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 import com.epic.framework.implementation.EpicSocialImplementation;
 

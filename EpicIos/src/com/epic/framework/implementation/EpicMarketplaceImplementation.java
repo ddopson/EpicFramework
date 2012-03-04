@@ -8,10 +8,10 @@ import org.xmlvm.iphone.SKPaymentTransaction;
 import org.xmlvm.iphone.SKPaymentTransactionObserver;
 import org.xmlvm.iphone.SKPaymentTransactionState;
 
-import com.epic.framework.common.util.EpicFeaturedAppCallback;
 import com.epic.framework.common.util.EpicFeaturedOffer;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.Product;
+import com.epic.framework.common.util.callbacks.EpicFeaturedAppCallback;
 import com.realcasualgames.words.PlayerState;
 
 public class EpicMarketplaceImplementation {

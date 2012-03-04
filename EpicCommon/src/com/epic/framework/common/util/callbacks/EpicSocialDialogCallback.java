@@ -1,4 +1,4 @@
-package com.epic.framework.common.util;
+package com.epic.framework.common.util.callbacks;
 
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 
