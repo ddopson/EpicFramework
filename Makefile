@@ -3,7 +3,7 @@
 ####################################################################################################
 
 .PHONY: all
-all: node_modules EpicBuilder EpicCommon EpicDesktop.jar
+all: node_modules EpicBuilder.jar EpicDesktop.jar
 
 .PHONY: clean
 clean:
@@ -29,10 +29,6 @@ java_src_files_common  := $(shell find EpicCommon/src -name '*.java' -type file 
 java_src_files_desktop := $(shell find EpicDesktop/src -name '*.java' -type file -follow)
 java_src_files_applet  := $(shell find EpicDesktop/src -name '*.java' -type file -follow)
 
-JAROPT_COMMON_BIN      := -C build/classes_common com/epic/framework/common -C build/classes_builder com/epic/framework/build 
-JAROPT_COMMON_SRC      := -C EpicCommon/src . -C EpicBuilder/src .
-JAROPT_COMMON_DOC      :=
-JAROPT_COMMON          := $(JAROPT_COMMON_SRC) $(JAROPT_COMMON_BIN) $(JAROPT_COMMON_DOC)
 JAVAC_PROCESSOR        := -processor com.epic.framework.build.EpicAnnotationProcessor
 
 CP_COMM := build/classes_common
@@ -85,6 +81,14 @@ build/.make.EpicDesktop: $(java_src_files_desktop)
 	javac -d $(CP_DESK) -cp $(CP_BLD):$(CP_COMM):$(call classpathify,EpicDesktop/lib/*.jar) $(JAVAC_PROCESSOR) $(java_src_files_desktop)
 	@touch build/.make.EpicDesktop
 	
+.PHONY: EpicBuilder.jar
+EpicBuilder.jar: EpicBuilder build/EpicBuilder.jar
+build/EpicBuilder.jar: build/.make.EpicBuilder $(shell find EpicBuilder/src)
+	@echo "$(GREEN)EpicBuilder.jar$(NOCOLOR) - jar cf build/EpicBuilder.jar -C build/classes_builder . -C EpicBuilder/src ."
+	@rsync -a EpicBuilder/src/ $(CP_BLD)/
+	@jar cf build/EpicBuilder.jar -C build/classes_builder .
+
+
 .PHONY: EpicDesktop.jar
 EpicDesktop.jar: EpicDesktop build/EpicDesktop.jar
 build/EpicDesktop.jar: build/.make.EpicDesktop build/.make.EpicCommon build/.make.EpicBuilder $(shell find EpicBuilder/src EpicCommon/src/ EpicDesktop/src/)

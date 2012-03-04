@@ -1,8 +1,10 @@
 package com.epic.framework.common.Ui2;
 
+import com.epic.framework.build.EpicInflatableClass;
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicCanvas;
 
+@EpicInflatableClass
 public class EpicButtonWidget extends EpicWidget implements EpicWidget.Clickable {
 	EpicAction action;
 	EpicBitmap bitmap_default;

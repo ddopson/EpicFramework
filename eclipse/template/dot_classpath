@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath><% _.each(sources, function (source, name) { %>
-  <classpathentry kind="src" path="<%=name%>"/><% }); %>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/><% 
-  _.each(deps || [], function (dep) { 
-  if (_.isString(dep)) { %>
-  <classpathentry kind="lib" path="<%=dep%>"/><%
-  } else if (dep.project) { %>
-  <classpathentry combineaccessrules="false" kind="src" path="/<%= dep.project %>"/><%
-  }}); %>
-  <classpathentry kind="output" path="eclipse-bin"/>
+	<classpathentry kind="src" path="<%=name%>"/><% }); %>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/><% 
+	_.each(deps || [], function (dep) { 
+	if (_.isString(dep)) { %>
+	<classpathentry kind="lib" path="<%=dep%>"/><%
+	} else if (dep.project) { %>
+	<classpathentry combineaccessrules="false" kind="src" path="/<%= dep.project %>"/><%
+	}}); %>
+	<classpathentry kind="output" path="eclipse-bin"/>
 </classpath>
