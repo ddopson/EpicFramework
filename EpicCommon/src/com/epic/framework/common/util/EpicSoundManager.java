@@ -12,22 +12,23 @@ public class EpicSoundManager {
 			if(currentMusic == sound) {
 				return;
 			}
-			EpicSoundManagerImplementation.stopSound(currentMusicObject);
+			EpicSoundManagerImplementation.stopMusic();
 		}
-		currentMusicObject = EpicSoundManagerImplementation.playSound(sound, -1);
+		
+		EpicSoundManagerImplementation.playSound(sound);
 		currentMusic = sound;
 	}
 	
 	public static void playSound(EpicSound sound) {		
-		EpicSoundManagerImplementation.playSound(sound, 1);
+		EpicSoundManagerImplementation.playSound(sound);
 	}
 
 	public static void preload(EpicSound[] soundsToPreload) {
 	}
 	
 	public static void stopMusic() {
-		if(currentMusicObject != null) {
-			EpicSoundManagerImplementation.stopSound(currentMusicObject);
+		if(currentMusicObject != null && currentMusic != null) {
+			EpicSoundManagerImplementation.stopSound(currentMusic);
 			currentMusic = null;
 			currentMusicObject = null;
 		}

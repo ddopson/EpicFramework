@@ -1,6 +1,5 @@
 package com.epic.framework.implementation;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.HashMap;
 
 import org.xmlvm.iphone.AVAudioPlayer;
@@ -22,6 +21,11 @@ public class EpicSoundManagerImplementation {
 	public static void playSound(EpicSound sound) {
 		AVAudioPlayer player = getPlayerForSound(sound, false);
 		player.play();
+	}
+	
+	public static void stopSound(EpicSound sound) {
+		AVAudioPlayer player = getPlayerForSound(sound, false);
+		player.stop();
 	}
 
 	public static void playMusic(EpicSound sound) {
