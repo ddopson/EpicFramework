@@ -14,19 +14,19 @@ public class EpicFacebookUser {
 	/**
 	 * Facebook display name--e.g. a users real name.
 	 */
-	String displayName;
+	public String displayName;
 	
 	/**
 	 * Either the users raw Facebook ID ('546633'), or their chosen handle ('myfacebookname')
 	 * if the user chose to set one on Facebook.
 	 */
-	String facebookId;
+	public String facebookId;
 	
 	/**
 	 * Raw JSON object representing a Facebook user. This can be used by advanced users to
 	 * object more information about the user not provided by EpicSocial utility methods.
 	 */
-	JSONObject rawJsonObject;
+	public JSONObject rawJsonObject;
 	
 	/**
 	 * Create an EpicFacebookUser from the response from the Graph API call to '/me'.
@@ -35,6 +35,8 @@ public class EpicFacebookUser {
 	 * to '/me'
 	 * 
 	 */
-	private EpicFacebookUser(JSONObject facebookObject) {}
+	protected EpicFacebookUser(JSONObject facebookObject) {}
+	
+	public EpicFacebookUser() {}
 
 }

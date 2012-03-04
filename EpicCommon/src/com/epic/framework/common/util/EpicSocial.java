@@ -12,6 +12,10 @@
 
 package com.epic.framework.common.util;
 
+import com.epic.framework.common.util.exceptions.EpicFrameworkException;
+import com.epic.framework.implementation.EpicSocialImplementation;
+import com.epic.framework.implementation.EpicSocialFriendListCallback;
+
 public class EpicSocial {
 	/**
 	 * Begins the asynchronous login process to Facebook, using Single Sign On (SSO), 
@@ -21,187 +25,50 @@ public class EpicSocial {
 	 * For customers without the Facebook client installed, a browser window will appear
 	 * to log in. For users with the client, SSO will be used to log in.
 	 * 
-	 * @param socialDelegate Delegate with a proper implementation of 
-	 * EpicSocialDelegate.onLoggedInToFacebook(EpicFacebookUser facebookUser)
+	 * @param callback 
 	 * 
 	 */
-	public void beginLoginToFacebook() {}
+	public void beginLoginToFacebook(EpicSocialSignedInCallback callback) {
+		EpicSocialImplementation.beginLoginToFacebook(callback);
+	}
 	
-	public void postToFacebookWallDialog() {}
+	/**
+	 * Begins the asynchronous post to Facebook wall with the given parameters.
+	 * 
+	 * @param title Main title in Facebook post
+	 * @param description Caption given to Facebook post (optional)
+	 * @param imageUrl Web-accessible URL for icon file to use for post (optional)
+	 */
+	public void beginPostToFacebookWallDialog(String title, String description, String imageUrl, EpicSocialDialogCallback callback) {
+		if(title == null || title.length() == 0) {
+			callback.onDialogFailed(new EpicFrameworkException("Title cannot be null or 0-length."));
+		}
+		
+		EpicSocialImplementation.beginPostToFacebookWall(title, description, imageUrl, callback);
+	}
 	
-	public void sendFacebookAppRequestsDialog() {}
+	/**
+	 * Prompt a Facebook App Requests dialog (https://developers.facebook.com/docs/reference/dialogs/requests/)
+	 * 
+	 * @param message Message to be displayed alongside request
+	 * @param callback
+	 * 
+	 */
+	public void sendFacebookAppRequestsDialog(String message, EpicSocialDialogCallback callback) {
+		EpicSocialImplementation.beginInviteFacebookFriends(message, callback);
+	}
 	
-	public void getFacebookFriendList() {}
+	/**
+	 * Begins a Facebook request for a list of the currently signed in users' friends. Results
+	 * are parsed into EpicFacebookUser objects for easy of use.
+	 * 
+	 * @param callback
+	 */
+	public void getFacebookFriendList(EpicSocialFriendListCallback callback) {
+		EpicSocialImplementation.beginGetFacebookFriendList(callback);
+	}
 	
+	// TODO: Implement
 	public void sendRawFacebookGraphApiRequest(String action) {}
 	
 }
-
-
-//package com.epic.framework.common.util;
-//
-//import com.epic.framework.common.Ui.EpicClickListener;
-//import com.epic.framework.common.Ui.EpicNotification;
-//import com.epic.framework.common.Ui.EpicPlatform;
-//import com.epic.framework.common.Ui.EpicScreen;
-//import com.epic.framework.implementation.EpicSocialImplementation;
-//import com.epic.resources.EpicImages;
-//import com.realcasualgames.words.PlayerState;
-//import com.realcasualgames.words.ScreenMainMenu;
-//import com.realcasualgames.words.WordsHttp;
-//
-//public class EpicSocial {
-//	public static String getIdentity() {
-//		return PlayerState.getIdentity();
-//	}
-//
-//	public interface EpicSocialSignInCompletionHandler {
-//		void onSignedIn(String identity);
-//	}
-//	
-//	public static boolean supportsFacebookPost() {
-//		return EpicSocialImplementation.supportsFacebookPost();
-//	}
-//	
-//	public static void postToFacebook(String title, String url, String caption, String imageUrl, EpicClickListener callback) {
-//		if(supportsFacebookPost()) EpicSocialImplementation.postToFacebook(title, url, caption, imageUrl, callback);
-//	}
-//
-//	public static void signIn(final EpicSocialSignInCompletionHandler doAfter) {
-//		if(PlayerState.getIdentity() == null) {
-//			EpicLog.i("PLAYER IDENTITY REQUESTED");
-//			EpicSocialImplementation.beginLogin(new EpicSocialSignInCompletionHandler() {
-//				public void onSignedIn(String identity) {
-//					onSignInComplete(identity, null, null);
-//					
-//					if(doAfter != null) {
-//						doAfter.onSignedIn(identity);
-//					}
-//				}
-//
-//			});
-//		}
-//		else {
-//			doAfter.onSignedIn(PlayerState.getIdentity());
-//		}
-//	}
-//	
-//	public static void onSignInComplete(String identity, String displayName, String fbid) {
-//		EpicLog.i("PLAYER IDENTITY CHOSEN: '" + identity + "'");
-//		String un = "";
-//		if(displayName != null) {
-//			un = displayName;
-//		} else if(identity.contains("@")) {
-//			un = identity.split("@")[0];
-//		} else {
-//			un = identity;
-//		}
-//		
-//		EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now logged in." }, EpicImages.icon_cow);
-//		// EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
-//		EpicPlatform.doToastNotification(n);
-//		PlayerState.setIdentityWithFacebookId(identity, displayName, fbid);
-//		if(fbid != null) {
-//			PlayerState.setFBID(fbid);
-//			EpicLog.v("Set FBID: " + fbid);
-//		}
-//		
-//		WordsHttp.syncAccount(new EpicHttpResponseHandler() {
-//			public void handleResponse(EpicHttpResponse response) {	
-//				EpicLog.i("Account sync complete.");
-//				EpicPlatform.repaintScreen();
-//			}
-//
-//			public void handleFailure(Exception e) {
-//				EpicLog.w("Failure to call syncAccount on the remote service");
-//			}
-//		});
-//		
-//		if(EpicSocialImplementation.friendList != null) {
-//			EpicSocialImplementation.searchFriendList(EpicSocialImplementation.friendList);
-//		} else {
-//			EpicLog.i("Friends list still null when signing in...");
-//		}
-//	}
-//	
-//	public static void switchUser(final EpicSocialSignInCompletionHandler doAfter) {
-//		EpicLog.i("PLAYER IDENTITY SWITCH REQUESTED");
-//		EpicSocialImplementation.beginLogin(new EpicSocialSignInCompletionHandler() {
-//			public void onSignedIn(String identity) {
-//				EpicLog.i("NEW PLAYER IDENTITY CHOSEN: '" + identity + "'");
-//				EpicNotification n = new EpicNotification("Welcome to Word Farm!", new String[] { "You are now logged in." }, EpicImages.icon_cow);
-//				//EpicPlatform.doToastNotification("Welcome to Word Farm, " + identity + "!", 3000);
-//				EpicPlatform.doToastNotification(n);
-//				PlayerState.setIdentity(identity);
-//				if(doAfter != null) {
-//					doAfter.onSignedIn(identity);
-//				}
-//			}
-//		});
-//	
-//	}
-//	
-//	public static boolean isLoggedIn() {
-//		return PlayerState.getIdentity() != null;
-//	}
-//
-//	public static String getEmailList() {
-//		return EpicSocialImplementation.getEmailList();
-//	}
-//
-//	public static String getPlatformId() {
-//		return EpicSocialImplementation.getPlatformId();
-//	}
-//	
-//	public static String getDisplayNameFromEmail(String email) {
-//		return EpicSocialImplementation.getDisplayNameFromEmail(email);
-//	}
-//
-//	public static String[] getDisplayNamesFromEmails(String[] names_to_lookup) {
-//		return names_to_lookup;
-//		// return EpicSocialImplementation.getDisplayNamesFromEmails(names_to_lookup);
-//	}
-//
-////	public static String chooseContact() {
-////		return EpicSocialImplementation.chooseContact();
-////	}
-//
-//	public static void onContactEmailReturned(String[] strings) {
-//		EpicSocialImplementation.selectFromEmailList(strings);
-//	}
-//
-//	public static void signOut() {
-//		if(PlayerState.canLogOut()) {
-//			PlayerState.logOut();
-//			EpicLog.i("PLAYER LOGGED OUT");
-//			EpicPlatform.doToastNotification(new EpicNotification("Logged Out", new String[] { "You have successfully logged out." }, EpicImages.icon_cow));
-//			EpicPlatform.repaintScreen();
-//		} else {
-//			EpicPlatform.doToastNotification(new EpicNotification("Problem Logging Out", new String[] { "You cannot log out until you sync your latest scores.", "Please complete a game and try again." }, EpicImages.icon_cow, 5));
-//		}
-//	}
-//
-//	public static void togglePush(boolean pushEnabled) {
-//		EpicSocialImplementation.togglePush(pushEnabled);
-//	}
-//
-//	public static void getFacebookFriendList() {
-//		EpicSocialImplementation.getFacebookFriendList();
-//	}
-//
-//	public static void showAchievements() {
-//		EpicSocialImplementation.showAchievements();
-//	}
-//
-//	public static void viewChallenges(int defaultListLength, String response) {
-//		EpicSocialImplementation.viewChallenges(defaultListLength, response);
-//	}
-//
-//	public static void viewChallenges(int defaultListLength) {
-//		EpicSocialImplementation.viewChallenges(defaultListLength);
-//	}
-//
-//	public static void promptFacebookLogin(EpicScreen screen) {
-//		EpicSocialImplementation.promptFacebookLogin(screen);
-//	}
-//}
