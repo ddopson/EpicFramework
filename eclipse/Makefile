@@ -20,5 +20,6 @@ $(PROJECTS):
 .PHONY: clean
 clean:
 	rm -rf $(PROJECTS) .metadata
+	git co .metadata
 #!/bin/bash
 
