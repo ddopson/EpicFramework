@@ -3,10 +3,12 @@
 var _       = require('underscore');
 var program = require('commander');
 var fs      = require('fs');
+var path    = require('path');
 
 program
   .version('0.1.0')
   .option('-t, --template [filename]', 'Template to process')
+  .option('-c, --compile', 'Compile the template into JS code without data')
   .option('-d, --data [filename]', 'JSON file of data to pass to the template')
   .option('-j, --json [json_string]', 'JSON formatted data to pass to the template')
   .option('-s, --selector [field.field.field...]', 'Selector to choose a subset of the input data')
@@ -14,40 +16,94 @@ program
   .option('-o, --output [filename]', 'File to write results into')
   .parse(process.argv);
 
-if (! program.template || ! (program.data || program.json)) {
-  console.error("Error: template and data/json MUST be specified!");
+if (! (program.template || program.data || program.json || program.compile)) {
+  console.error("Error: no arguments specified");
   console.error(program.helpInformation());
   process.exit(1);
 }
 
-var template, data, output;
-
-try {
-  template = fs.readFileSync(program.template, 'utf8');
-} catch (e) {
-  console.error("Error reading template file '%s': %s", program.template, e.message);
-  process.exit(1);
+function compileTemplate(str) {
+  var c  = { 
+    evaluate    : /<%([\s\S]+?)%>/g,
+    interpolate : /<%=([\s\S]+?)%>/g,
+    escape      : /<%-([\s\S]+?)%>/g
+  };  
+     
+  return 'var __p=[],print=function(){__p.push.apply(__p,arguments);};' +
+    'with(obj||{}){__p.push(\'' +
+    str.replace(/\\/g, '\\\\')
+       .replace(/'/g, "\\'")
+       .replace(c.escape || noMatch, function(match, code) {
+         return "',_.escape(" + unescape(code) + "),'";
+       })  
+       .replace(c.interpolate || noMatch, function(match, code) {
+         return "'," + unescape(code) + ",'";
+       })  
+       .replace(c.evaluate || noMatch, function(match, code) {
+         return "');" + unescape(code).replace(/[\r\n\t]/g, ' ') + ";__p.push('";
+       })  
+       .replace(/\r/g, '\\r')
+       .replace(/\n/g, '\\n')
+       .replace(/\t/g, '\\t')
+       + "');} __p.join('');";
 }
 
-if (program.json) {
-  data = program.json;  
-} else if (program.data) {
+var template;
+if (program.template) {
   try {
-    data = fs.readFileSync(program.data, 'utf8');
+    template = fs.readFileSync(program.template, 'utf8');
   } catch (e) {
-    console.error("Error reading data file '%s': %s", program.data, e.message);
+    console.error("Error reading template file '%s': %s", program.template, e.message);
     process.exit(1);
   }
+} else {
+  template = null;
 }
 
-try {
-  var data = JSON.parse(data);
-} catch (e) {
-  console.error("Error: JSON parsing failed on data file '%s': %s", program.data, e.message);
-  if (program.verbose) {
-    console.error("Data: ", data);
+var data, datafile;
+if (program.compile) {
+  data = null;
+  datafile = 'NULL';
+} else if (program.json) {
+  data = program.json;
+  datafile = 'INLINE';
+  try {
+    var data = JSON.parse(data);
+  } catch (e) {
+    console.error("Error: JSON parsing failed for command-line data", e.message);
+    if (program.verbose) {
+      console.error("Data: ", data);
+    }
+    process.exit(1);
   }
-  process.exit(1);
+} else if (program.data) {
+  datafile = path.resolve(program.data);
+  if (datafile.match(/[.]js$/)) {
+    // no need for try/catch here.  Exception will be useful
+    data = require(datafile.replace(/[.]js$/, ''));
+  } else {
+    try {
+      data = fs.readFileSync(datafile, 'utf8');
+    } catch (e) {
+      console.error("Error reading data file '%s': %s", datafile, e.message);
+      process.exit(1);
+    }
+    try {
+      var data = JSON.parse(data);
+    } catch (e) {
+      console.error("Error: JSON parsing failed on data file '%s': %s", datafile, e.message);
+      if (program.verbose) {
+        console.error("Data: ", data);
+      }
+      process.exit(1);
+    }
+  }
+} else {
+  data = null;
+  datafile = 'NULL';
+}
+
+if (data) {
 }
 
 if (program.selector) {
@@ -55,14 +111,21 @@ if (program.selector) {
   _.each(fields, function (f) {
     data = data[f];
     if (data == undefined) {
-      console.error("Error: data file '%s' has no field named '%s'", program.data, program.selector);
+      console.error("Error: data file '%s' has no field named '%s'", datafile, program.selector);
       process.exit(1);
     }
   });
 }
 
+var output;
 try {
-  var output = _.template(template, data);
+  if (data === null) {
+    output = compileTemplate(template);
+  } else if (template === null) {
+    output = data;
+  } else {
+    output = _.template(template, data);
+  }
 } catch (e) {
   console.error("Error processing template '%s': %s", program.template, e.message);
   if(program.verbose) {
@@ -71,7 +134,7 @@ try {
   process.exit(1);
 }
 
-if(program.output || program.output === '-') {
+if(program.output && program.output !== '-') {
   try {
     fs.writeFileSync(program.output, output);
   } catch (e) {
