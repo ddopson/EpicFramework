@@ -6,7 +6,7 @@ public abstract class EpicClickableUiWidget extends EpicUiWidget {
 		super(left, top, right, bottom);
 	}
 	public abstract void onClick(int x, int y);
-	public boolean processCLick(int x, int y) {
+	public boolean processClick(int x, int y) {
 		if(
 				x >= left && x < right
 				&& y >= top && y < bottom

@@ -1,5 +1,6 @@
 package com.epic.framework.common.util;
 
+import com.epic.framework.common.AppConfig;
 import com.epic.framework.implementation.EpicLogImplementation;
 
 public class EpicLog {
@@ -10,7 +11,7 @@ public class EpicLog {
 	public static final int LEVEL_DEBUG = 3;
 	public static final int LEVEL_VERBOSE = 4;
 
-	private static final String tag = "Epic";
+	private static final String tag = AppConfig.appName;
 
 	private static void log(String msg, int level) {
 		EpicLogImplementation.log(tag, msg, level, null);
