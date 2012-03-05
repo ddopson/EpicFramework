@@ -15,9 +15,9 @@ public class Main {
 
 	/**
 	 * @param args
-	 * @throws IOException 
-	 * @throws JSONException 
-	 * @throws InterruptedException 
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws IOException, JSONException, InterruptedException {
 		InitRoutine.init();
