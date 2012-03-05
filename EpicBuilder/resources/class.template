@@ -37,10 +37,18 @@ if (abstract) { %>
           
           object.type = Class<%=name%>.singleton;<%
  _.each(fields, function (field) {
-  if (field.type === "java.lang.String") { %>
-          object.<%=field.name%> = data.getString("<%=field.name%>");<%
-  } else if (field.type === "int") { %>
+  if (field.type === "int") { %>
           object.<%=field.name%> = data.getInt("<%=field.name%>");<%
+  } else if (field.type === "long") { %>
+          object.<%=field.name%> = data.getLong("<%=field.name%>");<%
+  } else if (field.type === "boolean") { %>
+          object.<%=field.name%> = data.getBoolean("<%=field.name%>");<%
+  } else if (field.type === "float") { %>
+          object.<%=field.name%> = data.getDouble("<%=field.name%>");<%
+  } else if (field.type === "double") { %>
+          object.<%=field.name%> = data.getDouble("<%=field.name%>");<%
+  } else if (field.type === "java.lang.String") { %>
+          object.<%=field.name%> = data.getString("<%=field.name%>");<%
   } else { %>
           object.<%=field.name%> = (<%=field.type%>) Registry.inflateField(
               data,
