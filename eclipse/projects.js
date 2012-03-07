@@ -65,8 +65,7 @@ module.exports = {
       "src": "PARENT-1-WORKSPACE_LOC/examples/HelloWorld/src"
     },
     deps: [
-      { project: "EpicBuilder" },
-      { project: "Desktop" }
+      "../../build/EpicDesktop.jar"
     ]
   },
 
@@ -76,8 +75,7 @@ module.exports = {
       "src": "PARENT-1-WORKSPACE_LOC/examples/HelloUIv2/src"
     },
     deps: [
-      { project: "EpicBuilder" },
-      { project: "Desktop" }
+      "../../build/EpicDesktop.jar"
     ]
   }
 }
