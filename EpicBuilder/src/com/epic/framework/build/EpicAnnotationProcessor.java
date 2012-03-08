@@ -6,6 +6,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
@@ -176,11 +177,17 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 	}
 
 	public String generate(String metadata) throws IOException {
-		String[] params = {fwDir + "/bin/underscore-template", "-t", fwDir + "/EpicBuilder/resources/class.template", "-j", metadata};
-		Process p = Runtime.getRuntime().exec(params, null, new File(fwDir));
-		InputStream in = p.getInputStream(); // this is actually stdout (gotta love java)
-		String result = consumeInputStream(in);
-		String errors = consumeInputStream(p.getErrorStream());
+		String[] params = {"bin/underscore-template", "-t", "EpicBuilder/resources/class.template", "-j", metadata};
+		String[] env = { "PATH=" + fwDir + "/bin" };
+		File cwd = new File(fwDir);
+		Process child = Runtime.getRuntime().exec(params, env, cwd);
+		OutputStream stdin = child.getOutputStream ();
+		InputStream stderr = child.getErrorStream ();
+		InputStream stdout = child.getInputStream (); // this is actually stdout (gotta love java)
+		stdin.close();
+		
+		String result = consumeInputStream(stdout);
+		String errors = consumeInputStream(stderr);
 		if(errors != null && ! errors.equals("")) {
 			printError("CLI-ERRORS: " + errors.replaceAll("\n", "\\n"));
 		}
