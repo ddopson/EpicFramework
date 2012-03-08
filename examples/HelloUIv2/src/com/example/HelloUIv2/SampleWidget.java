@@ -7,12 +7,11 @@ import com.epic.framework.common.Ui2.EpicWidget;
 
 @EpicInflatableClass
 public class SampleWidget extends EpicWidget {
-	int size;
+	int size, x, y;
 
 	@Override
 	public void onPaint(EpicCanvas canvas) {
 		canvas.applyFullscreenFill(EpicColor.YELLOW);
-		canvas.drawCircle(EpicColor.RED, 255, 400, 200, size);
-		ClassSampleWidget.register();
+		canvas.drawCircle(EpicColor.RED, 255, x, y, size);
 	}
 }
