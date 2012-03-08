@@ -1,40 +1,52 @@
 package com.epic.framework.build;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
 
 import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
-import javax.lang.model.util.Types;
+import javax.tools.Diagnostic.Kind;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+@SuppressWarnings("unused")
 public class EpicAnnotationProcessor extends AbstractProcessor {
-
-	//	@Override
-	//	public Iterable<? extends Completion> getCompletions(Element element, AnnotationMirror annotation, ExecutableElement member, String userText) {
-	//		return Arrays.asList();
-	//	}
-
+	private TypeElement currentElement;
+	private String fwDir;
+	public static int DEBUG = 0;
+	
+	private void printError(String msg) {
+		this.processingEnv.getMessager().printMessage(Kind.ERROR, msg, currentElement);
+	}
+	
+	private void printWarning(String msg) {
+		this.processingEnv.getMessager().printMessage(Kind.WARNING, msg, currentElement);
+	}
+	
+	private void printNotice(String msg) {
+		this.processingEnv.getMessager().printMessage(Kind.NOTE, msg, currentElement);
+	}
+	
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
 		return new HashSet<String>(Arrays.asList("*"));
@@ -45,6 +57,30 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 		return SourceVersion.RELEASE_6;
 	}
 
+	@Override
+	public synchronized void init(ProcessingEnvironment processingEnv) {
+		super.init(processingEnv);
+		String path = EpicAnnotationProcessor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		
+		
+		File f = new File(path).getParentFile();
+		
+		while(f.listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return pathname.getName().equals("package.json");
+			}
+		}).length == 0) {
+			f = f.getParentFile();
+			if (f == null) {
+				// TODO: support passing in the fwDir as an arg
+				printNotice("Initializing EpicAnnotationProcessor (" + path + "). fwDir=" + fwDir);
+				printError("Unable to locate Framework Directory (has the jar file been moved somewhere unexpected?)");
+			}
+		}
+		fwDir = f.toString();
+		printNotice("Initializing EpicAnnotationProcessor (" + path + "). fwDir=" + fwDir);
+	};
 	private static class EpicClassDescription {
 		String qualifiedName;
 		String parent;
@@ -90,15 +126,12 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
-		final Elements elementUtil = this.processingEnv.getElementUtils();
-		final Filer filer = this.processingEnv.getFiler();
-		final Types typeUtil = this.processingEnv.getTypeUtils();
-		final Messager messager = this.processingEnv.getMessager();
 		Set<? extends Element> elements = env.getElementsAnnotatedWith(EpicInflatableClass.class);
 		for(Element el : elements) {
 			// System.out.println("Element: " + el.getSimpleName());
 			el.accept(new SimpleElementVisitor6<Object, Object>() {
 				public Object visitType(TypeElement typeElement, Object p) {
+					EpicAnnotationProcessor.this.currentElement = typeElement;
 					final EpicClassDescription classDescription = new EpicClassDescription();
 					classDescription.qualifiedName = typeElement.getQualifiedName().toString();
 					classDescription.isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
@@ -120,8 +153,7 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 
 						}, null);
 					}
-					// messager.printMessage(Kind.NOTE, "Generating " + classDescription.qualifiedName, typeElement);
-					writeGeneratedClass(filer, classDescription);
+					writeGeneratedClass(classDescription);
 					return null;
 				};
 			}, null);
@@ -143,22 +175,31 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 		return sb.toString();
 	}
 
-	public static String generate(String metadata) throws IOException {
-		String fwDir = "/workspace/EpicFramework";
-		String[] params = {"bin/underscore-template", "-t", fwDir + "/EpicBuilder/resources/class.template", "-j", metadata};
+	public String generate(String metadata) throws IOException {
+		String[] params = {fwDir + "/bin/underscore-template", "-t", fwDir + "/EpicBuilder/resources/class.template", "-j", metadata};
 		Process p = Runtime.getRuntime().exec(params, null, new File(fwDir));
 		InputStream in = p.getInputStream(); // this is actually stdout (gotta love java)
 		String result = consumeInputStream(in);
-
-		// System.out.println("Input Metadata: " + metadata);
-		// System.out.println("Generated Class: " + result);
+		String errors = consumeInputStream(p.getErrorStream());
+		if(errors != null && ! errors.equals("")) {
+			printError("CLI-ERRORS: " + errors.replaceAll("\n", "\\n"));
+		}
+		
+		if (DEBUG >= 2) {
+			printNotice("Input Metadata: " + metadata.replaceAll("\n", "\\n"));
+			printNotice("Generated Class: " + result.replaceAll("\n", "\\n"));
+		}
 		return result;
 	}
 
-	public static void writeGeneratedClass(Filer filer, EpicClassDescription clazz) {
+	public void writeGeneratedClass(EpicClassDescription clazz) {
 		String generatedClassName = clazz.qualifiedName.replaceAll("[.]([^.]+)$", ".Class$1");
+		if(DEBUG >= 1) {
+			printNotice("Generating " + clazz.qualifiedName);
+		}
+
 		try {
-			Writer w = filer.createSourceFile(generatedClassName).openWriter();
+			Writer w = this.processingEnv.getFiler().createSourceFile(generatedClassName).openWriter();
 			String contents = generate(clazz.toJSON().toString());
 			w.append(contents);
 			w.close();
@@ -166,5 +207,4 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 			throw new RuntimeException(e);
 		}
 	}
-
 }

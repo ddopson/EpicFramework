@@ -5,8 +5,6 @@ import org.json.JSONObject;
 import com.epic.framework.common.Ui2.EpicClass;
 import com.epic.framework.common.Ui2.EpicObject;
 import com.epic.framework.common.Ui2.Registry;
-import com.epic.framework.common.util.EpicLog;
-import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 
 public class Class<%=name%> extends EpicClass {
      public static final Class<%=name%> singleton = new Class<%=name%>();
@@ -29,9 +27,9 @@ public class Class<%=name%> extends EpicClass {
      @Override
      public EpicObject inflate(JSONObject data) throws JSONException {<%
 if (abstract) { %>
-          throw new EpicObjectInflationException("Can't inflate abstract class <%=fullname%>");<%
+          throw new com.epic.framework.common.util.exceptions.EpicObjectInflationException("Can't inflate abstract class <%=fullname%>");<%
 } else if (!inflatable) { %>
-          throw new EpicObjectInflationException("Can't inflate non-inflatable class <%=fullname%>");<%
+          throw new com.epic.framework.common.util.exceptions.EpicObjectInflationException("Can't inflate non-inflatable class <%=fullname%>");<%
 } else { %>
           <%=name%> object = new <%=name%>();
           
