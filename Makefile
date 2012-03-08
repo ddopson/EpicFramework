@@ -74,11 +74,11 @@ build/.make.EpicCommon: $(java_src_files_common) $(java_src_files_null)
 	@#	jar cf build/EpicCommon.jar $(JAROPT_COMMON)
 
 .PHONY: EpicDesktop
-EpicDesktop: EpicCommon build/.make.EpicDesktop
+EpicDesktop: EpicCommon build/.make.EpicDesktop build/EpicBuilder.jar
 build/.make.EpicDesktop: $(java_src_files_desktop)
 	@mkdir -p $(CP_DESK)
 	@echo "$(GREEN)EpicDesktop$(NOCOLOR) - Compiling $(words $(java_src_files_desktop)) source files ..."
-	javac -d $(CP_DESK) -cp $(CP_BLD):$(CP_COMM):$(call classpathify,EpicDesktop/lib/*.jar) $(JAVAC_PROCESSOR) $(java_src_files_desktop)
+	javac -d $(CP_DESK) -cp build/EpicBuilder.jar:$(CP_COMM):$(call classpathify,EpicDesktop/lib/*.jar) $(JAVAC_PROCESSOR) $(java_src_files_desktop)
 	@touch build/.make.EpicDesktop
 	
 .PHONY: EpicBuilder.jar
