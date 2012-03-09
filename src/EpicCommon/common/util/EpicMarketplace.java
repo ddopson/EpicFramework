@@ -33,7 +33,7 @@ public class EpicMarketplace {
 		new Product("wf_tokens_small", "Small Token Pack", "100", "$0.99", 100),
 		new Product("wf_tokens_medium", "Medium Token Pack", "400", "$2.99", 400),
 		new Product("wf_tokens_large", "Large Token Pack", "1,000", "$4.99", 1000),
-		new Product("wf_tokens_unlimited", "Unlimited Token Pack", "Unlimited", "$19.99", 9999999),
+		new Product("wf_tokens_unlim", "Unlimited Token Pack", "Unlimited", "$19.99", 9999999),
 		new Product("wf_unlock_specials", "Unlock All Daily Specials", "", "$0.99", 0)
 	};
 
