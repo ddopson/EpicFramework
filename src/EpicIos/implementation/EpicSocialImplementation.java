@@ -38,10 +38,6 @@ public class EpicSocialImplementation {
 		return "i";
 	}
 	
-	public static String getDisplayNameFromEmail(String email) {
-		return email;
-	}
-	
 	public static String getEmailList() {
 		return "";
 	}

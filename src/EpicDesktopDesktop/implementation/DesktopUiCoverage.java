@@ -97,14 +97,14 @@ public class DesktopUiCoverage {
 	}
 
 	private static void testTrophyRoom() {
-		for(Challenge challenge : Challenge.challenges) {
-			ScreenTrophyRoomDetails s = new ScreenTrophyRoomDetails(challenge);
-			EpicPlatform.changeScreen(s);
-			sleep(50);
-		}
-		ScreenTrophyRoom screen = new ScreenTrophyRoom();
-		EpicPlatform.changeScreen(screen);
-		sleep(200);
+//		for(Challenge challenge : Challenge.challenges) {
+//			ScreenTrophyRoomDetails s = new ScreenTrophyRoomDetails(challenge);
+//			EpicPlatform.changeScreen(s);
+//			sleep(50);
+//		}
+//		ScreenTrophyRoom screen = new ScreenTrophyRoom();
+//		EpicPlatform.changeScreen(screen);
+//		sleep(200);
 	}
 
 	private static void testScreenBuyTokens() {
@@ -114,10 +114,10 @@ public class DesktopUiCoverage {
 	}
 
 	private static void testScreenAdvertisement() {
-		ScreenAdvertisement screen = new ScreenAdvertisement(new ScreenScores(232, "", ""));
-		EpicPlatform.changeScreen(screen);
-		EpicPlatform.timeAtScreenChange = 34;
-		sleep(200);
+//		ScreenAdvertisement screen = new ScreenAdvertisement(new ScreenScores(232, "", ""));
+//		EpicPlatform.changeScreen(screen);
+//		EpicPlatform.timeAtScreenChange = 34;
+//		sleep(200);
 	}
 
 	private static void testScreenGame() {
