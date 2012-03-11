@@ -7,14 +7,15 @@ import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicRuntimeException;
 import com.epic.framework.implementation.EpicNativeWidget;
+import com.epic.framework.implementation.EpicPlatformImplementation;
+
 import static com.epic.framework.common.EpicConfig.*;
+
 public class EpicPercentLayout {
 	ArrayList<LayoutChild> children = new ArrayList<LayoutChild>();
-	EpicPlatformInterface implementation = null;
 	private boolean firstLayout = true;
 
-	public EpicPercentLayout(EpicPlatformInterface implementation) {
-		this.implementation = implementation;
+	public EpicPercentLayout() {
 	}
 
 	public class LayoutChild {
@@ -78,7 +79,7 @@ public class EpicPercentLayout {
 	public void clear() {
 		EpicLog.d("Clearing EpicPercentLayout");
 		this.children.clear();
-		implementation.clear();
+		EpicPlatformImplementation.clear();
 		firstLayout = true;
 	}
 
@@ -142,6 +143,6 @@ public class EpicPercentLayout {
 			EpicLog.e("child=" + child.child);
 			throw e;
 		}
-		implementation.layoutChild(child, l, r, t, b, firstLayout);	
+		EpicPlatformImplementation.layoutChild(child, l, r, t, b, firstLayout);	
 	}
 }

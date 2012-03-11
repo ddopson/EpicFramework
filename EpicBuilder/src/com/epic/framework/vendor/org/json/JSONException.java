@@ -1,4 +1,4 @@
-package org.json;
+package com.epic.framework.vendor.org.json;
 
 /**
  * The JSONException is thrown by the JSON.org classes when things are amiss.

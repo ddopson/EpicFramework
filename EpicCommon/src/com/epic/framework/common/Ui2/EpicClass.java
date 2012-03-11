@@ -1,9 +1,9 @@
 package com.epic.framework.common.Ui2;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.epic.framework.build.EpicInflatableClass;
+import com.epic.framework.vendor.org.json.JSONException;
+import com.epic.framework.vendor.org.json.JSONObject;
 
 @EpicInflatableClass
 public abstract class EpicClass extends EpicObject {

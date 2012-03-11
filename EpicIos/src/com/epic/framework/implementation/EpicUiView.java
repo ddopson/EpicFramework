@@ -17,15 +17,14 @@ import org.xmlvm.iphone.UIView;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.epic.framework.common.Ui.EpicPlatformInterface;
 import com.epic.framework.common.util.EpicLog;
 
-public class EpicUiView extends UIView implements EpicPlatformInterface {
+public class EpicUiView extends UIView {
+	public static EpicUiView singleton;
 	public EpicUiView(CGRect rect) {
 		super(rect);
 		this.setOpaque(true);
-		CGRect bounds = this.getBounds();
-		EpicPlatform.initialize(this, (int)bounds.size.width, (int)bounds.size.height, null, null);
+		singleton = this;
 		EpicPlatformImplementationNative.setupDebugHandlers();
 	}
 
@@ -126,23 +125,19 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 		getTouches(event);
 	}
 
-	@Override
 	public void requestRepaint() {
 		this.setNeedsDisplay();
 	}
 
-	@Override
 	public void requestRelayout() {
 		this.setNeedsDisplay();
 	}
 
-	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
 		// TODO Auto-generated method stub
 

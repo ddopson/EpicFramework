@@ -26,9 +26,9 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.tools.Diagnostic.Kind;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.epic.framework.vendor.org.json.JSONArray;
+import com.epic.framework.vendor.org.json.JSONException;
+import com.epic.framework.vendor.org.json.JSONObject;
 
 @SuppressWarnings("unused")
 public class EpicAnnotationProcessor extends AbstractProcessor {
@@ -185,7 +185,6 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 		InputStream stderr = child.getErrorStream ();
 		InputStream stdout = child.getInputStream (); // this is actually stdout (gotta love java)
 		stdin.close();
-		
 		String result = consumeInputStream(stdout);
 		String errors = consumeInputStream(stderr);
 		if(errors != null && ! errors.equals("")) {

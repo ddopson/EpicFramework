@@ -2,6 +2,7 @@ package com.epic.framework.implementation;
 
 import javax.swing.SwingUtilities;
 
+import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.util.EpicLog;
 
 public class EpicPlatformImplementation {
@@ -56,5 +57,17 @@ public class EpicPlatformImplementation {
 
 	public static String getDeviceName() {
 		return "device_name";
+	}
+
+	public static void clear() {
+		EpicNativeGameFrame.get().clear();
+	}
+
+	public static void requestRepaint() {
+		EpicNativeGameFrame.get().requestRepaint();
+	}
+
+	public static void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
+		EpicNativeGameFrame.get().layoutChild(child, l, r, t, b, firstLayout);
 	}
 }

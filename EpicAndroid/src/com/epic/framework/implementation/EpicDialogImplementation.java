@@ -3,8 +3,6 @@ package com.epic.framework.implementation;
 import com.epic.framework.common.Ui.EpicDialogBuilder;
 import com.epic.framework.common.Ui.EpicDialogBuilder.EpicDialogButton;
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.realcasualgames.words.Challenge;
-import com.realcasualgames.words.ScreenTrophyRoomDetails;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -89,28 +87,28 @@ public class EpicDialogImplementation {
 		dialog.dismiss();
 	}
 
-	public static int ask(String string, String[] challenges, int startAt) {
-		AlertDialog.Builder alert = new AlertDialog.Builder(EpicAndroidActivity.getCurrentAndroidActivity());
-
-		alert.setTitle(string);
-		
-		alert.setSingleChoiceItems(challenges, startAt, new OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				if(which >= 0) {
-					EpicPlatform.changeScreen(new ScreenTrophyRoomDetails(Challenge.challenges[which]));
-				}
-			}
-		});
-		
-		alert.setNeutralButton("Back", new OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		
-		alert.show();
-		
-		return -1;
-	}
+//	public static int ask(String string, String[] challenges, int startAt) {
+//		AlertDialog.Builder alert = new AlertDialog.Builder(EpicAndroidActivity.getCurrentAndroidActivity());
+//
+//		alert.setTitle(string);
+//		
+//		alert.setSingleChoiceItems(challenges, startAt, new OnClickListener() {
+//			public void onClick(DialogInterface dialog, int which) {
+//				dialog.dismiss();
+//				if(which >= 0) {
+//					EpicPlatform.changeScreen(new ScreenTrophyRoomDetails(Challenge.challenges[which]));
+//				}
+//			}
+//		});
+//		
+//		alert.setNeutralButton("Back", new OnClickListener() {
+//			public void onClick(DialogInterface dialog, int which) {
+//				dialog.dismiss();
+//			}
+//		});
+//		
+//		alert.show();
+//		
+//		return -1;
+//	}
 }

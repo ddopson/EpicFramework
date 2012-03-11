@@ -2,7 +2,7 @@ package com.epic.framework.implementation;
 
 import java.util.UUID;
 
-import com.epic.config.EpicProjectConfig;
+import com.epic.framework.common.EpicConfig;
 import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.util.EpicLog;
 
@@ -77,6 +77,6 @@ public class ArchPlatform {
 		text += "\ndbg.mi.otherPss" 				+ toMib(mi2.otherPss);
 		text += "\ndbg.mi.otherSharedDirty=" 		+ toMib(mi2.otherSharedDirty);
 
-		if(!EpicProjectConfig.isReleaseMode) EpicLog.i("ArchPlatform[android].logStats() - " + text);
+		if(EpicConfig.DEBUG_EPICSTOPWATCH) EpicLog.i("ArchPlatform[android].logStats() - " + text);
 	}
 }

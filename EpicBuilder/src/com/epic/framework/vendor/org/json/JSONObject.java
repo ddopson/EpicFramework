@@ -1,4 +1,4 @@
-package org.json;
+package com.epic.framework.vendor.org.json;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -36,6 +36,11 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import com.epic.framework.vendor.org.json.JSONArray;
+import com.epic.framework.vendor.org.json.JSONException;
+import com.epic.framework.vendor.org.json.JSONObject;
+import com.epic.framework.vendor.org.json.JSONTokener;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its

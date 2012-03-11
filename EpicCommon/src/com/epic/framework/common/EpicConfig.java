@@ -6,10 +6,13 @@ import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.Ui.EpicSound;
 
 public class EpicConfig {
-	public static boolean DEBUG_EPICPLAT = false;
-	public static boolean DEBUG_EPICRAND = false;
+	public static boolean CONFIG_TITLEBAR_DISABLE	= false;
+	
+	public static boolean DEBUG_TAPJOY	      = false;
+	public static boolean DEBUG_EPICPLAT      = false;
+	public static boolean DEBUG_EPICRAND      = false;
 	public static boolean DEBUG_EPICSTOPWATCH = false;
-	public static boolean DEBUG_MENUS = true;
+	public static boolean DEBUG_MENUS         = true;
 	
 	public static int DESIGN_WIDTH = 800;
 	public static int DESIGN_HEIGHT = 480;

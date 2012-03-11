@@ -6,7 +6,6 @@ import static com.epic.framework.common.util.EpicLog.LEVEL_INFO;
 import static com.epic.framework.common.util.EpicLog.LEVEL_VERBOSE;
 import static com.epic.framework.common.util.EpicLog.LEVEL_WARN;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.util.EpicFail;
 
 import android.util.Log;
@@ -21,13 +20,13 @@ public class EpicLogImplementation {
 			Log.w(tag, msg, e);
 			break;
 		case LEVEL_INFO:
-			if(!EpicProjectConfig.isReleaseMode) Log.i(tag, msg, e);
+			Log.i(tag, msg, e);
 			break;
 		case LEVEL_DEBUG:
-			if(!EpicProjectConfig.isReleaseMode) Log.d(tag, msg, e);
+			Log.d(tag, msg, e);
 			break;
 		case LEVEL_VERBOSE:
-			if(!EpicProjectConfig.isReleaseMode) Log.v(tag, msg, e);
+			Log.v(tag, msg, e);
 			break;
 		default:
 			EpicFail.unhandled_case();

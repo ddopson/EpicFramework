@@ -18,9 +18,7 @@ import javax.swing.JTextArea;
 import com.epic.framework.implementation.ArchPlatform;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicStopwatch;
-import com.epic.framework.common.util.StringHelper;
 //import com.google.monitoring.runtime.instrumentation.AllocationRecorder;
 //import com.google.monitoring.runtime.instrumentation.Sampler;
 
@@ -34,7 +32,6 @@ public class DesktopMain {
 		//		});
 		mainFrame = new JFrame();
 		mainFrame.setContentPane(EpicNativeGameFrame.get());
-		EpicPlatform.initialize(EpicNativeGameFrame.get(), EpicSimulator.currentScreenSize.width, EpicSimulator.currentScreenSize.height, null, null);
 		mainFrame.setJMenuBar(new EpicSimulatorMenuBar());
 		mainFrame.pack();
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

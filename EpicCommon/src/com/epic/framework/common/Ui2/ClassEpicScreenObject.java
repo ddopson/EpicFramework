@@ -1,6 +1,6 @@
 package com.epic.framework.common.Ui2;
 
-import org.json.*;
+import com.epic.framework.vendor.org.json.*;
 
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 

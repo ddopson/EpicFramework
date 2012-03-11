@@ -23,34 +23,34 @@ public class EpicHttpRequest {
 	public EpicHttpRequest(String url) {
 		this(url, new HashMap<String, String>());
 	}
-
-	public void beginGet(final EpicHttpResponseHandler handler) {
-		EpicHttpImplementation.beginGet(this, handler);
-		// handler.handleFailure(new EpicNotImplementedException("Network calls not yet implemented."));
-//		new Thread(new Runnable() {
-//			Exception exception;
-//			EpicHttpResponse response;		
-//			public void run() {
-//				try {
-//					response = get();
-//				} catch (Exception e) {
-//					exception = e;
-//				}
-//				if(handler != null) {
-//					EpicPlatform.runOnUiThread(new Runnable() {
-//						public void run() {
-//							if(exception == null) {
-//								handler.handleResponse(response);
-//							}
-//							else {
-//								handler.handleFailure(exception);
-//							}
-//						}
-//					});
-//				}
-//			}
-//		}).start();
-	}
+// WF_COMPAT
+//	public void beginGet(final EpicHttpResponseHandler handler) {
+//		EpicHttpImplementation.beginGet(this, handler);
+//		// handler.handleFailure(new EpicNotImplementedException("Network calls not yet implemented."));
+////		new Thread(new Runnable() {
+////			Exception exception;
+////			EpicHttpResponse response;		
+////			public void run() {
+////				try {
+////					response = get();
+////				} catch (Exception e) {
+////					exception = e;
+////				}
+////				if(handler != null) {
+////					EpicPlatform.runOnUiThread(new Runnable() {
+////						public void run() {
+////							if(exception == null) {
+////								handler.handleResponse(response);
+////							}
+////							else {
+////								handler.handleFailure(exception);
+////							}
+////						}
+////					});
+////				}
+////			}
+////		}).start();
+//	}
 
 	public EpicHttpResponse get() throws IOException {
 		return EpicHttpImplementation.get(this);

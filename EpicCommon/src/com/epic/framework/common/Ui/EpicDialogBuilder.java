@@ -121,9 +121,9 @@ public class EpicDialogBuilder {
 		return this;
 	}
 
-	public static int ask(String string, String[] challenges, int startAt) {
-		return EpicDialogImplementation.ask(string, challenges, startAt);
-	}
+//	public static int ask(String string, String[] challenges, int startAt) {
+//		return EpicDialogImplementation.ask(string, challenges, startAt);
+//	}
 
 	public void setList(String[] listItems, int listStartAt,
 			EpicRowSelectListener listListener) {

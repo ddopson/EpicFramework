@@ -19,18 +19,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.epic.config.EpicProjectConfig;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.epic.framework.common.Ui.EpicPlatformInterface;
 import com.epic.framework.common.util.EpicLog;
-import com.realcasualgames.words.PlayerState;
 
-public class EpicPlatformImplementation extends ViewGroup implements EpicPlatformInterface {
-	private static EpicPlatformImplementation thePercentLayout = new EpicPlatformImplementation();
+public class EpicPlatformImplementation extends ViewGroup {
+	private static EpicPlatformImplementation singleton = new EpicPlatformImplementation();
 	public static EpicPlatformImplementation get() {
-		return thePercentLayout;
+		return singleton;
 	}
 	private EpicPlatformImplementation() {
 		super(EpicApplication.getAndroidContext());
@@ -43,14 +40,14 @@ public class EpicPlatformImplementation extends ViewGroup implements EpicPlatfor
 		});
 	}
 
-	public void clear() {
-		this.removeAllViews();
+	public static void clear() {
+		singleton.removeAllViews();
 	}
 
-	public void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
+	public static void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
 		View childView = child.child.getAndroidView();
 		if(firstLayout) {
-			this.addView(childView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+			singleton.addView(childView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
 		}
 		childView.measure(
 				MeasureSpec.makeMeasureSpec(r - l, MeasureSpec.EXACTLY), 
@@ -63,12 +60,12 @@ public class EpicPlatformImplementation extends ViewGroup implements EpicPlatfor
 		EpicPlatform.onPlatformLayoutRequest(r - l, b - t, false);
 	}
 
-	public void requestRepaint() {
-		this.invalidate();
+	public static void requestRepaint() {
+		singleton.invalidate();
 	}
 
-	public void requestRelayout() {
-		this.invalidate();
+	public static void requestRelayout() {
+		singleton.invalidate();
 	}
 
 	//	public void draw(Canvas canvas) {
@@ -77,20 +74,8 @@ public class EpicPlatformImplementation extends ViewGroup implements EpicPlatfor
 	//		EpicPlatform.onPlatformPaint(EpicCanvas.get(canvas));
 	////		super.draw(canvas);
 	//	}
-	private static final boolean BUFFERED = EpicPlatform.RMODE_STRETCH;
-	private static final Bitmap screenBuffer = BUFFERED ? Bitmap.createBitmap(EpicProjectConfig.designDimensions.width, EpicProjectConfig.designDimensions.height, Bitmap.Config.ARGB_8888) : null;
-	private static final Canvas bufferCanvas = BUFFERED ? new Canvas(screenBuffer) : null;
-	private static final Rect bufferSrcRect = BUFFERED ? new Rect(0, 0, EpicProjectConfig.designDimensions.width, EpicProjectConfig.designDimensions.height) : null; 
-	private static final Rect screenRect = BUFFERED ? new Rect() : null;
-	private static final Paint defaultPaint = BUFFERED ? new Paint() : null;
 	protected void onDraw(Canvas canvas) {
-		if(BUFFERED) {
-			EpicPlatform.onPlatformPaint(EpicCanvas.get(bufferCanvas));
-			screenRect.set(0, 0, this.getWidth(), this.getHeight());
-			canvas.drawBitmap(screenBuffer, bufferSrcRect, screenRect, defaultPaint);
-		} else {
-			EpicPlatform.onPlatformPaint(EpicCanvas.get(canvas));			
-		}
+		EpicPlatform.onPlatformPaint(EpicCanvas.get(canvas));			
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -144,7 +129,7 @@ public class EpicPlatformImplementation extends ViewGroup implements EpicPlatfor
         NotificationManager mNotificationManager = (NotificationManager) EpicApplication.getAndroidContext().getSystemService(ns);
         mNotificationManager.cancelAll();		
         
-        PlayerState.resetClicked();
+// WF_COMPAT       PlayerState.resetClicked();
 	}
 	
 	public static boolean isTouchEnabledDevice() {
@@ -165,6 +150,10 @@ public class EpicPlatformImplementation extends ViewGroup implements EpicPlatfor
 
         EpicLog.i("Detected version " + mVersionNumber);
         return mVersionNumber;
+	}
+	
+	public static String getDeviceName() {
+		return "deviceName";
 	}
 
 }

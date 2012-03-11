@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.epic.framework.build.EpicInflatableClass;
-import com.epic.framework.common.Ui2.ClassEpicBitmap;
-import com.epic.framework.common.Ui2.EpicObject;
 import com.epic.framework.common.Ui2.Registry;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;

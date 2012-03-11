@@ -14,11 +14,10 @@ import javax.swing.JPanel;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.Ui.EpicPlatform;
-import com.epic.framework.common.Ui.EpicPlatformInterface;
 import com.epic.framework.common.util.EpicLog;
 
 @SuppressWarnings("serial")
-public class EpicNativeGameFrame extends JPanel implements MouseListener, MouseMotionListener, EpicPlatformInterface {
+public class EpicNativeGameFrame extends JPanel implements MouseListener, MouseMotionListener {
 	private static EpicNativeGameFrame theGameFrame;
 
 	public static EpicNativeGameFrame get() {

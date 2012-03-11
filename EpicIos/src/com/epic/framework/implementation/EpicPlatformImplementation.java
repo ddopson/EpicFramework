@@ -1,5 +1,7 @@
 package com.epic.framework.implementation;
 
+import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
+
 public class EpicPlatformImplementation {
 	public static void doToastNotification(String text, int duration) {
 	}
@@ -47,5 +49,17 @@ public class EpicPlatformImplementation {
 
 	public static String getDeviceName() {
 		return EpicPlatformImplementationNative.getDeviceName();
+	}
+
+	public static void clear() {
+		EpicUiView.singleton.clear();
+	}
+
+	public static void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
+		EpicUiView.singleton.layoutChild(child, l, r, t, b, firstLayout);
+	}
+
+	public static void requestRepaint() {
+		EpicUiView.singleton.requestRepaint();
 	}
 }

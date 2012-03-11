@@ -3,19 +3,12 @@ package com.epic.framework.common.Ui2;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import com.epic.framework.common.Ui.EpicBitmap;
-import com.epic.framework.common.Ui.EpicCanvas;
-import com.epic.framework.common.Ui.EpicFont;
-import com.epic.framework.common.Ui.EpicMenu;
-import com.epic.framework.common.Ui.EpicPercentLayout;
-import com.epic.framework.common.Ui.MouseTrail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
+import com.epic.framework.vendor.org.json.JSONArray;
+import com.epic.framework.vendor.org.json.JSONException;
+import com.epic.framework.vendor.org.json.JSONObject;
+import com.epic.framework.vendor.org.json.JSONTokener;
 
 
 public class Registry {

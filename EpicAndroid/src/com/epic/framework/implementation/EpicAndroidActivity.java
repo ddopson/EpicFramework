@@ -20,35 +20,34 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.epic.config.EpicProjectConfig;
+import com.epic.framework.common.EpicConfig;
 import com.epic.framework.common.Ui.EpicMenu;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
-import com.epic.framework.common.util.EpicSocial;
-import com.epic.framework.implementation.facebook.Facebook;
 import com.epic.framework.implementation.tapjoy.TapjoyConnect;
 import com.epic.framework.implementation.tapjoy.TapjoyEarnedPointsNotifier;
 import com.epic.framework.implementation.tapjoy.TapjoyLog;
-import com.realcasualgames.words.PlayerState;
 
 public class EpicAndroidActivity extends Activity {
 	public static final int CONTACT_PICK = 5;
 	private static EpicAndroidActivity currentActivity = null;
-	public Facebook facebook = new Facebook("172905469435543");
+	// WF_COMPAT
+	//	public Facebook facebook = new Facebook("172905469435543");
 
-	public static TapjoyEarnedPointsNotifier tepn = new TapjoyEarnedPointsNotifier() {
-		public void earnedTapPoints(int amount) {
-			final int a = amount;
-			EpicPlatform.runOnUiThread(new Runnable() {
-				public void run() {
-					PlayerState.updateLocalTokens(a, true);		
-				}				
-			});
-		}
-	};
-	
+	// WF_COMPAT
+	//	public static TapjoyEarnedPointsNotifier tepn = new TapjoyEarnedPointsNotifier() {
+	//		public void earnedTapPoints(int amount) {
+	//			final int a = amount;
+	//			EpicPlatform.runOnUiThread(new Runnable() {
+	//				public void run() {
+	//					PlayerState.updateLocalTokens(a, true);		
+	//				}				
+	//			});
+	//		}
+	//	};
+
 	public EpicAndroidActivity() {
 		super();
 	}
@@ -60,100 +59,104 @@ public class EpicAndroidActivity extends Activity {
 			EpicLog.w("Intent result data empty");
 			return;
 		}
-		
-		if(requestCode == CONTACT_PICK && resultCode == RESULT_OK) {
-			Cursor cursor =  managedQuery(data.getData(), null, null, null, null);
-			Vector<String> emailList = new Vector<String>();
-			   while (cursor.moveToNext()) 
-			   {           
-			       String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
 
-			       // Find Email Addresses
-			       Cursor emails = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,null,ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + contactId,null, null);
-			       while (emails.moveToNext()) 
-			       {
-			    	   emailList.add(emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
-			       }
-			       emails.close();
-			  }  //while (cursor.moveToNext())        
-			   cursor.close();
-			   
-			   String[] emailStrings = new String[emailList.size()];
-			   for(int i = 0; i < emailList.size(); ++i) {
-				   emailStrings[i] = emailList.get(i);
-			   }
-		
-    		   EpicSocial.onContactEmailReturned(emailStrings);
-    		   EpicLog.i("Returned contact info.");
-	   
-		}
-		
-		if(requestCode == 6969) {
-			// Facebook SSO
-			facebook.authorizeCallback(requestCode, resultCode, data);
-		}
-		
+		// WF_COMPAT
+		//		if(requestCode == CONTACT_PICK && resultCode == RESULT_OK) {
+		//			Cursor cursor =  managedQuery(data.getData(), null, null, null, null);
+		//			Vector<String> emailList = new Vector<String>();
+		//			   while (cursor.moveToNext()) 
+		//			   {           
+		//			       String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+		//
+		//			       // Find Email Addresses
+		//			       Cursor emails = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,null,ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + contactId,null, null);
+		//			       while (emails.moveToNext()) 
+		//			       {
+		//			    	   emailList.add(emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
+		//			       }
+		//			       emails.close();
+		//			  }  //while (cursor.moveToNext())        
+		//			   cursor.close();
+		//			   
+		//			   String[] emailStrings = new String[emailList.size()];
+		//			   for(int i = 0; i < emailList.size(); ++i) {
+		//				   emailStrings[i] = emailList.get(i);
+		//			   }
+		//		
+		////    		   EpicSocial.onContactEmailReturned(emailStrings);
+		//    		   EpicLog.i("Returned contact info.");
+		//	   
+		//		}
+		//		
+		//		if(requestCode == 6969) {
+		//			// Facebook SSO
+		//			facebook.authorizeCallback(requestCode, resultCode, data);
+		//		}
+
 	}
-	
+
 	public static EpicAndroidActivity getCurrentAndroidActivity() {
 		return currentActivity;
 	}
-	
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		
-		String screenName = null;
-		screenName = intent.getStringExtra("launchScreen");
-		if(screenName == null) {
-			EpicLog.w("launchScreen null");
-		} else {
-			EpicLog.w("launchScreen=" + screenName);
-		}
-		
-		String extra = null;
-		extra = intent.getStringExtra("challengeId");
-		if(extra != null) {
-			EpicLog.w("extra=" + extra);
-		}
-		
-		EpicPlatform.changeScreen(EpicProjectConfig.getInitialScreenObject(screenName, extra));
-	}
+
+	// WF_COMPAT
+	//	protected void onNewIntent(Intent intent) {
+	//		super.onNewIntent(intent);
+	//		
+	//		String screenName = null;
+	//		screenName = intent.getStringExtra("launchScreen");
+	//		if(screenName == null) {
+	//			EpicLog.w("launchScreen null");
+	//		} else {
+	//			EpicLog.w("launchScreen=" + screenName);
+	//		}
+	//		
+	//		String extra = null;
+	//		extra = intent.getStringExtra("challengeId");
+	//		if(extra != null) {
+	//			EpicLog.w("extra=" + extra);
+	//		}
+	//		
+	////		EpicPlatform.changeScreen(EpicProjectConfig.getInitialScreenObject(screenName, extra));
+	//	}
 
 	protected void onCreate(Bundle savedInstanceState) {
 		EpicLog.i("EpicAndroidActivity.onCreate() this=" + this);
 		super.onCreate(savedInstanceState);
 		if(!EpicPlatform.initialized) {
 			EpicLog.w("Starting init");
-			String screenName = null;
-			Intent n = getIntent();
-			screenName = n.getStringExtra("launchScreen");
-			if(screenName == null) {
-				EpicLog.w("launchScreen null");
-			} else {
-				EpicLog.w("launchScreen=" + screenName);
-			}
-			
-			String extra = null;
-			extra = n.getStringExtra("challengeId");
-			if(extra != null) {
-				EpicLog.w("extra=" + extra);
-			}
-			
-			EpicPlatform.initialize(EpicPlatformImplementation.get(), screenName, extra);
-			EpicProjectConfig.onApplicationStart();
-			if(!EpicProjectConfig.isReleaseMode) TapjoyLog.enableLogging(true);
-			TapjoyConnect.requestTapjoyConnect(EpicApplication.getAndroidContext(), "6517efe1-8c2f-4218-ada9-1f56a76361d5", "HpW9tbSmVBf4ZfvfLqpj");		
-			TapjoyConnect.getTapjoyConnectInstance().setEarnedPointsNotifier(tepn);
 
-			Intent intent = new Intent("com.google.android.c2dm.intent.REGISTER");
-			intent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
-			intent.putExtra("sender", "android@realcasualgames.com");
-			startService(intent);
+			// WF_COMPAT
+			//			String screenName = null;
+			//			Intent n = getIntent();
+			//			screenName = n.getStringExtra("launchScreen");
+			//			if(screenName == null) {
+			//				EpicLog.w("launchScreen null");
+			//			} else {
+			//				EpicLog.w("launchScreen=" + screenName);
+			//			}
+			//			
+			//			String extra = null;
+			//			extra = n.getStringExtra("challengeId");
+			//			if(extra != null) {
+			//				EpicLog.w("extra=" + extra);
+			//			}
+			if(EpicConfig.DEBUG_TAPJOY) TapjoyLog.enableLogging(true);
+
+			// WF_COMPAT
+			//			TapjoyConnect.requestTapjoyConnect(EpicApplication.getAndroidContext(), "6517efe1-8c2f-4218-ada9-1f56a76361d5", "HpW9tbSmVBf4ZfvfLqpj");		
+			//			TapjoyConnect.getTapjoyConnectInstance().setEarnedPointsNotifier(tepn);
+
+			// WF_COMPAT
+			//			Intent intent = new Intent("com.google.android.c2dm.intent.REGISTER");
+			//			intent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+			//			intent.putExtra("sender", "android@realcasualgames.com");
+			//			startService(intent);
 		} else {
 			EpicLog.w("Skipping re-init");
 		}
-		
-		
+
+
 		try {
 			EpicLog.i("Setting exception handler.");
 			final UncaughtExceptionHandler previousUncaughtExceptionHandler = Thread.currentThread().getUncaughtExceptionHandler();
@@ -173,8 +176,8 @@ public class EpicAndroidActivity extends Activity {
 		} catch(Exception e) {
 			EpicLog.e("Exception while setting exception handler: " + e.toString());
 		}
-		
-		if(EpicProjectConfig.getIsTitlebarDisabled()) {
+
+		if(EpicConfig.CONFIG_TITLEBAR_DISABLE) {
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 			getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		}
@@ -193,24 +196,25 @@ public class EpicAndroidActivity extends Activity {
 		EpicFail.assertNotNull(platformUiObject);
 		this.setContentView(platformUiObject);
 		EpicLog.i("Screen created...");
-		
-//		if(facebook.getAccessToken() != null && facebook.getAccessExpires() > System.currentTimeMillis()) {
-//			EpicLog.i("Facebook oAuth token: " + facebook.getAccessToken());
-//			facebook.authorize(this, new String[] { "publish_stream" }, 999, new DialogListener() {
-//		           @Override
-//		           public void onComplete(Bundle values) {}
-//	
-//		           @Override
-//		           public void onFacebookError(FacebookError error) {}
-//	
-//		           @Override
-//		           public void onError(DialogError e) {}
-//	
-//		           @Override
-//		           public void onCancel() {}
-//		      });
-//		}	
-		
+
+		// WF_COMPAT
+		//		if(facebook.getAccessToken() != null && facebook.getAccessExpires() > System.currentTimeMillis()) {
+		//			EpicLog.i("Facebook oAuth token: " + facebook.getAccessToken());
+		//			facebook.authorize(this, new String[] { "publish_stream" }, 999, new DialogListener() {
+		//		           @Override
+		//		           public void onComplete(Bundle values) {}
+		//	
+		//		           @Override
+		//		           public void onFacebookError(FacebookError error) {}
+		//	
+		//		           @Override
+		//		           public void onError(DialogError e) {}
+		//	
+		//		           @Override
+		//		           public void onCancel() {}
+		//		      });
+		//		}	
+
 	}
 
 	protected void onResume() {
@@ -266,17 +270,17 @@ public class EpicAndroidActivity extends Activity {
 
 		return ret ? true : super.onKeyDown(keyCode, event);
 	}
-	
+
 	protected void onStart() {
 		super.onStart();
-//	    UAirship.shared().getAnalytics().activityStarted(this);
+		//	    UAirship.shared().getAnalytics().activityStarted(this);
 	}
 
 	protected void onStop() {
 		super.onStop();
-//		UAirship.shared().getAnalytics().activityStopped(this);
+		//		UAirship.shared().getAnalytics().activityStopped(this);
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		EpicLog.i("EpicAndroidActivity.onOptionsItemSelected(" + item.toString()  + ") - " + item.getItemId());
 		EpicMenuItem epicMenuItem = mapMenuItems.get(item);

@@ -1,9 +1,6 @@
 package com.epic.framework.common.Ui2;
 
-import java.io.InputStream;
-
-import com.epic.framework.common.Ui.EpicBitmap;
-import org.json.*;
+import com.epic.framework.vendor.org.json.JSONException;
 
 public class InitRoutine {
 	public static void init() throws JSONException {

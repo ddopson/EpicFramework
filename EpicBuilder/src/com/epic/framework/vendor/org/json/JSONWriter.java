@@ -1,7 +1,10 @@
-package org.json;
+package com.epic.framework.vendor.org.json;
 
 import java.io.IOException;
 import java.io.Writer;
+
+import com.epic.framework.vendor.org.json.JSONException;
+import com.epic.framework.vendor.org.json.JSONObject;
 
 /*
 Copyright (c) 2006 JSON.org

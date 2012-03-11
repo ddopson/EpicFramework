@@ -43,7 +43,7 @@ public class EpicPlatform {
 	public static boolean initialized = false;
 	public static EpicScreen currentScreen;
 	private static EpicPercentLayout epicPercentLayout;
-	private static EpicPlatformInterface epicPlatformInterface;
+//	private static EpicPlatformInterface epicPlatformInterface;
 	public static MouseTrail mouseTrail = new MouseTrail();
 	private static Object singleThreadingLock = new Object();
 	private static long lastInputTime = System.currentTimeMillis();
@@ -111,9 +111,9 @@ public class EpicPlatform {
 		return (System.currentTimeMillis() - timeAtScreenChange) / 1000.0f;
 	}
 
-	public static void initialize(EpicPlatformInterface platformInterface, int width, int height, String screen, String extra) {
-		ArchPlatform.logMemoryStats();
-		if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.initialize(" + platformInterface + ")");
+	public static void initialize(int width, int height) {
+		if(EpicConfig.DEBUG_EPICSTOPWATCH) ArchPlatform.logMemoryStats();
+		if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.initialize()");
 		if(initialized) {
 			throw EpicFail.framework("EpicPlatform.initialize() is being called twice!!!");
 		}
@@ -131,8 +131,8 @@ public class EpicPlatform {
 //		EpicProjectConfig.onApplicationStart();
 //
 //		
-		EpicPlatform.epicPlatformInterface = platformInterface;
-		EpicPlatform.epicPercentLayout = new EpicPercentLayout(platformInterface);
+//		EpicPlatform.epicPlatformInterface = platformInterface;
+		EpicPlatform.epicPercentLayout = new EpicPercentLayout();
 		EpicPlatform.currentScreen = EpicConfig.INITIAL_SCREEN;
 		currentScreen.onCreateUi(epicPercentLayout);
 		currentScreen.onShow();
@@ -289,7 +289,7 @@ public class EpicPlatform {
 	public static void repaintScreen() {
 		synchronized (singleThreadingLock) {
 			//			if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.repaintScreen()");
-			epicPlatformInterface.requestRepaint();
+			EpicPlatformImplementation.requestRepaint();
 		}
 	}
 
@@ -580,6 +580,9 @@ public class EpicPlatform {
 	}
 
 	public static void onPlatformLayoutRequest(int width, int height, boolean invertWidgetOrder) {
+		if(!initialized) {
+			initialize(width, height);
+		}
 		// DDOPSON-2011-10-15 - this is a ghetto hack to deal with some BB phones that inexplicably load us first as profile and then switch to landscape.  
 		// This hack avoids resizing all the images dynamically and then throwing them away (big perf hit).
 		if(height > width) {
@@ -649,14 +652,16 @@ public class EpicPlatform {
 		return EpicPlatformImplementation.isTouchEnabledDevice();
 	}
 
-	public static boolean isFunkySmallNonTouchDevice() {
-		// wtf?  - some strange hacks Derek uses
-		return getPlatformWidth() < 800 && !EpicPlatform.isTouchEnabledDevice();
-	}
+// WF_COMPAT
+//	public static boolean isFunkySmallNonTouchDevice() {
+//		// wtf?  - some strange hacks Derek uses
+//		return getPlatformWidth() < 800 && !EpicPlatform.isTouchEnabledDevice();
+//	}
 
-	public static void androidLaunchMarketplace(String string) {
-		EpicPlatformImplementation.deepLinkToMarket(string);
-	}
+// WF_COMPAT
+//	public static void androidLaunchMarketplace(String string) {
+//		EpicPlatformImplementation.deepLinkToMarket(string);
+//	}
 
 	public static String getApplicationVersion() {
 		return EpicPlatformImplementation.getApplicationVersion();
@@ -666,17 +671,18 @@ public class EpicPlatform {
 		return EpicPlatformImplementation.getListingId();
 	}
 
-	public static String getUniqueDeviceId() {
-		return EpicPlatformImplementation.getUniqueDeviceId().substring(0, 8) + "@wordfarmgame.com";
-	}
-
-	public static void setAppBadge(int newCount) {
-		EpicPlatformImplementation.setAppBadge(newCount);
-	}
-
-	public static void requestFacebookFriends(String string) {
-		EpicPlatformImplementation.requestFacebookFriends(string);
-	}
+// WF_COMPAT
+//	public static String getUniqueDeviceId() {
+//		return EpicPlatformImplementation.getUniqueDeviceId().substring(0, 8) + "@wordfarmgame.com";
+//	}
+//
+//	public static void setAppBadge(int newCount) {
+//		EpicPlatformImplementation.setAppBadge(newCount);
+//	}
+//
+//	public static void requestFacebookFriends(String string) {
+//		EpicPlatformImplementation.requestFacebookFriends(string);
+//	}
 
 	public static boolean isIphone() {
 		return EpicPlatform.isIos() && EpicPlatform.getPlatformWidth() <= 480;
