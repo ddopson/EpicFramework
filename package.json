@@ -1,9 +1,11 @@
 {
-  "name": "epicbuild-codegen",
+  "name": "EpicFramework",
+  "description": "A Java-based framework for writing cross-platform mobile apps to iOS, Android, and more",
   "version": "0.1.0",
-
+  "main": "jslib/index.js",
   "dependencies": {
     "commander":  "*",
-    "underscore": "*"
+    "underscore": "*",
+    "imagemagick": "*"
   }
 }
