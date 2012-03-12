@@ -1,4 +1,8 @@
 
+Embedding Dependencies:
+ * embed Node.js + deps
+ * embed ImageMagick
+
 Framework Cleanup:
  * Clean up the EpicSocial code-clusterfuck
  * Clean up config story - core set of config entries in a well-known-location (eg, EpicPlatform) that can be overridden per-project and per-platform.  The project should have a configInit() method or similar to override config settings.  Need a well-documented Bootup story
