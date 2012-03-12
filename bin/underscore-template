@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 
-var _       = require('underscore');
+GLOBAL._       = require('underscore');
 var program = require('commander');
 var fs      = require('fs');
 var path    = require('path');
+var framework = require('..');
 
 program
   .version('0.1.0')
   .option('-t, --template [filename]', 'Template to process')
-  .option('-c, --compile', 'Compile the template into JS code without data')
-  .option('-d, --data [filename]', 'JSON file of data to pass to the template')
+  .option('-d, --data <filename>', 'JSON file of data to pass to the template')
   .option('-j, --json [json_string]', 'JSON formatted data to pass to the template')
   .option('-s, --selector [field.field.field...]', 'Selector to choose a subset of the input data')
   .option('-v, --verbose', 'Turn on more verbose output when hitting errors')
   .option('-o, --output [filename]', 'File to write results into')
   .parse(process.argv);
 
-if (! (program.template || program.data || program.json || program.compile)) {
+if (! (program.template || program.data || program.json)) {
   console.error("Error: no arguments specified");
   console.error(program.helpInformation());
   process.exit(1);
@@ -61,21 +61,20 @@ if (program.template) {
 }
 
 var data, datafile;
-if (program.compile) {
-  data = null;
-  datafile = 'NULL';
-} else if (program.json) {
+if (program.json) {
   data = program.json;
-  datafile = 'INLINE';
-  try {
-    var data = JSON.parse(data);
-  } catch (e) {
-    console.error("Error: JSON parsing failed for command-line data", e.message);
-    if (program.verbose) {
-      console.error("Data: ", data);
-    }
-    process.exit(1);
-  }
+  datafile = '(args)';
+} else if (program.data === '-' || program.data === '_') {
+  process.stdin.setEncoding('utf8');
+  process.stdin.resume();
+  data = "";
+  datafile = '(stdin)';
+  process.stdin.on('data', function (d) {
+    data = data + d;
+  });
+  process.stdin.on('end', function () {
+    processTemplate();
+  })
 } else if (program.data) {
   datafile = path.resolve(program.data);
   if (datafile.match(/[.]js$/)) {
@@ -88,8 +87,21 @@ if (program.compile) {
       console.error("Error reading data file '%s': %s", datafile, e.message);
       process.exit(1);
     }
+  }
+} else {
+  data = null;
+  datafile = 'NULL';
+}
+
+if (datafile !== '(stdin)') {
+  processTemplate();
+}
+
+
+function processTemplate() {
+  if (_.isString(data)) {
     try {
-      var data = JSON.parse(data);
+      data = JSON.parse(data);
     } catch (e) {
       console.error("Error: JSON parsing failed on data file '%s': %s", datafile, e.message);
       if (program.verbose) {
@@ -98,49 +110,46 @@ if (program.compile) {
       process.exit(1);
     }
   }
-} else {
-  data = null;
-  datafile = 'NULL';
-}
 
-if (data) {
-}
-
-if (program.selector) {
-  var fields = program.selector.split('.');
-  _.each(fields, function (f) {
-    data = data[f];
-    if (data == undefined) {
-      console.error("Error: data file '%s' has no field named '%s'", datafile, program.selector);
-      process.exit(1);
-    }
-  });
-}
-
-var output;
-try {
-  if (data === null) {
-    output = compileTemplate(template);
-  } else if (template === null) {
-    output = data;
-  } else {
-    output = _.template(template, data);
+  if (program.selector) {
+    var fields = program.selector.split('.');
+    _.each(fields, function (f) {
+      data = data[f];
+      if (data == undefined) {
+        console.error("Error: data file '%s' has no field named '%s'", datafile, program.selector);
+        process.exit(1);
+      }
+    });
   }
-} catch (e) {
-  console.error("Error processing template '%s': %s", program.template, e.message);
-  if(program.verbose) {
-    console.error("Data: ", data);
-  }
-  process.exit(1);
-}
 
-if(program.output && program.output !== '-') {
+  var output;
   try {
-    fs.writeFileSync(program.output, output);
+    if (data === null) {
+      output = compileTemplate(template);
+    } else if (template === null) {
+      output = data;
+    } else {
+      output = _.template(template, data);
+    }
   } catch (e) {
-    console.error("Error writing output file '%s': %s", program.output, e.message);
+    console.error("Error processing template '%s': %s", program.template, e.message);
+    if(program.verbose) {
+      console.error("Data: ", data);
+    }
     process.exit(1);
   }
-} else {
-  console.log(output);
+  writeOutput(output);
+}
+
+function writeOutput (output) {
+  if(program.output && program.output !== '-') {
+    try {
+      fs.writeFileSync(program.output, output);
+    } catch (e) {
+      console.error("Error writing output file '%s': %s", program.output, e.message);
+      process.exit(1);
+    }
+  } else {
+    console.log(output);
+  }
 }
