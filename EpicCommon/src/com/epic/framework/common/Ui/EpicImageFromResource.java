@@ -17,7 +17,7 @@ public class EpicImageFromResource extends EpicImageInstance {
 	public int android_id;
 
 	private static HashMap<String, EpicImageFromResource> allImageResources = new HashMap<String, EpicImageFromResource>();
-	
+
 	public EpicImageFromResource(String name, String plat, String extension, int android_id, boolean hasAlpha, int width, int height, int lpad, int tpad, int rpad, int bpad) {
 		super(name, hasAlpha, width, height, lpad, tpad, rpad, bpad);
 		this.plat = plat;
@@ -25,7 +25,7 @@ public class EpicImageFromResource extends EpicImageInstance {
 		this.android_id = android_id;
 		allImageResources.put(name, this);
 	}
-	
+
 	public static EpicImage lookupByNameOrThrow(String name) {
 		EpicImageFromResource image = allImageResources.get(name);
 		if(image == null) {
@@ -34,16 +34,24 @@ public class EpicImageFromResource extends EpicImageInstance {
 		return image;
 	}
 
-	
+
 	public int lastRender = -1;
 	EpicImageInstance[] instances;
 
 	public String getFilename() {
-		return this.name + "_" + this.plat + "." + this.extension;
+		if(this.plat == null) {
+			return this.name + "." + this.extension;
+		} else {
+			return this.name + "_" + this.plat + "." + this.extension;
+		}
 	}
 
 	public String getFilename(String baseDirectory) {
-		return baseDirectory + "/" + this.name + "_" + this.plat + "." + this.extension;
+		if(this.plat == null) {
+			return baseDirectory + "/" + this.name + "." + this.extension;
+		} else {
+			return baseDirectory + "/" + this.name + "_" + this.plat + "." + this.extension;
+		}
 	}
 
 	private static final Object loadingLock = new Object();
@@ -76,7 +84,7 @@ public class EpicImageFromResource extends EpicImageInstance {
 						tpad * desiredHeight / height,    // tpad
 						rpad * desiredWidth / width,      // rpad
 						bpad * desiredHeight / height     // bpad
-				);
+						);
 				EpicLog.w("EpicBitmap - Scaling: " + this.getFilename() + " to " + desiredWidth + "x" + desiredHeight);
 
 				// Extend the array

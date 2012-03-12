@@ -1,10 +1,17 @@
 package <%=package%>;
 
-import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicImageFromResource;
+import com.epic.framework.common.Ui2.Registry;
 
 public class EpicImages {<%
  _.map(images, function (image) {
 %>
-  public static EpicBitmapReference <%=image.name%> = new EpicImageReference("<%=image.name%>");<%
- } %>
+  public static EpicImageFromResource <%=image.name%> = new EpicImageFromResource("<%=image.name%>", <%=JSON.stringify(image.plat)%>, "<%=image.extension%>", -1, <%=image.hasAlpha%>, <%=image.vwidth%>, <%=image.vheight%>, <%=image.lpad%>, <%=image.tpad%>, <%=image.rpad%>, <%=image.bpad%>);<%
+ }); %>
+
+  public static void register() {<%
+_.map(images, function(image) {  %>
+    Registry.register("images/<%=image.name%>", <%=image.name%>);<%
+}); %>
+  }
 }

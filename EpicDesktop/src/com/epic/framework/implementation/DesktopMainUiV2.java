@@ -15,7 +15,7 @@ public class DesktopMainUiV2 {
 	public static void main(String[] args) throws InterruptedException, JSONException {
 //		InitRoutine.init();
 		EpicPlatformConfig.platform = EpicPlatform.PLATFORM_IOS;
-		EpicBitmapImplementation.magicBaseDirectory = "./resources";
+		EpicBitmapImplementation.magicBaseDirectory = "./resources/images";
 		EpicSimulator.currentScreenSize = new Dimension(1024, 768);
 		InitRoutine.init();
 		DesktopMain.MainMethod(args);

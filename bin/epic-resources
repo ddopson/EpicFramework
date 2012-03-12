@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+
+var _       = require('underscore');
+var program = require('commander');
+var im      = require('imagemagick');
+var fs      = require('fs');
+var path    = require('path');
+var framework = require('../');
+
+program
+  .version('0.1.0')
+  .option('-s, --src [dir]', 'Source dir to scan for resources')
+  .option('--plat [name]', 'Platform name for the resources')
+  .parse(process.argv);
+
+if (! (program.src)) {
+  console.error("Error: no arguments specified");
+  console.error(program.helpInformation());
+  process.exit(1);
+}
+
+function parseIdentifyLine(line) {
+  // eg, leaves_b0_000_ipad.png:  resources/leaves_b0_000_ipad.png[738] PNG 122x104 940x274+11+105 8-bit DirectClass 10KB 0.000u 0:00.000
+  
+  var v = line.split(/ +/);
+  var m = {
+    name:      v[0].match(/([^\/]+)[.]([a-z]+)/)[1],
+    extension: v[0].match(/([^\/]+)[.]([a-z]+)/)[2],
+    hasAlpha:  true,
+    iwidth:    parseInt(v[2].split('x')[0]),
+    iheight:   parseInt(v[2].split('x')[1]),
+    vwidth:    parseInt(v[3].split(/[x+]/)[0]),
+    vheight:   parseInt(v[3].split(/[x+]/)[1]),
+    lpad:      parseInt(v[3].split(/[x+]/)[2]),
+    tpad:      parseInt(v[3].split(/[x+]/)[3])
+  };
+  m.rpad = m.vwidth - m.lpad - m.iwidth;
+  m.bpad = m.vheight - m.tpad - m.iheight;
+  return m;
+}
+
+var resDir = program.src;
+var plat = program.plat ? program.plat : null;
+var files = fs.readdirSync(resDir);
+
+files = _.map(files, function (f) { return resDir + "/" + f; });
+  
+im.identify(files, function (err, output) {
+  if(err) return console.log(err);
+  var lines = output.split('\n');
+  var images = _.compact(_.map(lines, function (line) {
+    if (line === '') return;
+    try {
+      var meta = parseIdentifyLine(line);
+      meta.plat = plat;
+      meta.type = 'com.epic.framework.Ui.EpicImageFromResource';
+      return meta;
+    } catch (e) {
+      console.log("BAD: " + line);
+    }
+  }));
+  console.log("%j", {
+    package: 'com.epic.resources',
+    images: images
+  });
+});
+

@@ -8,12 +8,8 @@ public class InitRoutine {
 		ClassEpicBitmap.register();
 		ClassEpicAction.register();
 		ClassEpicClass.register();
-//		ClassEnsureLoginAction.register();
-//		ClassStartGameAction.register();
 		ClassEpicScreenObject.register();
 		ClassEpicWidget.register();
 		ClassEpicBackgroundWidget.register();
-		
-//		EpicImages.init();
 	}
 }
