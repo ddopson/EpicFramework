@@ -14,11 +14,20 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources><% _.each(sources, function (source, name) { %>
+	<linkedResources><%
+_.each(sources, function (source, name) { %>
 		<link>
 			<name><%=name%></name>
 			<type>2</type>
 			<locationURI><%=source%></locationURI>
-		</link><% }); %>
+		</link><%
+});
+_.each(dirs, function (source, name) { %>
+		<link>
+			<name><%=name%></name>
+			<type>2</type>
+			<locationURI><%=source%></locationURI>
+		</link><%
+}); %>
 	</linkedResources>
 </projectDescription>

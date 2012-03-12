@@ -5,8 +5,10 @@ module.exports = {
     name: "EpicBuilder",
     sources: {
       "EpicBuilder": "PARENT-1-WORKSPACE_LOC/EpicBuilder/src",
-      "resources": "PARENT-1-WORKSPACE_LOC/EpicBuilder/resources"
     },
+    dirs: {
+      "resources": "PARENT-1-WORKSPACE_LOC/EpicBuilder/resources"
+    }, 
     deps: [
       "../../EpicBuilder/lib/jcommander-1.24-SNAPSHOT-bundle.jar",
     ]
@@ -59,6 +61,20 @@ module.exports = {
     ]
   },
 
+  HelloResources: {
+    name: "Example: HelloResources",
+    sources: {
+      "src": "PARENT-1-WORKSPACE_LOC/examples/HelloResources/src",
+      "gen": "PARENT-1-WORKSPACE_LOC/examples/HelloResources/gen"
+    },
+    dirs: {
+      "resources": "PARENT-1-WORKSPACE_LOC/examples/HelloResources/resources"
+    },
+    deps: [
+      "../../build/EpicDesktop.jar"
+    ]
+  },
+
   HelloWorld: {
     name: "Example: HelloWorld",
     sources: {
@@ -79,3 +95,9 @@ module.exports = {
     ]
   }
 }
+
+_.map(module.exports, function (obj) {
+  if (!obj.dirs) {
+    obj.dirs = [];
+  }
+});

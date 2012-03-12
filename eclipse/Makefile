@@ -1,5 +1,5 @@
 
-PROJECTS  := Desktop Android iOS NullPlat HelloWorld EpicBuilder HelloUIv2
+PROJECTS  := Desktop Android iOS NullPlat HelloWorld EpicBuilder HelloUIv2 HelloResources
 UTEMPLATE ?= $(shell PATH=$$PATH:../bin; which underscore-template)
 
 .PHONY: build
