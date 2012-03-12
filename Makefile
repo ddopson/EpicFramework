@@ -3,7 +3,7 @@
 ####################################################################################################
 
 .PHONY: all
-all: node_modules EpicBuilder.jar EpicDesktop.jar
+all: lint EpicBuilder.jar EpicDesktop.jar
 
 .PHONY: clean
 clean:
@@ -49,6 +49,9 @@ dbg:
 node_modules: package.json
 	npm install
 	@touch node_modules
+
+.PHONY: lint
+	@jshint  bin/underscore-template  bin/epic-resources jslib/*
 
 .PHONY: EpicBuilder
 EpicBuilder: build/.make.EpicBuilder
