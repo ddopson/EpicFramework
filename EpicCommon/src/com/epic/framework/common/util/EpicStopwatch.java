@@ -1,6 +1,6 @@
 package com.epic.framework.common.util;
 
-import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicImage;
 import com.epic.framework.common.Ui.EpicClickListener;
 import com.epic.framework.implementation.EpicTimeImplementation;
 import static com.epic.framework.common.EpicConfig.DEBUG_EPICSTOPWATCH;
@@ -146,7 +146,7 @@ public class EpicStopwatch {
 					"AllocTotal=" + _mil(bytesAllocated.value),
 					"AllocTotal2=" + _mil(bytesAllocated2.value),
 					"ObjAlloc=" + _mil(1000*objectsAllocated.value) + "k (" + objectsAllocated.pctFromRender() + ") apf=" + objectsAllocated.valueFromPaint / nFramesRendered,
-					"PixelsLoaded=" + _mil(4*EpicBitmap.getGlobalPixelCount()) + "MB (" + _mil(4*EpicBitmap.getGlobalPixelCountScaled()) + "MB scaled)",
+//					"PixelsLoaded=" + _mil(4*EpicImage.getGlobalPixelCount()) + "MB (" + _mil(4*EpicImage.getGlobalPixelCountScaled()) + "MB scaled)",
 					"RenderTimes=" + buff.toString()
 			};
 			return debugStrings;
@@ -257,15 +257,15 @@ public class EpicStopwatch {
 	}
 
 	// DDOPSON-2011-07-10 - note that "pixels" != width * height due to cropping and padding and such.  It's the actual pixel work
-	public static void reportPixelsPushed(EpicBitmap image, int width, int height, int pixels) {
+	public static void reportPixelsPushed(EpicImage image, int width, int height, int pixels) {
 		if(DEBUG_EPICSTOPWATCH) {
 			pixelsPushed.value += pixels;
-			if(image.lastRender != monotonicN) {
-				if(image.lastRender < pixelsInPlay_lastReset) {
-					pixelsInPlay_total += width * height;
-				}
-				image.lastRender = monotonicN;
-			}
+//			if(image.lastRender != monotonicN) {
+//				if(image.lastRender < pixelsInPlay_lastReset) {
+//					pixelsInPlay_total += width * height;
+//				}
+//				image.lastRender = monotonicN;
+//			}
 		}
 	}
 

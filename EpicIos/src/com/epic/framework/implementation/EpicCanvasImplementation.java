@@ -10,7 +10,6 @@ import org.xmlvm.iphone.CGSize;
 import org.xmlvm.iphone.UIFont;
 import org.xmlvm.iphone.UIImage;
 
-import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.Ui.EpicCanvas;
 import com.epic.framework.common.Ui.EpicColor;
 import com.epic.framework.common.Ui.EpicFont;

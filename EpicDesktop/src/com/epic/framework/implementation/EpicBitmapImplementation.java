@@ -7,34 +7,36 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.epic.framework.common.Ui.EpicBitmap;
-import com.epic.framework.common.Ui.EpicBitmapInstance;
+import com.epic.framework.common.Ui.EpicImage;
+import com.epic.framework.common.Ui.EpicImageFromResource;
+import com.epic.framework.common.Ui.EpicImageFromUrl;
+import com.epic.framework.common.Ui.EpicImageInstance;
 import com.epic.framework.common.util.EpicFail;
 
 
 public class EpicBitmapImplementation {
 	static String magicBaseDirectory = null; // will be set during Main()
 	
-	private static BufferedImage _loadBitmap(EpicBitmapInstance eb) {
-		String path = eb.parent.getFilename(magicBaseDirectory);
+	private static BufferedImage _loadBitmap(EpicImageFromResource image) {
+		String path = image.getFilename(magicBaseDirectory);
 		File file = new File(path);
 		if(!file.exists()) {
-			throw EpicFail.invalid_argument("Image file for '" + eb.parent.getFilename() + "' does not exist at '"+path+"'");
+			throw EpicFail.invalid_argument("Image file for '" + image.getFilename() + "' does not exist at '"+path+"'");
 		}
 		try {
 			return ImageIO.read(file);
 		} catch (IOException e) {
-			throw EpicFail.framework("caught IOException while trying to read '" + eb.parent.getFilename() + "'", e);
+			throw EpicFail.framework("caught IOException while trying to read '" + image.getFilename() + "'", e);
 		}
 	}
 
-	public static Object loadBitmap(EpicBitmapInstance eb) {
-		BufferedImage original = _loadBitmap(eb);
+	public static Object loadBitmap(EpicImageFromResource image, EpicImageInstance instance) {
+		BufferedImage original = _loadBitmap(image);
 
-		if(original.getWidth() != eb.iwidth || original.getHeight() != eb.iheight) {
-			BufferedImage scaled = new BufferedImage(eb.iwidth, eb.iheight, BufferedImage.TYPE_INT_ARGB);
+		if(original.getWidth() != instance.iwidth || original.getHeight() != instance.iheight) {
+			BufferedImage scaled = new BufferedImage(instance.iwidth, instance.iheight, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = scaled.createGraphics();
-			graphics.drawImage(original, 0, 0, eb.iwidth, eb.iheight, null);
+			graphics.drawImage(original, 0, 0, instance.iwidth, instance.iheight, null);
 			graphics.dispose();
 			return scaled;
 		}
@@ -46,8 +48,7 @@ public class EpicBitmapImplementation {
 	public static void recycle(Object platformObject) {
 	}
 
-	public static EpicBitmap loadBitmapFromUrl(String url) {
-		// TODO Auto-generated method stub
+	public static EpicImageInstance loadImageFromUrl(EpicImageFromUrl image) {
 		return null;
 	}
 

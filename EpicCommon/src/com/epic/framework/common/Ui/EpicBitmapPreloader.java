@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class EpicBitmapPreloader {
 	public int sum = 0;
 	public boolean prepareOnly = false;
-	public void preload(EpicBitmap bitmap, int width, int height) {
+	public void preload(EpicImage bitmap, int width, int height) {
 		if(!prepareOnly) {
 			bitmap.getInstance(EpicPlatform.scaleLogicalToRenderX(width), EpicPlatform.scaleLogicalToRenderY(height));
 		}

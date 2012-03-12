@@ -9,18 +9,18 @@ public class EpicNotification {
 	public EpicClickListener clickCallback;
 	public String title;
 	public String[] messages;
-	public EpicBitmap icon;
+	public EpicImage icon;
 	public int duration;
 	public boolean minimized;
 	
-	public EpicNotification(String title, String[] messages, EpicBitmap icon, int duration) {
+	public EpicNotification(String title, String[] messages, EpicImage icon, int duration) {
 		this.title = title;
 		this.messages = messages;
 		this.icon = icon;
 		this.duration = duration;
 	}
 	
-	public EpicNotification(String title, String[] messages, EpicBitmap icon) {
+	public EpicNotification(String title, String[] messages, EpicImage icon) {
 		this(title, messages, icon, 3);
 	}
 	

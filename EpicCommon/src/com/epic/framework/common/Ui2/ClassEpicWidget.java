@@ -1,7 +1,7 @@
 package com.epic.framework.common.Ui2;
 
 import com.epic.framework.vendor.org.json.*;
-import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicImage;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 

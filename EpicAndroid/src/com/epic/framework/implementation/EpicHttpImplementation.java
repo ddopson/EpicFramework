@@ -25,15 +25,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
-import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.util.EpicBufferedReader;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicHttpRequest;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicLog;
 
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Environment;
 
 public class EpicHttpImplementation {

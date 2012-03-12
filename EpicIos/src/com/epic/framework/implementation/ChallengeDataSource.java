@@ -11,16 +11,16 @@ import org.xmlvm.iphone.UITableView;
 import org.xmlvm.iphone.UITableViewCell;
 import org.xmlvm.iphone.UITableViewDataSource;
 
-import com.epic.framework.common.Ui.EpicBitmap;
+import com.epic.framework.common.Ui.EpicImage;
 import com.epic.framework.common.Ui.EpicPlatform;
 
 class ChallengeDataSource extends UITableViewDataSource {
 	private String[] titles;
 	private String[] subtitles;
-	private EpicBitmap[] images;
+	private EpicImage[] images;
 	private boolean[] complete;
 
-	public ChallengeDataSource(String[] titles, String[] subtitles, boolean[] complete, EpicBitmap[] images) {
+	public ChallengeDataSource(String[] titles, String[] subtitles, boolean[] complete, EpicImage[] images) {
 		this.titles = titles;
 		this.subtitles = subtitles;
 		this.images = images;

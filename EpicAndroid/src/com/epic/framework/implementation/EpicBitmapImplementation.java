@@ -10,8 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Debug;
 
-import com.epic.framework.common.Ui.EpicBitmap;
-import com.epic.framework.common.Ui.EpicBitmapInstance;
+import com.epic.framework.common.Ui.EpicImageFromResource;
+import com.epic.framework.common.Ui.EpicImageFromUrl;
+import com.epic.framework.common.Ui.EpicImageInstance;
 import com.epic.framework.common.Ui.EpicPlatform;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
@@ -31,11 +32,11 @@ public class EpicBitmapImplementation {
 	public static int bTemp = 0;
 	public static int bLoaded = 0;
 
-	public static Object loadBitmap(EpicBitmapInstance instance) {
+	public static Object loadBitmap(EpicImageFromResource image, EpicImageInstance instance) {
 		Bitmap defaultBitmap = null;
 		nLoaded++;
 		while(true) {
-			defaultBitmap = (instance.parent.platformObject != null) ? (Bitmap)instance.parent.platformObject : _loadAndroidBitmap(instance.parent);
+			defaultBitmap = (image.platformObject != null) ? (Bitmap)image.platformObject : _loadAndroidBitmap(image);
 			if(defaultBitmap == null) {
 				throw EpicFail.missing_image(instance.parent.name);
 			}
@@ -62,7 +63,7 @@ public class EpicBitmapImplementation {
 		}	}
 
 	private static BitmapFactory.Options bitmapFactoryOptions = new BitmapFactory.Options();
-	private static Bitmap _loadAndroidBitmap(EpicBitmap epicBitmap) {
+	private static Bitmap _loadAndroidBitmap(EpicImageFromResource epicBitmap) {
 		checkMemory("load", 4 * epicBitmap.iwidth * epicBitmap.iheight);
 		//int sampleSize = 1;
 		while(true) {
@@ -102,41 +103,41 @@ public class EpicBitmapImplementation {
 		return b.getRowBytes() * b.getHeight();
 	}
 
-	private static int recycleOldestBitmaps() {
-		int oldest = Integer.MAX_VALUE;
-		int bytesReclaimed = 0;
-		int bitmaps = 0;
-		for(EpicBitmap bitmap : EpicBitmap.getAllBitmaps()) {
-			if(bitmap.lastRender < oldest && bitmap.isLoaded()) {
-				oldest = bitmap.lastRender;
-			}
-		}
-		int age = EpicStopwatch.getMonotonicN() - oldest;
-		if(age == 0) {
-			throw EpicFail.framework("ACK.  refusing to recycle bitmaps from the current frame in " + EpicPlatform.currentScreen.toString() + ".");
-		} else if(oldest == Integer.MAX_VALUE) {
-			EpicLog.e("ACK.  there are no loaded bitmaps to recycle");			
-		}
-
-		if(LOG_RECYCLING) EpicLog.w("BITMAP_RECYCLING: recycling the cohort of age=" + age);
-		for(EpicBitmap bitmap : EpicBitmap.getAllBitmaps()) {
-			if(bitmap.lastRender == oldest) {
-				bitmaps++;
-				bytesReclaimed += 4 * bitmap.recycle();
-			}
-		}
-		if(LOG_RECYCLING) EpicLog.w("BITMAP_RECYCLING: recycled " + bitmaps + " bitmaps worth " + mil(bytesReclaimed) + ").  age=" + age);
-		return bytesReclaimed;
-	}
+//	private static int recycleOldestBitmaps() {
+//		int oldest = Integer.MAX_VALUE;
+//		int bytesReclaimed = 0;
+//		int bitmaps = 0;
+//		for(EpicBitmap bitmap : EpicBitmap.getAllBitmaps()) {
+//			if(bitmap.lastRender < oldest && bitmap.isLoaded()) {
+//				oldest = bitmap.lastRender;
+//			}
+//		}
+//		int age = EpicStopwatch.getMonotonicN() - oldest;
+//		if(age == 0) {
+//			throw EpicFail.framework("ACK.  refusing to recycle bitmaps from the current frame in " + EpicPlatform.currentScreen.toString() + ".");
+//		} else if(oldest == Integer.MAX_VALUE) {
+//			EpicLog.e("ACK.  there are no loaded bitmaps to recycle");			
+//		}
+//
+//		if(LOG_RECYCLING) EpicLog.w("BITMAP_RECYCLING: recycling the cohort of age=" + age);
+//		for(EpicBitmap bitmap : EpicBitmap.getAllBitmaps()) {
+//			if(bitmap.lastRender == oldest) {
+//				bitmaps++;
+//				bytesReclaimed += 4 * bitmap.recycle();
+//			}
+//		}
+//		if(LOG_RECYCLING) EpicLog.w("BITMAP_RECYCLING: recycled " + bitmaps + " bitmaps worth " + mil(bytesReclaimed) + ").  age=" + age);
+//		return bytesReclaimed;
+//	}
 
 	private static void ensureSufficientFreeMemory(int minBytes) {
-		EpicLog.w("Trying to free up " + minBytes + " bytes...");
-		int bytesReclaimed = 0;
-		while(bytesReclaimed < minBytes) {
-			bytesReclaimed += recycleOldestBitmaps();
-			checkMemory("gc", 0);
-		}
-		System.gc();
+//		EpicLog.w("Trying to free up " + minBytes + " bytes...");
+//		int bytesReclaimed = 0;
+//		while(bytesReclaimed < minBytes) {
+//			bytesReclaimed += recycleOldestBitmaps();
+//			checkMemory("gc", 0);
+//		}
+//		System.gc();
 	}
 
 	private static String mil(long i) {
@@ -181,20 +182,23 @@ public class EpicBitmapImplementation {
 	}
 
 	public static void onLowMemory() {
-		recycleOldestBitmaps();
+//		recycleOldestBitmaps();
 	}
 
-	public static EpicBitmap loadBitmapFromUrl(String src) {
+	public static EpicImageInstance loadImageFromUrl(EpicImageFromUrl image) {
 		try {
-			URL url = new URL(src);
+			URL url = new URL(image.name);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setDoInput(true);
 			connection.connect();
 			InputStream input = connection.getInputStream();
 			Bitmap myBitmap = BitmapFactory.decodeStream(input);
-			EpicBitmap epicBitmap = new EpicBitmap(src, "URL", "URL", -1, myBitmap.getWidth(), myBitmap.getHeight(), 0, 0, 0, 0);
-			epicBitmap.platformObject = myBitmap;
-			return epicBitmap;
+			int width = myBitmap.getWidth();
+			int height = myBitmap.getHeight();
+			boolean hasAlpha = myBitmap.hasAlpha();
+			EpicImageInstance instance = new EpicImageInstance(image, hasAlpha, width, height, 0, 0, 0, 0);
+			instance.platformObject = myBitmap;
+			return instance;
 		} catch (Exception e) {
 			EpicLog.e(e.toString());
 			return null;

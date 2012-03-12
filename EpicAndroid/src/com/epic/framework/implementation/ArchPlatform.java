@@ -3,7 +3,6 @@ package com.epic.framework.implementation;
 import java.util.UUID;
 
 import com.epic.framework.common.EpicConfig;
-import com.epic.framework.common.Ui.EpicBitmap;
 import com.epic.framework.common.util.EpicLog;
 
 import android.app.ActivityManager;
@@ -48,7 +47,7 @@ public class ArchPlatform {
 		text += "\nGlobalFreedSize=" 				+ toMib(android.os.Debug.getGlobalFreedSize());
 		text += "\nGlobalExternalAllocSize=" 		+ toMib(android.os.Debug.getGlobalExternalAllocSize());
 		text += "\nGlobalExternalFreedSize=" 		+ toMib(android.os.Debug.getGlobalExternalFreedSize());
-		text += "\nEpicPixels="						+ toMib(EpicBitmap.getGlobalPixelCount()*4);
+//		text += "\nEpicPixels="						+ toMib(EpicBitmap.getGlobalPixelCount()*4);
 		text += "\nNativeHeapSize=" 				+ toMib(android.os.Debug.getNativeHeapSize());
 		text += "\nNativeHeapFree=" 				+ toMib(android.os.Debug.getNativeHeapFreeSize());
 		text += "\nNativeHeapAllocSize=" 			+ toMib(android.os.Debug.getNativeHeapAllocatedSize());

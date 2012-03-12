@@ -73,22 +73,22 @@ public class EpicCanvas {
 	public static int hack_y_offset = 0;
 	
 
-	public final void drawFullscreenBitmap(EpicBitmap image) {
+	public final void drawFullscreenBitmap(EpicImage image) {
 		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, OPAQUE, 0, 0, 0, 0);
 	}
-	public final void drawFullscreenBitmap(EpicBitmap image, int alpha) {
+	public final void drawFullscreenBitmap(EpicImage image, int alpha) {
 		_drawBitmapSubsetWithGlobalAlpha(image, 0, 0, EpicPlatform.renderWidth, EpicPlatform.renderHeight, alpha, 0, 0, 0, 0);
 	}
-	public final void drawBitmap(EpicBitmap image, int left, int top, int width, int height) {
+	public final void drawBitmap(EpicImage image, int left, int top, int width, int height) {
 		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), OPAQUE, 0, 0, 0, 0);
 	}
-	public final void drawBitmapWithGlobalAlpha(EpicBitmap image, int left, int top, int width, int height, int alpha) {
+	public final void drawBitmapWithGlobalAlpha(EpicImage image, int left, int top, int width, int height, int alpha) {
 		_drawBitmapSubsetWithGlobalAlpha(image, sx(left)+hack_x_offset, sy(top)+hack_y_offset, sx(width), sy(height), alpha, 0, 0, 0, 0);
 	}
-	public final void drawBitmapSubset(EpicBitmap image, int left, int top, int width, int height, int lcrop, int tcrop, int rcrop, int bcrop) {
+	public final void drawBitmapSubset(EpicImage image, int left, int top, int width, int height, int lcrop, int tcrop, int rcrop, int bcrop) {
 		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), OPAQUE, sx(lcrop), sy(tcrop), sx(rcrop), sy(bcrop));
 	}
-	public final void drawBitmapSubsetWithGlobalAlpha(EpicBitmap image, int left, int top, int width, int height, int alpha, int lcrop, int tcrop, int rcrop, int bcrop) {
+	public final void drawBitmapSubsetWithGlobalAlpha(EpicImage image, int left, int top, int width, int height, int alpha, int lcrop, int tcrop, int rcrop, int bcrop) {
 		_drawBitmapSubsetWithGlobalAlpha(image, sx(left), sy(top), sx(width), sy(height), alpha, sx(lcrop), sy(tcrop), sx(rcrop), sy(bcrop));
 	}
 
@@ -135,7 +135,7 @@ public class EpicCanvas {
 	////////////////////////////////////////////////////////////////////////////////
 
 	public static boolean hack = false;
-	final void _drawBitmapSubsetWithGlobalAlpha(EpicBitmap image, int left, int top, int width, int height, int alpha, int lcrop, int tcrop, int rcrop, int bcrop) {
+	final void _drawBitmapSubsetWithGlobalAlpha(EpicImage image, int left, int top, int width, int height, int alpha, int lcrop, int tcrop, int rcrop, int bcrop) {
 		if(alpha == 0) {
 			return; // invisible
 		}
@@ -149,7 +149,7 @@ public class EpicCanvas {
 		if(hack) {
 			EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
 		}
-		EpicBitmapInstance b = image.getInstance(width, height);
+		EpicImageInstance b = image.getInstance(width, height);
 
 		boolean isCropped = lcrop > 0 || tcrop > 0 || rcrop > 0 || bcrop > 0;
 		int sx = max(lcrop - b.lpad, 0);
