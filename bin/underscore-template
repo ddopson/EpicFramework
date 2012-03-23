@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-GLOBAL._       = require('underscore');
+var _       = require('underscore');
 var program = require('commander');
 var fs      = require('fs');
 var path    = require('path');
@@ -78,6 +78,8 @@ if (program.json) {
 } else if (program.data) {
   datafile = path.resolve(program.data);
   if (datafile.match(/[.]js$/)) {
+    // need _ to be available inside the file
+    GLOBAL._ = _;
     // no need for try/catch here.  Exception will be useful
     data = require(datafile.replace(/[.]js$/, ''));
   } else {
