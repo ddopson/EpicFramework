@@ -1,4 +1,15 @@
 
+Platforms:
+ * Support building for IOS
+ ** Need Ios version of JSON
+ * Support building for Android
+ * Support modular framework plugins
+
+
+JSON:
+ * support for reading an entire directory hierarchy and spitting out a consolidated and validated JSON file
+
+
 Embedding Dependencies:
  * embed Node.js + deps
  * embed ImageMagick
@@ -10,7 +21,6 @@ Framework Cleanup:
 
 
 UIv2:
- * finish the codegen 'tool', taking a srcdir, destdir pair on the CLI
  * Support for arrays - array constructor in the codegen + Registry.inflateArray
  * Inheritance
 
@@ -30,6 +40,7 @@ Build:
  * Rationalize how we expose the N build steps so the per-project Makefile isnt batshit insane
 
 Done:
+ * Codegen tool - written as an Annotation Processor
  * JAR files build successfully
  * lots of reorganizing
  * using Eclipse links since Eclipse sucks donkey balls when given symlinks
