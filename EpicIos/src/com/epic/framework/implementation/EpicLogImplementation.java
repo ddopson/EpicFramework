@@ -1,5 +1,6 @@
-package com.epic.framework.implementation;
+	package com.epic.framework.implementation;
 
+import org.xmlvm.ios.NSThread;
 import org.xmlvm.iphone.NSLog;
 
 import com.epic.framework.common.util.exceptions.EpicRuntimeException;
@@ -19,6 +20,8 @@ public class EpicLogImplementation {
 	}
 
 	public static void logStack() {
-		NSLog.logStack();
+		for(Object symbol : NSThread.callStackSymbols()) {
+			NSLog.log((String)symbol);
+		}
 	}
 }
