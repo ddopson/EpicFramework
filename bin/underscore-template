@@ -138,7 +138,6 @@ if (program.json) {
   })
 } else if (program.data) {
   datafile = path.resolve(program.data);
-  console.log('datafile=', datafile);
   if (fs.statSync(datafile).isDirectory()) {
     data = processDataDir(datafile, '');
   } else {
