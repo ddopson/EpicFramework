@@ -1,0 +1,11 @@
+package <%=package%>;
+
+import com.epic.framework.common.Ui.EpicFile;
+import com.epic.framework.common.Ui2.Registry;
+
+public class EpicFiles {<%
+ _.map(files, function (f) {
+%>
+  public static EpicFile <%=f.name%> = new EpicFile("<%=f.filename%>");<%
+ }); %>
+}

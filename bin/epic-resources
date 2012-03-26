@@ -39,13 +39,24 @@ function parseIdentifyLine(line) {
   return m;
 }
 
-var resDir = program.src;
+var resDir = path.resolve(program.src);
 var plat = program.plat ? program.plat : null;
-var files = fs.readdirSync(resDir);
 
-files = _.map(files, function (f) { return resDir + "/" + f; });
-  
-im.identify(files, function (err, output) {
+function readDir(dir) {
+  var files = fs.readdirSync(dir);
+  return _.map(files, function (f) { return dir + "/" + f; });
+}
+
+var imageFiles = readDir(resDir + '/images');
+var fileFiles = fs.readdirSync(resDir + '/files');
+var files = _.map(fileFiles, function (f) {
+  return {
+    name: f.replace(/[.][^.]+/, ''),
+    filename: f
+  };
+});
+
+im.identify(imageFiles, function (err, output) {
   if(err) return console.log(err);
   var lines = output.split('\n');
   var images = _.compact(_.map(lines, function (line) {
@@ -61,7 +72,8 @@ im.identify(files, function (err, output) {
   }));
   console.log("%j", {
     package: 'com.epic.resources',
-    images: images
+    images: images,
+    files: files
   });
 });
 
