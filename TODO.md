@@ -7,7 +7,9 @@ Platforms:
 
 
 JSON:
- * support for reading an entire directory hierarchy and spitting out a consolidated and validated JSON file
+  * Rewrite everything as a streaming parser that retains textual context and can emit errors that reference textual offsets
+  * Add a debug popup for Parse errors that shows the JSON text and the location of the error.  Error types: JSONSyntax, JSONParse, Epic
+  * support for reading an entire directory hierarchy and spitting out a consolidated and validated JSON file
 
 
 Embedding Dependencies:
