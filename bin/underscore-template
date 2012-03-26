@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var _       = require('underscore');
+var util    = require('util');
 var program = require('commander');
 var fs      = require('fs');
 var path    = require('path');
@@ -12,7 +13,14 @@ program
   .option('-d, --data <filename>', 'JSON file of data to pass to the template')
   .option('-j, --json [json_string]', 'JSON formatted data to pass to the template')
   .option('-s, --selector [field.field.field...]', 'Selector to choose a subset of the input data')
-  .option('-v, --verbose', 'Turn on more verbose output when hitting errors')
+  .option('-m, --mode <mode>', 'Format for output.  can be {auto, template, compile, inspect, json, list}', String, 'inspect')
+  // auto - Prints template output when data and template are specified.  Without data, prints compiled template.  Without template, inspects data.
+  // template - Prints template output. Requires {template, data}
+  // compile - Prints a compiled template. Requires {template}
+  // inspect - Inspects provided data in human readable format.  Requires {data}
+  // json - Inspects provided data in JSON format.  Requires {data}
+  // list - Inspects provided data in 'list' format, one entry per line.  Requires {data}
+  .option('-v, --verbose', 'Turn on more verbose output when hitting error.')
   .option('-o, --output [filename]', 'File to write results into')
   .parse(process.argv);
 
@@ -60,6 +68,59 @@ if (program.template) {
   template = null;
 }
 
+function processDataDir(dir, ns) {
+  var files = fs.readdirSync(dir);
+  var data = {};
+
+// cases: index.js, foo.js, screens/index.js, screens/foo.js
+
+  _.map(files, function (f) {
+    var file = dir + '/' + f;
+    if (fs.statSync(file).isDirectory()) {
+      var d = processDataDir(file, ns + f + '/');
+      data = _.extend({}, data, d);
+    } else {
+      var d = processDataFile(file);
+      var name = f.replace(/[.][^.]+/, '');
+      if (name === 'index') {
+        // index files get exploded into the root object
+        _.map(d, function (v, k) {
+          data[ns + k] = v; 
+        });
+      } else {
+        // non-index files become a single property in the root object
+        data[ns + name] = d;
+      }
+    }
+  });
+
+  return data;
+}
+
+function processDataFile(file) {
+  var data;
+  if (file.match(/[.]js$/)) {
+    // need _ to be available inside the file
+    GLOBAL._ = _;
+    try {
+      data = require(file.replace(/[.]js$/, ''));
+    } catch (e) {
+      console.error("Exception was thrown while processing JS data file '%s'", file);
+      console.error(e.stack);
+      process.exit(1);
+    }
+  } else {
+    try {
+      data = fs.readFileSync(file, 'utf8');
+    } catch (e) {
+      console.error("Error reading data file '%s': %s", file, e.message);
+      process.exit(1);
+    }
+    data = JSONparse(data, file);
+  }
+  return data;
+}
+
 var data, datafile;
 if (program.json) {
   data = program.json;
@@ -77,18 +138,11 @@ if (program.json) {
   })
 } else if (program.data) {
   datafile = path.resolve(program.data);
-  if (datafile.match(/[.]js$/)) {
-    // need _ to be available inside the file
-    GLOBAL._ = _;
-    // no need for try/catch here.  Exception will be useful
-    data = require(datafile.replace(/[.]js$/, ''));
+  console.log('datafile=', datafile);
+  if (fs.statSync(datafile).isDirectory()) {
+    data = processDataDir(datafile, '');
   } else {
-    try {
-      data = fs.readFileSync(datafile, 'utf8');
-    } catch (e) {
-      console.error("Error reading data file '%s': %s", datafile, e.message);
-      process.exit(1);
-    }
+    data = processDataFile(datafile);
   }
 } else {
   data = null;
@@ -100,6 +154,21 @@ if (datafile !== '(stdin)') {
 }
 
 
+function JSONparse(data, filename) {
+  if (_.isString(data)) {
+    try {
+      data = JSON.parse(data);
+    } catch (e) {
+      console.error("Error: JSON parsing failed on data file '%s': %s", filename, e.message);
+      if (program.verbose) {
+        console.error("Data: ", data);
+      }
+      process.exit(1);
+    }
+  }
+  return data;
+}
+
 function processTemplate() {
   if (_.isString(data)) {
     try {
@@ -110,41 +179,63 @@ function processTemplate() {
         console.error("Data: ", data);
       }
       process.exit(1);
-    }
+      }
   }
 
   if (program.selector) {
     var fields = program.selector.split('.');
     _.each(fields, function (f) {
-      data = data[f];
-      if (data == undefined) {
-        console.error("Error: data file '%s' has no field named '%s'", datafile, program.selector);
-        process.exit(1);
+      if(f == '%keys') {
+        data = _.keys(data);
+      } else {
+        data = data[f];
+        if (data == undefined) {
+          console.error("Error: data file '%s' has no field named '%s'", datafile, program.selector);
+          process.exit(1);
+        }
       }
     });
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////   
+  // GENERATE OUTPUT
+  ////////////////////////////////////////////////////////////////////////////////////////////////////   
+  
   var output;
-  try {
-    if (data === null) {
-      output = compileTemplate(template);
-    } else if (template === null) {
-      output = data;
+  if (template === null) {
+    if (program.mode === 'inspect') {
+      output = util.inspect(data, false, 99);
+    } else if (program.mode === 'json') {
+      output = JSON.stringify(data);
+    } else if (program.mode === 'list') {
+      output = "";
+      _.map(data, function (v, k) {
+        output += k + ": " + v + "\n";
+      });
     } else {
-      output = _.template(template, data);
+      throw new Error("unknown program mode '" + program.mode + "'");
     }
-  } catch (e) {
-    console.error("Error processing template '%s': %s", program.template, e.message);
-    if(program.verbose) {
-      console.error("Data: ", data);
+  } else {
+    try {
+      if (data === null) {
+        output = compileTemplate(template);
+      } else {
+        output = _.template(template, data);
+      }
+    } catch (e) {
+      console.error("Error processing template '%s': %s", program.template, e.message);
+      if(program.verbose) {
+        console.error("Data: ", data);
+      }
+      process.exit(1);
     }
-    process.exit(1);
   }
-  writeOutput(output);
-}
 
-function writeOutput (output) {
-  if(program.output && program.output !== '-') {
+  ////////////////////////////////////////////////////////////////////////////////////////////////////   
+  // WRITE OUTPUT
+  ////////////////////////////////////////////////////////////////////////////////////////////////////   
+  
+  if(program.output && program.output !== '-' && program.output !== '_') {
     try {
       fs.writeFileSync(program.output, output);
     } catch (e) {
