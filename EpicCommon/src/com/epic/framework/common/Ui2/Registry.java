@@ -3,8 +3,13 @@ package com.epic.framework.common.Ui2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import com.epic.framework.common.EpicConfig;
 import com.epic.framework.common.JSON;
+import com.epic.framework.common.Ui.EpicFile;
+import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 import com.epic.framework.vendor.org.json.simple.JSONArray;
@@ -129,6 +134,20 @@ public class Registry {
 
 		object.initialize();
 		return object;
+	}
+
+	public static void processConfig(EpicFile configFile) throws JSONException, IOException {
+		JSONObject config = (JSONObject)JSON.parse(configFile.openAsInputStream());
+		for(Entry<String,Object> entry : (Set<Entry<String,Object>>)config.entrySet()) {
+			String key = entry.getKey();
+			Object value = entry.getValue();
+			if(value instanceof JSONObject) {
+				EpicObject inflated = inflate((JSONObject)value);
+				EpicLog.d("Registering '" + key + "'");
+				registry.put(key, inflated);
+			}
+		}
+		EpicConfig.INITIAL_SCREEN = (EpicScreen) Registry.inflateField(config, "INITIAL_SCREEN", ClassEpicScreenObject.singleton, 0);
 	}
 }
 

@@ -1,8 +1,11 @@
 package com.epic.framework.common.util;
 
+import java.io.FileNotFoundException;
+
 import com.epic.framework.common.util.exceptions.EpicAssertionFailedException;
 import com.epic.framework.common.util.exceptions.EpicFrameworkException;
 import com.epic.framework.common.util.exceptions.EpicInvalidArgumentException;
+import com.epic.framework.common.util.exceptions.EpicMissingFileException;
 import com.epic.framework.common.util.exceptions.EpicMissingImageException;
 import com.epic.framework.common.util.exceptions.EpicNoSuchElementException;
 import com.epic.framework.common.util.exceptions.EpicNotImplementedException;
@@ -126,5 +129,9 @@ public class EpicFail {
 
 	public static EpicRuntimeException not_supported() {
 		return log_exception( new EpicNotSupportedException() );
+	}
+
+	public static EpicRuntimeException missing_file(String filename, FileNotFoundException e) {
+		return log_exception(new EpicMissingFileException(filename, e));
 	}
 }

@@ -25,6 +25,9 @@ import com.epic.framework.common.util.EpicStopwatch;
 public class DesktopMain {
 	private static JFrame mainFrame;
 	public static void MainMethod(String[] args) throws InterruptedException {
+		MainMethod();
+	}
+	public static void MainMethod() throws InterruptedException {
 		//		AllocationRecorder.addSampler(new Sampler() {
 		//			public void sampleAllocation(int count, String desc, Object newObj, long size) {
 		//				EpicStopwatch.reportAllocation(count, desc, newObj, size);

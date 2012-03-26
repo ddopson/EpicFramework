@@ -10,13 +10,16 @@ import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 
 public class EpicFileImplementation {
+	public static String magicBaseDirectory = "";
+	public static File magicBaseDirectory2 = new File(new File("").getAbsoluteFile(), "resources/files");
 	public static InputStream openInputStream(String filename) {
+		File file = new File(magicBaseDirectory2, filename);
+		file = file.getAbsoluteFile();
 		try {
-			return new FileInputStream("./resources/" + filename);
+			return new FileInputStream(file);
 		} catch (FileNotFoundException e) {
-			File f = new File("./resources/" + filename);
-			EpicLog.i("failed to get " + f.getAbsolutePath());
-			throw EpicFail.missing_image(filename, e);
+			EpicLog.i("failed to get " + file.getAbsolutePath());
+			throw EpicFail.missing_file(filename, e);
 		}
 	}
 
