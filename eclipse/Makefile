@@ -1,6 +1,8 @@
 
-PROJECTS  := Desktop Android iOS NullPlat HelloWorld EpicBuilder HelloUIv2 HelloResources
 UTEMPLATE ?= $(shell PATH=$$PATH:../bin; which underscore-template)
+
+PROJECTS  := $(shell $(UTEMPLATE) -d projects.js  -s %keys -m list | cut -d' ' -f2)
+
 
 .PHONY: build
 build: $(PROJECTS)

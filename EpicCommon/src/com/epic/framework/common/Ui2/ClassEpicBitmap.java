@@ -1,6 +1,9 @@
 package com.epic.framework.common.Ui2;
 
-import com.epic.framework.vendor.org.json.*;
+import java.util.Map;
+
+import com.epic.framework.vendor.org.json.simple.JSONArray;
+import com.epic.framework.vendor.org.json.simple.JSONObject;
 
 import com.epic.framework.common.Ui.EpicImage;
 import com.epic.framework.common.util.EpicFail;
@@ -16,10 +19,10 @@ public class ClassEpicBitmap extends EpicClass {
 	}
 	
 	public static EpicImage[] inflateArray(JSONArray array) {
-		int length = array.length();
+		int length = array.size();
 		EpicImage[] realArray = new EpicImage[length];
 		for(int i = 0; i < length; i++) {
-			Object el = array.opt(i);
+			Object el = array.get(i);
 			if(el instanceof JSONObject) {
 				EpicObject o = Registry.inflate((JSONObject)el);
 				if(o instanceof EpicImage) {
@@ -27,7 +30,7 @@ public class ClassEpicBitmap extends EpicClass {
 				} else {
 					throw new EpicObjectInflationException("element " + i + " is not of type EpicBitmap");
 				}
-			} else if(el == null || el == JSONObject.NULL) {
+			} else if(el == null) {
 				realArray[i] = null;
 			} else {
 				throw EpicFail.unhandled_case();

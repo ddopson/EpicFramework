@@ -2,7 +2,7 @@ package com.epic.framework.common.Ui;
 
 import java.util.HashMap;
 
-import com.epic.framework.build.EpicInflatableClass;
+import com.epic.framework.common.EpicInflatableClass;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.EpicStopwatch;

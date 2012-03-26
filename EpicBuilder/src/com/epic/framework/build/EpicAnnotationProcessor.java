@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
@@ -26,9 +27,9 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.tools.Diagnostic.Kind;
 
-import com.epic.framework.vendor.org.json.JSONArray;
-import com.epic.framework.vendor.org.json.JSONException;
-import com.epic.framework.vendor.org.json.JSONObject;
+import com.epic.framework.common.EpicInflatableClass;
+import com.epic.framework.vendor.org.json.simple.JSONArray;
+import com.epic.framework.vendor.org.json.simple.JSONObject;
 
 @SuppressWarnings("unused")
 public class EpicAnnotationProcessor extends AbstractProcessor {
@@ -89,39 +90,31 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 		boolean inflatable;
 		ArrayList<EpicFieldDescription> fields = new ArrayList<EpicFieldDescription>();
 		public JSONObject toJSON() {
-			try {
-				JSONObject o = new JSONObject();
-				int di = qualifiedName.lastIndexOf(".");
-				o.put("name", qualifiedName.substring(di + 1));
-				o.put("fullname", qualifiedName);
-				o.put("package", qualifiedName.substring(0, di));
-				o.put("parent", parent);
-				o.put("abstract", isAbstract);
-				o.put("inflatable", inflatable);
-				JSONArray fieldsJson = new JSONArray();
-				for(EpicFieldDescription fd : this.fields) {
-					fieldsJson.put(fd.toJSON());
-				}
-				o.put("fields", fieldsJson);
-				return o;
-			} catch(JSONException e) {
-				throw new RuntimeException(e);
+			JSONObject o = new JSONObject();
+			int di = qualifiedName.lastIndexOf(".");
+			o.put("name", qualifiedName.substring(di + 1));
+			o.put("fullname", qualifiedName);
+			o.put("package", qualifiedName.substring(0, di));
+			o.put("parent", parent);
+			o.put("abstract", isAbstract);
+			o.put("inflatable", inflatable);
+			JSONArray fieldsJson = new JSONArray();
+			for(EpicFieldDescription fd : this.fields) {
+				fieldsJson.add(fd.toJSON());
 			}
+			o.put("fields", fieldsJson);
+			return o;
 		}
 	}
 
 	public static class EpicFieldDescription {
 		String name;
 		String type;
-		public JSONObject toJSON() {
-			try {
-				JSONObject o = new JSONObject();
-				o.put("name", name);
-				o.put("type", type);
-				return o;
-			} catch(JSONException e) {
-				throw new RuntimeException(e);
-			}
+		public Object toJSON() {
+			JSONObject o = new JSONObject();
+			o.put("name", name);
+			o.put("type", type);
+			return o;
 		}
 	}
 
@@ -189,6 +182,7 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 		String errors = consumeInputStream(stderr);
 		if(errors != null && ! errors.equals("")) {
 			printError("CLI-ERRORS: " + errors.replaceAll("\n", "\\n"));
+			printNotice("CLI=bin/underscore-template -t EpicBuilder/resources/class.template -j " + metadata);
 		}
 		
 		if (DEBUG >= 2) {

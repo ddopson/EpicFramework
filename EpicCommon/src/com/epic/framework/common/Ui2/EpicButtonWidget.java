@@ -1,6 +1,6 @@
 package com.epic.framework.common.Ui2;
 
-import com.epic.framework.build.EpicInflatableClass;
+import com.epic.framework.common.EpicInflatableClass;
 import com.epic.framework.common.Ui.EpicImage;
 import com.epic.framework.common.Ui.EpicCanvas;
 

@@ -1,6 +1,6 @@
 package com.epic.framework.common.Ui2;
 
-import com.epic.framework.vendor.org.json.JSONException;
+import com.epic.framework.vendor.org.json.simple.JSONException;
 
 public class InitRoutine {
 	public static void init() throws JSONException {

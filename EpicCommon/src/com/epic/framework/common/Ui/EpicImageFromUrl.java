@@ -1,6 +1,6 @@
 package com.epic.framework.common.Ui;
 
-import com.epic.framework.build.EpicInflatableClass;
+import com.epic.framework.common.EpicInflatableClass;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.implementation.EpicBitmapImplementation;
 

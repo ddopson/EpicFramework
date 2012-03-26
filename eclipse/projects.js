@@ -1,6 +1,13 @@
 
 
 module.exports = {
+  EpicJson: {
+    name: "EpicJson",
+    sources: {
+      "EpicJson": "PARENT-1-WORKSPACE_LOC/EpicJson/src",
+    }
+  },
+
   EpicBuilder: {
     name: "EpicBuilder",
     sources: {
@@ -11,6 +18,7 @@ module.exports = {
     }, 
     deps: [
       "../../EpicBuilder/lib/jcommander-1.24-SNAPSHOT-bundle.jar",
+      { project: 'EpicJson' }
     ]
   },
 
@@ -22,7 +30,7 @@ module.exports = {
     },
     deps: [
       "/workspace/SDK/android-sdk-r06/platforms/android-11/android.jar",
-      { project: "EpicBuilder" }
+      { project: "EpicJson" }
     ]
   },
 
@@ -34,7 +42,7 @@ module.exports = {
     },
     deps: [
       "../../xmlvm/xmlvm.jar",
-      { project: "EpicBuilder" }
+      { project: "EpicJson" }
     ]
   },
 
@@ -46,7 +54,7 @@ module.exports = {
     },
     deps: [
       "../../EpicDesktop/lib/jl1.0.1.jar",
-      { project: "EpicBuilder" }
+      { project: "EpicJson" }
     ]
   },
 
@@ -57,7 +65,7 @@ module.exports = {
       "EpicNullPlat": "PARENT-1-WORKSPACE_LOC/EpicNullPlat/src"
     },
     deps: [
-      { project: "EpicBuilder" }
+      { project: "EpicJson" }
     ]
   },
 
@@ -99,5 +107,8 @@ module.exports = {
 _.map(module.exports, function (obj) {
   if (!obj.dirs) {
     obj.dirs = [];
+  }
+  if (!obj.deps) {
+    obj.deps = []; 
   }
 });

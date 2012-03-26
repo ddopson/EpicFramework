@@ -1,6 +1,6 @@
 package com.epic.framework.common.Ui2;
 
-import com.epic.framework.vendor.org.json.*;
+import com.epic.framework.vendor.org.json.simple.*;
 
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 
@@ -11,7 +11,7 @@ public class ClassEpicScreenObject extends EpicClass {
 	public EpicObject inflate(JSONObject data) {
 		EpicScreenObject object = new EpicScreenObject();
 		
-		Object widgetsData = data.opt("widgets");
+		Object widgetsData = data.get("widgets");
 		if(widgetsData instanceof JSONArray) {
 			JSONArray widgetsArray = (JSONArray)widgetsData;
 			object.widgets = ClassEpicWidget.inflateArray(widgetsArray);

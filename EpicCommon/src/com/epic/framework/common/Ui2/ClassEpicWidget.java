@@ -1,6 +1,6 @@
 package com.epic.framework.common.Ui2;
 
-import com.epic.framework.vendor.org.json.*;
+import com.epic.framework.vendor.org.json.simple.*;
 import com.epic.framework.common.Ui.EpicImage;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
@@ -14,10 +14,10 @@ public class ClassEpicWidget extends EpicClass {
 	}
 
 	public static EpicWidget[] inflateArray(JSONArray array) {
-		int length = array.length();
+		int length = array.size();
 		EpicWidget[] realArray = new EpicWidget[length];
 		for(int i = 0; i < length; i++) {
-			Object el = array.opt(i);
+			Object el = array.get(i);
 			if(el instanceof JSONObject) {
 				EpicObject o = Registry.inflate((JSONObject)el);
 				if(o instanceof EpicWidget) {
