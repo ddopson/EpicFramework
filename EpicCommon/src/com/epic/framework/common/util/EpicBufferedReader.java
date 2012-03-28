@@ -24,7 +24,7 @@ public class EpicBufferedReader extends BufferedReader {
 		StringBuilder stringBuilder = new StringBuilder();
 		int c;
 		while(-1 != (c = this.read())) {
-			stringBuilder.append(c);
+			stringBuilder.append((char)c);
 		}
 		return stringBuilder.toString();
 	}
