@@ -3,6 +3,9 @@ package com.epic.framework.implementation;
 import com.epic.framework.common.util.exceptions.EpicNativeMethodMissingImplementation;
 
 public abstract class EpicPlatformImplementationNative {	
+	public static void initializeApplication() {
+		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
+	}
 	public static void setupDebugHandlers() {
 		throw new EpicNativeMethodMissingImplementation("EpicPlatformImplementationNative");
 	}

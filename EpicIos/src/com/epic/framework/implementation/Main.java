@@ -48,8 +48,8 @@ public class Main extends UIApplicationDelegate {
 
     public static void main(String[] args) throws JSONException, IOException {
 		InitRoutine.init();
+		EpicPlatformImplementationNative.initializeApplication();
 		Registry.processConfig(new EpicFile("config.json"));
-
         UIApplication.main(args, null, Main.class);
     }
 }

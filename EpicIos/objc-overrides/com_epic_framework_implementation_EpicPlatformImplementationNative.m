@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <execinfo.h>
 #import "Reachability.h"
+#import "com_epic_resources_EpicImages.h"
 
 #define STDERR_FD 2
 
@@ -132,6 +133,11 @@ void uncaught_exception_handler(NSException *exception) {
   dispatch_async(dispatch_get_main_queue(), ^{
     [callback run__];
   });
+}
+
++ (void) initializeApplication__
+{
+  [com_epic_resources_EpicImages register__];
 }
 
 @end
