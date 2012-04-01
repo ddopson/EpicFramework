@@ -1,0 +1,20 @@
+<project>
+<target name="go">
+
+<taskdef
+  name="trimmer"
+  classpath="/workspace/EpicFramework/xmlvm/xmlvm.jar"
+  classname="org.xmlvm.ant.Trimmer"
+  onerror="fail"/>
+
+<trimmer
+  home="/workspace/EpicFramework/examples/HelloResources/build/xcode"
+  seed="1"
+  shorten="false"
+  cleanup="yes"
+  template="template1234"
+  target="iphone"
+  resources="resources/files/:resources/images/"
+/>
+</target>
+</project>

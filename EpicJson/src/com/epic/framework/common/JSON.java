@@ -14,18 +14,9 @@ import com.epic.framework.vendor.org.json.simple.parser.JSONParser;
 
 public class JSON {
 	private static JSONParser parser = new JSONParser();
-	public static void main(String[] args) throws JSONException {
-		parser.DEBUG = true;
-		// TODO: can we lax up the syntax to support unquoted keys???
-//		Object o = decode("{\"a\": \"foo bar\", \"b\": 2   ,,,,,  ,\" c\":8}");
-		JSONObject o = new JSONObject();
-		o.put("foo", "bar");
-		o.put(1, 2);
-//		Object o = decode("true\n\n\nfalse");
-		System.out.println(JSON.stringify(o));
-	}
 	
 	public static Object parse(String data) throws JSONException {
+		System.out.println("Parsing JSON: " + data);
 		Object ret = parser.parse(data);
 		return ret;
 	}
@@ -38,15 +29,15 @@ public class JSON {
 		return parser.parse(new InputStreamReader(data));
 	}
 	
-	public static String stringify(Object obj) {
-		StringWriter sw = new StringWriter();
-		try {
-			JSONValue.writeJSONString(obj, sw);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return sw.toString();
-	}
+//	public static String stringify(Object obj) {
+//		StringWriter sw = new StringWriter();
+//		try {
+//			JSONValue.writeJSONString(obj, sw);
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}
+//		return sw.toString();
+//	}
 	
 	public static void stringify(Object obj, Writer out) throws IOException {
 		JSONValue.writeJSONString(obj, out);

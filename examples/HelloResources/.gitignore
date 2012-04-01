@@ -1,1 +1,5 @@
-gen
+/gen
+/xcodebuild.log
+/stderr.log
+/build
+/resources/files/config.json

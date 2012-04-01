@@ -137,10 +137,10 @@ public class Registry {
 	}
 
 	public static void processConfig(EpicFile configFile) throws JSONException, IOException {
-		JSONObject config = (JSONObject)JSON.parse(configFile.openAsInputStream());
-		for(Entry<String,Object> entry : (Set<Entry<String,Object>>)config.entrySet()) {
-			String key = entry.getKey();
-			Object value = entry.getValue();
+		JSONObject config = (JSONObject)JSON.parse(configFile.openAsBufferedReader().readEntireStreamAsString());
+		Set<String> keySet = config.keySet();
+		for(String key : keySet) {
+			Object value = config.get(key);
 			if(value instanceof JSONObject) {
 				EpicObject inflated = inflate((JSONObject)value);
 				EpicLog.d("Registering '" + key + "'");
