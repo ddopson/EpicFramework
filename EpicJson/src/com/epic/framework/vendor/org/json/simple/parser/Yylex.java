@@ -76,7 +76,14 @@ public class Yylex {
   /** 
    * Translates a state to a row index in the transition table
    */
-  private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
+//  private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
+  private static final int [] ZZ_ROWMAP = new int[] {
+	  0,27,54,81,108,135,54,162,189,216,
+	  54,54,54,54,54,54,243,270,54,297,
+	  324,351,378,405,54,54,54,54,54,54,
+	  54,54,432,459,486,486,513,540,567,
+	  594,54,54,621,648,54
+  };
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\33\0\66\0\121\0\154\0\207\0\66\0\242"+
