@@ -1,6 +1,6 @@
 	package com.epic.framework.implementation;
 
-import org.xmlvm.ios.NSThread;
+import org.xmlvm.iphone.NSThread;
 import org.xmlvm.iphone.NSLog;
 
 import com.epic.framework.common.util.exceptions.EpicRuntimeException;
