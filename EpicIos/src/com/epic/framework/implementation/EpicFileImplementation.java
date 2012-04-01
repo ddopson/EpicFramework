@@ -44,9 +44,10 @@ public class EpicFileImplementation {
 		try {
 			s = new FileInputStream(f);
 		} catch (FileNotFoundException e) {
-			EpicLog.e("FNF: " + e.toString() + " for " + path);
-		}
-		
+			// TODO: this should be an exception
+			EpicLog.e("FileNotFound: " + e.toString() + " for " + path);
+			return null;
+          }
         return s;
     }
 
