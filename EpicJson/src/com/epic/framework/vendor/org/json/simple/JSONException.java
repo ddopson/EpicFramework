@@ -28,7 +28,8 @@ public class JSONException extends Exception {
 		this(-1, errorType, unexpectedObject);
 	}
 	
-	public JSONException(int position, int errorType, Object unexpectedObject){
+	public JSONException(int position, int errorType, Object unexpectedObject) {
+		super(getString(errorType, position, unexpectedObject), errorType == ERROR_UNEXPECTED_EXCEPTION ? (Exception)unexpectedObject : null);
 		this.position = position;
 		this.errorType = errorType;
 		this.unexpectedObject = unexpectedObject;
@@ -70,8 +71,13 @@ public class JSONException extends Exception {
 	public void setUnexpectedObject(Object unexpectedObject) {
 		this.unexpectedObject = unexpectedObject;
 	}
+
+	@Override
+	public String toString() {
+		return getString(errorType, position, unexpectedObject);
+	}
 	
-	public String toString(){
+	public static String getString(int errorType, int position, Object unexpectedObject){
 		StringBuffer sb = new StringBuffer();
 		
 		switch(errorType){
