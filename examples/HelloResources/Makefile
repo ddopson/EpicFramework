@@ -1,5 +1,5 @@
 
-FRAMEWORK_DIR = /workspace/EpicFramework
+FRAMEWORK_DIR = $(realpath $(CURDIR)/../..)
 
 EPIC_RESOURCES = $(FRAMEWORK_DIR)/bin/epic-resources
 UTEMPLATE = $(FRAMEWORK_DIR)/bin/underscore-template
@@ -42,7 +42,7 @@ build/.make.xmlvm: build/.make.javac
 .PHONY: trim
 trim: build/.make.trim
 build/.make.trim: build/.make.xmlvm
-	ant go
+	ant trim -Dxmlvm_path=$(FRAMEWORK_DIR)/xmlvm/xmlvm.jar -Dhome=$(CURDIR)/build/xcode -Dresources=resources/images/:resources/files/:$(objc_resources)
 	@touch build/.make.trim
 
 .PHONY: xcodebuild
