@@ -2,7 +2,7 @@
 
 package com.epic.framework.vendor.org.json.simple.parser;
 
-import com.epic.framework.vendor.org.json.simple.JSONException;
+import com.epic.framework.vendor.org.json.simple.JSONParseException;
 
 public class Yylex {
 
@@ -507,7 +507,7 @@ int getPosition(){
    * @return      the next token
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
-  public Yytoken yylex() throws java.io.IOException, JSONException {
+  public Yytoken yylex() throws java.io.IOException, JSONParseException {
     int zzInput;
     int zzAction;
 
@@ -616,7 +616,7 @@ int getPosition(){
           }
         case 33: break;
         case 1: 
-          { throw new JSONException(yychar, JSONException.ERROR_UNEXPECTED_CHAR, new Character(yycharat(0)));
+          { throw new JSONParseException(yychar, JSONParseException.ERROR_UNEXPECTED_CHAR, new Character(yycharat(0)));
           }
         case 34: break;
         case 8: 
@@ -653,7 +653,7 @@ int getPosition(){
 														sb.append((char)ch);
 													}
 													catch(Exception e){
-														throw new JSONException(yychar, JSONException.ERROR_UNEXPECTED_EXCEPTION, e);
+														throw new JSONParseException(yychar, JSONParseException.ERROR_UNEXPECTED_EXCEPTION, e);
 													}
           }
         case 42: break;

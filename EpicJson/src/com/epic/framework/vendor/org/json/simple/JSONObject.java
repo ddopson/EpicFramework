@@ -153,4 +153,13 @@ public class JSONObject extends HashMap implements Map, JSONAware, JSONStreamAwa
 	public static String escape(String s){
 		return JSONValue.escape(s);
 	}
+	
+	public String getString(String key) throws JSONException {
+		Object o = this.get(key);
+		if(o == null || o instanceof String) {
+			return (String) o;
+		} else {
+			throw new JSONException("Expected '" + key + "' to be of type String");
+		}
+	}
 }

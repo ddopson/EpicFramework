@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.epic.framework.vendor.org.json.simple.JSONArray;
-import com.epic.framework.vendor.org.json.simple.JSONObject;
 import com.epic.framework.vendor.org.json.simple.JSONException;
+import com.epic.framework.vendor.org.json.simple.JSONObject;
+import com.epic.framework.vendor.org.json.simple.JSONParseException;
+import com.epic.framework.vendor.org.json.simple.JSONParseException;
 
 
 /**
@@ -59,7 +61,7 @@ public class JSONParser {
      * 
      * @param in - The new character reader.
      * @throws IOException
-     * @throws JSONException
+     * @throws JSONParseException
      */
 	public void reset(Reader in){
 		lexer.yyreset(in);
@@ -86,7 +88,7 @@ public class JSONParser {
 			/*
 			 * Actually it will never happen.
 			 */
-			throw new JSONException(-1, JSONException.ERROR_UNEXPECTED_EXCEPTION, ie);
+			throw new JSONParseException(-1, JSONParseException.ERROR_UNEXPECTED_EXCEPTION, ie);
 		}
 	}
 	
@@ -108,7 +110,7 @@ public class JSONParser {
 	 * 	null
 	 * 
 	 * @throws IOException
-	 * @throws JSONException
+	 * @throws JSONParseException
 	 */
 	public Object parse(Reader in, ContainerFactory containerFactory) throws IOException, JSONException{
 		reset(in);
@@ -145,7 +147,7 @@ public class JSONParser {
 					if(token.type==Yytoken.TYPE_EOF)
 						return valueStack.removeFirst();
 					else
-						throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+						throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 					
 				case S_IN_OBJECT:
 					switch(token.type){
@@ -253,10 +255,10 @@ public class JSONParser {
 					}//inner switch
 					break;
 				case S_IN_ERROR:
-					throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+					throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 				}//switch
 				if(status==S_IN_ERROR){
-					throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+					throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 				}
 			}while(token.type!=Yytoken.TYPE_EOF);
 		}
@@ -264,7 +266,7 @@ public class JSONParser {
 			throw ie;
 		}
 		
-		throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+		throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 	}
 	
 	private void nextToken() throws JSONException, IOException{
@@ -309,7 +311,7 @@ public class JSONParser {
 			/*
 			 * Actually it will never happen.
 			 */
-			throw new JSONException(-1, JSONException.ERROR_UNEXPECTED_EXCEPTION, ie);
+			throw new JSONParseException(-1, JSONParseException.ERROR_UNEXPECTED_EXCEPTION, ie);
 		}
 	}
 	
@@ -329,7 +331,7 @@ public class JSONParser {
 	 *                   If this method is called for the first time in this instance, isResume will be ignored.
 	 * 
 	 * @throws IOException
-	 * @throws JSONException
+	 * @throws JSONException 
 	 */
 	public void parse(Reader in, ContentHandler contentHandler, boolean isResume) throws IOException, JSONException{
 		if(!isResume){
@@ -385,7 +387,7 @@ public class JSONParser {
 					}
 					else{
 						status = S_IN_ERROR;
-						throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+						throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 					}
 			
 				case S_IN_OBJECT:
@@ -508,10 +510,10 @@ public class JSONParser {
 					return;
 					
 				case S_IN_ERROR:
-					throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+					throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 				}//switch
 				if(status==S_IN_ERROR){
-					throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+					throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 				}
 			}while(token.type!=Yytoken.TYPE_EOF);
 		}
@@ -533,6 +535,6 @@ public class JSONParser {
 		}
 		
 		status = S_IN_ERROR;
-		throw new JSONException(getPosition(), JSONException.ERROR_UNEXPECTED_TOKEN, token);
+		throw new JSONParseException(getPosition(), JSONParseException.ERROR_UNEXPECTED_TOKEN, token);
 	}
 }
