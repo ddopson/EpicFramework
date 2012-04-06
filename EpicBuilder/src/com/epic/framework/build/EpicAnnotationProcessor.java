@@ -27,6 +27,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.tools.Diagnostic.Kind;
 
+import com.epic.framework.common.EpicFieldInflation;
 import com.epic.framework.common.EpicInflatableClass;
 import com.epic.framework.vendor.org.json.simple.JSONArray;
 import com.epic.framework.vendor.org.json.simple.JSONObject;
@@ -136,6 +137,10 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 						enclosed.accept(new SimpleElementVisitor6<Object, Object>() {
 							public Object visitVariable(VariableElement variableElement, Object p) {
 								if(variableElement.getModifiers().contains(Modifier.STATIC)) {
+									return null;
+								}
+								EpicFieldInflation annotation = variableElement.getAnnotation(EpicFieldInflation.class);
+								if(annotation != null && annotation.ignore()) {
 									return null;
 								}
 								EpicFieldDescription fieldDescription = new EpicFieldDescription();
