@@ -1,3 +1,10 @@
+JSON: implement the "args struct" concept
+
+Widgets: native vs virtual
+
+Build: need to init classes into registry automagically
+
+
 
 Platforms:
  * Support building for IOS
@@ -24,7 +31,6 @@ Framework Cleanup:
 
 UIv2:
  * Support for arrays - array constructor in the codegen + Registry.inflateArray
- * Inheritance
 
 
 
@@ -33,7 +39,6 @@ UIv2:
 
 
 Build:
- * Need underscore template based generation for eclipse projects
  * New Project creation script
  * Finish commander work on the CodeGen thingy and integrate it into EpicFramework
  * Finish todo items for codegen
@@ -42,7 +47,9 @@ Build:
  * Rationalize how we expose the N build steps so the per-project Makefile isnt batshit insane
 
 Done:
+ * Need underscore template based generation for eclipse projects
  * Codegen tool - written as an Annotation Processor
+ * Inheritance support for codegen
  * JAR files build successfully
  * lots of reorganizing
  * using Eclipse links since Eclipse sucks donkey balls when given symlinks
