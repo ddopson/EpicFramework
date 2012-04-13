@@ -1,0 +1,397 @@
+// !$*UTF8*$!
+<%
+
+  RESOURCE_DIR = '';
+  RESOURCE_LIST = '';
+
+  var id = 10000;
+  function newId () {
+    return id++;
+  }
+
+  config = _.defaults(config, {
+    TARGETED_DEVICE_FAMILY: "1,2",
+    IPHONEOS_DEPLOYMENT_TARGET: "5.0",
+    ARCHITECTURE: "ARCHS_UNIVERSAL_IPHONE_OS",
+    SDKROOT: "iphoneos"
+  });
+
+  files = _.map(files, function (f) {
+    var m = f.match(/[.]([^.]+)$/);
+    var ext = m && m[1] ? m[1] : '';
+    var type;
+    var bid;
+    switch(ext) {
+      case 'c':
+        type = 'sourcecode.c.c';
+        bid = newId();
+        break;
+      case 'm':
+        type = 'sourcecode.c.objc';
+        bid = newId();
+        break;
+      case 'cpp':
+      case 'c++':
+        type = 'sourcecode.cpp.cpp';
+        bid = newId();
+        break;
+      case 'mm':
+        type = 'sourcecode.cpp.objcpp';
+        bid = newId();
+        break;
+      case 'h':
+        type = 'sourcecode.c.h';
+        break;
+      default:
+        break;
+    }
+    return {
+      name: f,
+      path: f,
+      type: type,
+      fid: newId(),
+      bid: bid
+    };
+  });
+
+  frameworks = _.map(frameworks, function (fw) {
+    return {
+      name: fw,
+      path: 'System/Library/Frameworks/' + fw,
+      fid: newId(),
+      bid: newId(),
+      type: 'wrapper.framework',
+    };
+  });
+
+%>
+{
+  archiveVersion = 1;
+  classes = {
+  };
+  objectVersion = 45;
+  objects = {
+
+    /* Begin PBXBuildFile section */
+<%
+  
+// BUILDREFS 
+_.map(frameworks, function (fw) { %>
+    <%= fw.bid %> /* <%= fw.name %> in Frameworks */ = {isa = PBXBuildFile; fileRef = <%= fw.fid %>; };<%
+});
+_.map(files, function (f) { 
+  if (f.bid) { %>
+    <%= f.bid %> /* <%= f.name %> */ = {isa = PBXBuildFile; fileRef = <%= f.fid %>; };<%
+  }
+});
+
+%>
+    /* End PBXBuildFile section */
+
+    /* Begin PBXFileReference section */
+    1 /* <%= projectName %>.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = <%= projectName %>.app; sourceTree = BUILT_PRODUCTS_DIR; };
+    8 /* <%= projectName %>-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "<%= projectName %>-Info.plist" ; path = "<%= projectName %>-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+<%
+
+// FILEREFS
+_.map(frameworks, function (fw) { %>
+    <%= fw.fid %> /* <%= fw.name %> */ = { isa = PBXFileReference; lastKnownFileType = <%= fw.type %>; name = <%= fw.name %>; path=<%= fw.path %>; sourceTree = SDKROOT; };<%
+});
+_.map(files, function (f) { %>
+    <%= f.fid %> /* <%= f.name %> */ = { isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = <%= f.type %>; path = "<%= f.path %>"; sourceTree = "<group>"; };<%
+});
+
+%>
+    /* End PBXFileReference section */
+
+    /* Begin PBXFrameworksBuildPhase section */
+
+    9 /* Frameworks */ = {
+      isa = PBXFrameworksBuildPhase;
+      buildActionMask = 2147483647;
+      files = (<%
+      
+// BUILDFRAMS 
+_.map(frameworks, function (fw) { %>
+        <%= fw.bid %> /* <%= fw.name %> */,<%
+});
+
+%>
+      );
+      runOnlyForDeploymentPostprocessing = 0;
+    };
+
+    /* End PBXFrameworksBuildPhase section */
+
+    /* Begin PBXGroup section */
+    24 /* Application */ = {
+      isa = PBXGroup;
+      children = (<%
+
+// APPSRC 
+_.map(files, function (f) { %>
+        <%= f.fid %> /* <%= f.name %> */,<%
+});
+
+%>
+      );
+      name = Application;
+      path = ../build/xcode/src/trim;
+      sourceTree = "<group>";
+    };
+
+    11 /* MainGroup */ = {
+      isa = PBXGroup;
+      children = (
+        24 /*   Application */,
+        12 /* Resources */,
+        13 /* Frameworks */,
+        10 /* Products */,
+      );
+      name = MainGroup;
+      sourceTree = "<group>";
+    };
+    12 /* Resources */ = {
+      isa = PBXGroup;
+      children = (
+        8 /* <%= projectName %>-Info.plist */,
+      );
+      name = Resources;
+      path = ../build/xcode/sys;
+      sourceTree = "<group>";
+    };
+    13 /* Frameworks */ = {
+      isa = PBXGroup;
+      children = (<%
+  
+// FRAMEWORKS 
+_.map(frameworks, function (fw) { %>
+        <%= fw.fid %> /* <%= fw.name %> */,<%
+});
+
+%>
+      );
+      name = Frameworks;
+      sourceTree = "<group>";
+    };
+    10 /* Products */ = {
+      isa = PBXGroup;
+      children = (
+        1 /* <%= projectName %>.app */,
+      );
+      name = Products;
+      sourceTree = "<group>";
+    };
+    /* End PBXGroup section */
+
+    /* Begin PBXNativeTarget section */
+    14 /* <%= projectName %> */ = {
+      isa = PBXNativeTarget;
+      buildConfigurationList = 15 /* Build configuration list for PBXNativeTarget "<%= projectName %>" */;
+      buildPhases = (
+        16 /* Other Resources */,
+        17 /* Sources */,
+        9 /* Frameworks */,
+        34 /* Resources */,
+      );
+      buildRules = (
+      );
+      dependencies = (
+      );
+      name = <%= projectName %>;
+      productName = <%= projectName %>;
+      productReference = 1 /* <%= projectName %>.app */;
+      productType = "com.apple.product-type.application";
+    };
+    /* End PBXNativeTarget section */
+
+    /* Begin PBXProject section */
+    18 /* Project object */ = {
+      isa = PBXProject;
+      buildConfigurationList = 19 /* Build configuration list for PBXProject "<%= projectName %>" */;
+      compatibilityVersion = "Xcode 3.1";
+      hasScannedForEncodings = 1;
+      mainGroup = 11 /* MainGroup */;
+      projectDirPath = "";
+      projectRoot = "";
+      targets = (
+        14 /* <%= projectName %> */,
+      );
+    };
+    /* End PBXProject section */
+
+    /* Begin PBXResourcesBuildPhase section */
+    16 /* Resources */ = {
+      isa = PBXResourcesBuildPhase;
+      buildActionMask = 2147483647;
+      files = (<%
+
+// RESOURCES_BUILD 
+_.map(resources, function (r) { %>
+        <%= r.bid %> /* <%= r.name %> */,<%
+});
+
+%>
+      );
+      runOnlyForDeploymentPostprocessing = 0;
+    };
+    /* End PBXResourcesBuildPhase section */
+
+    /* Begin PBXShellScriptBuildPhase section */
+    34 /* ShellScript */ = {
+      isa = PBXShellScriptBuildPhase;
+      buildActionMask = 2147483647;
+      files = (
+      );
+      inputPaths = (
+      );
+      outputPaths = (
+      );
+      runOnlyForDeploymentPostprocessing = 0;
+      shellPath = /bin/bash;
+      shellScript = "RESOURCES=\"<%= RESOURCE_DIR %>\"\nfor i in <%= RESOURCE_LIST %>; do\n\tcase $i in\n\t\t/*)\tFROM=$i ;;\n\t\t*)\tFROM=${RESOURCES}/$i ;;\n\tesac\n\tif [ -e \"$FROM\" ] ; then\n\t\tcp -r \"$FROM\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}\"\n\tfi\ndone\n";
+    };
+    /* End PBXShellScriptBuildPhase section */
+
+    /* Begin PBXSourcesBuildPhase section */
+    17 /* Sources */ = {
+      isa = PBXSourcesBuildPhase;
+      buildActionMask = 2147483647;
+      files = (<%
+
+// SRC_BUILD 
+_.map(files, function (f) { 
+  if (f.bid) { %>
+        <%= f.bid %> /* <%= f.name %> */,<%
+  }
+});
+
+%>
+      );
+      runOnlyForDeploymentPostprocessing = 0;
+    };
+    /* End PBXSourcesBuildPhase section */
+
+    /* Begin XCBuildConfiguration section */
+    29 /* AppStore */ = {
+        isa = XCBuildConfiguration;
+        buildSettings = {
+            ARCHS = "$(<%= config.ARCHITECTURE %>)";
+            "CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+            DEPLOYMENT_POSTPROCESSING = YES;
+            GCC_C_LANGUAGE_STANDARD = c99;
+            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+            GCC_WARN_ABOUT_RETURN_TYPE = YES;
+            GCC_WARN_UNUSED_VARIABLE = NO;
+            GCC_VERSION = com.apple.compilers.llvmgcc42;
+            "PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+            SEPARATE_STRIP = YES;
+            IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+            TARGETED_DEVICE_FAMILY = "<%= config.TARGETED_DEVICE_FAMILY %>";
+            SDKROOT = <%= config.SDKROOT %>;
+            OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+        };
+        name = AppStore;
+    };
+    22 /* Debug */ = {
+        isa = XCBuildConfiguration;
+        buildSettings = {
+            ARCHS = "$(<%= config.ARCHITECTURE %>)";
+            "CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+            GCC_C_LANGUAGE_STANDARD = c99;
+            GCC_WARN_ABOUT_RETURN_TYPE = YES;
+            GCC_WARN_UNUSED_VARIABLE = NO;
+            GCC_VERSION = com.apple.compilers.llvmgcc42;
+            IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+            TARGETED_DEVICE_FAMILY = "<%= config.TARGETED_DEVICE_FAMILY %>";
+            SDKROOT = <%= config.SDKROOT %>;
+        };
+        name = Debug;
+    };
+    23 /* Release */ = {
+        isa = XCBuildConfiguration;
+        buildSettings = {
+            ARCHS = "$(<%= config.ARCHITECTURE %>)";
+            "CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+            DEPLOYMENT_POSTPROCESSING = YES;
+            GCC_C_LANGUAGE_STANDARD = c99;
+            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+            GCC_WARN_ABOUT_RETURN_TYPE = YES;
+            GCC_WARN_UNUSED_VARIABLE = NO;
+            GCC_VERSION = com.apple.compilers.llvmgcc42;
+            SEPARATE_STRIP = YES;
+            IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+            TARGETED_DEVICE_FAMILY = "<%= config.TARGETED_DEVICE_FAMILY %>";
+            SDKROOT = <%= config.SDKROOT %>;
+            OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+        };
+        name = Release;
+    };
+
+    28 /* AppStore */ = {
+        isa = XCBuildConfiguration;
+        buildSettings = {
+            ALWAYS_SEARCH_USER_PATHS = NO;
+            COPY_PHASE_STRIP = YES;
+            GCC_PRECOMPILE_PREFIX_HEADER = YES;
+            INFOPLIST_FILE = "../build/xcode/sys/<%= projectName %>-Info.plist";
+            PRODUCT_NAME = <%= projectName %>;
+        };
+        name = AppStore;
+    };
+
+    20 /* Debug */ = {
+        isa = XCBuildConfiguration;
+        buildSettings = {
+            ALWAYS_SEARCH_USER_PATHS = NO;
+            COPY_PHASE_STRIP = NO;
+            GCC_DYNAMIC_NO_PIC = NO;
+            GCC_OPTIMIZATION_LEVEL = 0;
+            GCC_PRECOMPILE_PREFIX_HEADER = YES;
+            INFOPLIST_FILE = "../build/xcode/sys/<%= projectName %>-Info.plist";
+            PRODUCT_NAME = <%= projectName %>;
+        };
+        name = Debug;
+    };
+
+    21 /* Release */ = {
+        isa = XCBuildConfiguration;
+        buildSettings = {
+            ALWAYS_SEARCH_USER_PATHS = NO;
+            COPY_PHASE_STRIP = YES;
+            GCC_PRECOMPILE_PREFIX_HEADER = YES;
+            INFOPLIST_FILE = "../build/xcode/sys/<%= projectName %>-Info.plist";
+            PRODUCT_NAME = <%= projectName %>;
+        };
+        name = Release;
+    };
+    /* End XCBuildConfiguration section */
+
+    /* Begin XCConfigurationList section */
+    19 /* Build configuration list for PBXProject "<%= projectName %>" */ = {
+        isa = XCConfigurationList;
+        buildConfigurations = (
+            22 /* Debug */,
+            23 /* Release */,
+            29 /* AppStore */,
+        );
+        defaultConfigurationIsVisible = 0;
+        defaultConfigurationName = Release;
+    };
+
+    15 /* Build configuration list for PBXNativeTarget "<%= projectName %>" */ = {
+        isa = XCConfigurationList;
+        buildConfigurations = (
+            20 /* Debug */,
+            21 /* Release */,
+            28 /* AppStore */,
+        );
+        defaultConfigurationIsVisible = 0;
+        defaultConfigurationName = Release;
+    };
+    /* End XCConfigurationList section */
+
+  };
+  rootObject = 18 /* Project object */;
+}
+
