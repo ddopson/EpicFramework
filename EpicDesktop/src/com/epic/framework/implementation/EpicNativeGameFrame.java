@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.epic.framework.common.Ui.EpicCanvas;
@@ -123,11 +125,12 @@ public class EpicNativeGameFrame extends JPanel implements MouseListener, MouseM
 	}
 
 	public void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
+		JComponent casted = (JComponent)child.child.getNativeObject();
 		if(firstLayout) {
-			this.add(child.child.getDesktopComponent());
+			this.add(casted);
 		}
-		child.child.getDesktopComponent().setLocation(l, t);
-		child.child.getDesktopComponent().setSize(r - l, b - t);
-		child.child.getDesktopComponent().doLayout();				
+		casted.setLocation(l, t);
+		casted.setSize(r - l, b - t);
+		casted.doLayout();				
 	}
 }

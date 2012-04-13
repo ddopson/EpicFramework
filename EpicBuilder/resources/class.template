@@ -49,7 +49,7 @@ if (abstract) { %>
               data,
               "<%=field.name%>",
               <%=field.type.replace(/[.]([^.]+)$/, ".Class$1")%>.singleton,
-              EpicObject.FIELD_REQUIRED);<%
+              EpicObject.FIELD_OPTIONAL);<%
   }
  }); %>
           return object;<%

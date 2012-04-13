@@ -59,4 +59,8 @@ public class EpicPlatformImplementation {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static void Main(String[] args) {
+		
+	}
 }

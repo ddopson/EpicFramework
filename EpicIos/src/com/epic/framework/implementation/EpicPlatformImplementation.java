@@ -1,6 +1,11 @@
 package com.epic.framework.implementation;
 
+import org.xmlvm.iphone.UIApplication;
+
+import com.epic.framework.common.Ui.EpicFile;
 import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
+import com.epic.framework.common.Ui2.InitRoutine;
+import com.epic.framework.common.Ui2.Registry;
 
 public class EpicPlatformImplementation {
 	public static void doToastNotification(String text, int duration) {
@@ -61,5 +66,9 @@ public class EpicPlatformImplementation {
 
 	public static void requestRepaint() {
 		EpicUiView.singleton.requestRepaint();
+	}
+
+	public static void Main(String[] args) {
+        UIApplication.main(args, null, Main.class);
 	}
 }

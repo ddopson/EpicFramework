@@ -139,7 +139,8 @@ public class EpicUiView extends UIView {
 	}
 
 	public void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
-		// TODO Auto-generated method stub
-
+		if(firstLayout) {
+			this.addSubview((UIView)child.child.getNativeObject());
+		}
 	}
 }

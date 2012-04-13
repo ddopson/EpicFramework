@@ -1,9 +1,13 @@
 package com.epic.framework.implementation;
 
+import java.io.IOException;
+
 import javax.swing.SwingUtilities;
 
+import com.epic.framework.common.Ui.EpicFile;
 import com.epic.framework.common.Ui.EpicPercentLayout.LayoutChild;
 import com.epic.framework.common.util.EpicLog;
+import com.epic.framework.vendor.org.json.simple.JSONException;
 
 public class EpicPlatformImplementation {
 	public static void doToastNotification(String text, int duration) {
@@ -69,5 +73,17 @@ public class EpicPlatformImplementation {
 
 	public static void layoutChild(LayoutChild child, int l, int r, int t, int b, boolean firstLayout) {
 		EpicNativeGameFrame.get().layoutChild(child, l, r, t, b, firstLayout);
+	}
+
+	public static void Main(String[] args) {
+		try {
+			DesktopMainUiV2.main(new EpicFile("config.json"));
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		} catch (JSONException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

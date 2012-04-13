@@ -9,10 +9,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.Arrays;
 
@@ -24,7 +24,10 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic.Kind;
 
 import com.epic.framework.common.EpicFieldInflation;
@@ -34,22 +37,41 @@ import com.epic.framework.vendor.org.json.simple.JSONObject;
 
 @SuppressWarnings("unused")
 public class EpicAnnotationProcessor extends AbstractProcessor {
-	private TypeElement currentElement;
+
+	// Members: Options
+	private int DEBUG = 0;
 	private String fwDir;
-	public static int DEBUG = 0;
 	
+	// Members: Processing State
+	private TypeElement currentElement;	
+	
+	// Members: Utils
+	private Elements ElementUtils;
+	private Types TypeUtils;
+
+
 	private void printError(String msg) {
 		this.processingEnv.getMessager().printMessage(Kind.ERROR, msg, currentElement);
 	}
-	
+
 	private void printWarning(String msg) {
 		this.processingEnv.getMessager().printMessage(Kind.WARNING, msg, currentElement);
 	}
-	
+
 	private void printNotice(String msg) {
 		this.processingEnv.getMessager().printMessage(Kind.NOTE, msg, currentElement);
 	}
-	
+
+	public void writeGeneratedClass(String generatedClassName, String content) {
+		try {
+			Writer w = this.processingEnv.getFiler().createSourceFile(generatedClassName).openWriter();
+			w.append(content);
+			w.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
 		return new HashSet<String>(Arrays.asList("*"));
@@ -63,151 +85,146 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);
+		this.processingEnv = processingEnv;
+
+		this.ElementUtils = processingEnv.getElementUtils();
+		this.TypeUtils = processingEnv.getTypeUtils();
+		this.fwDir = findFrameworkDir();
+		this.processOptions(processingEnv.getOptions());
+		
+
+	};
+
+	private void processOptions(Map<String, String> options) {
+		if(options.containsKey("DEBUG")) {
+			this.DEBUG++;
+		}
+	}
+	
+	/**
+	 * This method recursively searches for the framework's root directory, signified by location of the 'package.json' file.
+	 * It begins with the location of the JAR or .class file containing this code, and searches the parent directory until 'package.json' is located.
+	 * @return
+	 */
+	private String findFrameworkDir() {
 		String path = EpicAnnotationProcessor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		
-		
 		File f = new File(path).getParentFile();
-		
-		while(f.listFiles(new FileFilter() {
+
+		FileFilter filter = new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
 				return pathname.getName().equals("package.json");
 			}
-		}).length == 0) {
+		};
+		
+		while(f.listFiles(filter).length == 0) {
 			f = f.getParentFile();
 			if (f == null) {
 				// TODO: support passing in the fwDir as an arg
-				printNotice("Initializing EpicAnnotationProcessor (" + path + "). fwDir=" + fwDir);
-				printError("Unable to locate Framework Directory (has the jar file been moved somewhere unexpected?)");
+				printError("Unable to locate Framework Directory (has the jar file been moved somewhere unexpected?).  Search began with path=" + path);
 			}
 		}
-		fwDir = f.toString();
-		printNotice("Initializing EpicAnnotationProcessor (" + path + "). fwDir=" + fwDir);
-	};
-	private static class EpicClassDescription {
-		String qualifiedName;
-		String parent;
-		boolean isAbstract;
-		boolean inflatable;
-		ArrayList<EpicFieldDescription> fields = new ArrayList<EpicFieldDescription>();
-		public JSONObject toJSON() {
-			JSONObject o = new JSONObject();
-			int di = qualifiedName.lastIndexOf(".");
-			o.put("name", qualifiedName.substring(di + 1));
-			o.put("fullname", qualifiedName);
-			o.put("package", qualifiedName.substring(0, di));
-			o.put("parent", parent);
-			o.put("abstract", isAbstract);
-			o.put("inflatable", inflatable);
-			JSONArray fieldsJson = new JSONArray();
-			for(EpicFieldDescription fd : this.fields) {
-				fieldsJson.add(fd.toJSON());
-			}
-			o.put("fields", fieldsJson);
-			return o;
-		}
+		printNotice("Initializing EpicAnnotationProcessor (" + path + "). fwDir=" + f.toString());
+		return f.toString();
 	}
 
-	public static class EpicFieldDescription {
-		String name;
-		String type;
-		public Object toJSON() {
-			JSONObject o = new JSONObject();
-			o.put("name", name);
-			o.put("type", type);
-			return o;
-		}
-	}
-
+	/**
+	 * This method is the entry point for processing.
+	 */
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
 		Set<? extends Element> elements = env.getElementsAnnotatedWith(EpicInflatableClass.class);
 		for(Element el : elements) {
 			// System.out.println("Element: " + el.getSimpleName());
-			el.accept(new SimpleElementVisitor6<Object, Object>() {
-				public Object visitType(TypeElement typeElement, Object p) {
+			el.accept(new TrivialElementVisitor() {
+				public void visitType(TypeElement typeElement) {
 					EpicAnnotationProcessor.this.currentElement = typeElement;
-					final EpicClassDescription classDescription = new EpicClassDescription();
-					classDescription.qualifiedName = typeElement.getQualifiedName().toString();
-					classDescription.isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
-					classDescription.inflatable = typeElement.getAnnotation(EpicInflatableClass.class).inflatable() && ! classDescription.isAbstract;
-					classDescription.parent = typeElement.getSuperclass().toString();
-					for(Element enclosed : typeElement.getEnclosedElements()) {
-						// System.out.println("SubElement: " + enclosed.getSimpleName());
-						enclosed.accept(new SimpleElementVisitor6<Object, Object>() {
-							public Object visitVariable(VariableElement variableElement, Object p) {
-								if(variableElement.getModifiers().contains(Modifier.STATIC)) {
-									return null;
-								}
-								EpicFieldInflation annotation = variableElement.getAnnotation(EpicFieldInflation.class);
-								if(annotation != null && annotation.ignore()) {
-									return null;
-								}
-								EpicFieldDescription fieldDescription = new EpicFieldDescription();
-								fieldDescription.name = variableElement.getSimpleName().toString();
-								fieldDescription.type = variableElement.asType().toString();
-								classDescription.fields.add(fieldDescription);
-								return null;
-							};
-
-						}, null);
-					}
-					writeGeneratedClass(classDescription);
-					return null;
+					processType(typeElement);
 				};
 			}, null);
 		}
 		return true;
 	}
+	
+	private void processType(TypeElement typeElement) {
+		final EpicClassDescription classDescription = new EpicClassDescription();
+		classDescription.qualifiedName = typeElement.getQualifiedName().toString();
+		classDescription.isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
+		classDescription.inflatable = typeElement.getAnnotation(EpicInflatableClass.class).inflatable() && ! classDescription.isAbstract;
+		classDescription.parent = typeElement.getSuperclass().toString();
+		addFields(classDescription, typeElement);
+		String generatedClass = generate(classDescription);
+		writeGeneratedClass(classDescription.getGeneratedClassName(), generatedClass);
+	}
 
-	public static String consumeInputStream(InputStream in) throws IOException {
-		Reader reader = new InputStreamReader(in);
-		char[] buff = new char[4096];
-		StringBuilder sb = new StringBuilder();
-		int ret = 0;
-		while(ret != -1) {
-			ret = reader.read(buff);
-			if(ret > 0) {
-				sb.append(buff, 0, ret);
+	private void addFields(final EpicClassDescription classDescription, TypeElement typeElement) {
+		TypeMirror superclass = typeElement.getSuperclass();
+		
+		// Handle Inheritance - if the superclass also supports EpicFieldInflation, then add the logic for the superclass's fields too
+		if (! typeElement.getAnnotation(EpicInflatableClass.class).ignoreSuperclass()) {
+			Element superclassElement = TypeUtils.asElement(superclass);
+			if(superclassElement == null) {
+				if(DEBUG >=1 ) System.out.println("superclassElement is NULL. sc=" + superclass.toString());
+			} else {
+				if(DEBUG >=1 ) System.out.println("Visiting superclass " + superclassElement.toString());
+				superclassElement.accept(new TrivialElementVisitor() {
+					@Override
+					public void visitType(TypeElement supertypeElement) {
+						if(supertypeElement.getAnnotation(EpicInflatableClass.class) != null) {
+							addFields(classDescription, supertypeElement);
+						}
+					}
+				}, null);
 			}
 		}
-		return sb.toString();
-	}
+		for(Element enclosed : typeElement.getEnclosedElements()) {
+			// System.out.println("SubElement: " + enclosed.getSimpleName());
+			enclosed.accept(new TrivialElementVisitor() {
+				public void visitVariable(VariableElement variableElement) {
+					if(variableElement.getModifiers().contains(Modifier.STATIC)) {
+						return;
+					}
+					EpicFieldInflation annotation = variableElement.getAnnotation(EpicFieldInflation.class);
+					if(annotation != null && annotation.ignore()) {
+						return;
+					}
+					EpicFieldDescription fieldDescription = new EpicFieldDescription();
+					fieldDescription.name = variableElement.getSimpleName().toString();
+					fieldDescription.type = variableElement.asType().toString();
+					classDescription.fields.add(fieldDescription);
+				};
 
-	public String generate(String metadata) throws IOException {
-		String[] params = {"bin/underscore-template", "-t", "EpicBuilder/resources/class.template", "-j", metadata};
-		String[] env = { "PATH=" + fwDir + "/bin" };
-		File cwd = new File(fwDir);
-		Process child = Runtime.getRuntime().exec(params, env, cwd);
-		OutputStream stdin = child.getOutputStream ();
-		InputStream stderr = child.getErrorStream ();
-		InputStream stdout = child.getInputStream (); // this is actually stdout (gotta love java)
-		stdin.close();
-		String result = consumeInputStream(stdout);
-		String errors = consumeInputStream(stderr);
-		if(errors != null && ! errors.equals("")) {
-			printError("CLI-ERRORS: " + errors.replaceAll("\n", "\\n"));
-			printNotice("CLI=bin/underscore-template -t EpicBuilder/resources/class.template -j " + metadata);
+			}, null);
 		}
-		
-		if (DEBUG >= 2) {
-			printNotice("Input Metadata: " + metadata.replaceAll("\n", "\\n"));
-			printNotice("Generated Class: " + result.replaceAll("\n", "\\n"));
-		}
-		return result;
 	}
-
-	public void writeGeneratedClass(EpicClassDescription clazz) {
-		String generatedClassName = clazz.qualifiedName.replaceAll("[.]([^.]+)$", ".Class$1");
+	
+	public String generate(EpicClassDescription clazz) {
 		if(DEBUG >= 1) {
 			printNotice("Generating " + clazz.qualifiedName);
 		}
 
+		String metadata = clazz.toJSON().toString();
+		String[] params = {"bin/underscore-template", "-t", "EpicBuilder/resources/class.template", "-j", metadata};
+		String[] env = { "PATH=" + fwDir + "/bin" };
+		File cwd = new File(fwDir);
 		try {
-			Writer w = this.processingEnv.getFiler().createSourceFile(generatedClassName).openWriter();
-			String contents = generate(clazz.toJSON().toString());
-			w.append(contents);
-			w.close();
+			Process child = Runtime.getRuntime().exec(params, env, cwd);
+			OutputStream stdin = child.getOutputStream ();
+			InputStream stderr = child.getErrorStream ();
+			InputStream stdout = child.getInputStream (); // this is actually stdout (gotta love java)
+			stdin.close();
+			String result = StreamUtil.consumeInputStream(stdout);
+			String errors = StreamUtil.consumeInputStream(stderr);
+			if(errors != null && ! errors.equals("")) {
+				printError("CLI-ERRORS: " + errors.replaceAll("\n", "\\n"));
+				printNotice("CLI=bin/underscore-template -t EpicBuilder/resources/class.template -j " + metadata);
+			}
+			if (DEBUG >= 2) {
+				printNotice("Input Metadata: " + metadata.replaceAll("\n", "\\n"));
+				printNotice("Generated Class: " + result.replaceAll("\n", "\\n"));
+			}
+			
+			return result;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

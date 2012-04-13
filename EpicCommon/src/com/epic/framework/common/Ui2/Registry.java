@@ -15,6 +15,9 @@ import com.epic.framework.common.util.exceptions.EpicObjectInflationException;
 import com.epic.framework.vendor.org.json.simple.JSONArray;
 import com.epic.framework.vendor.org.json.simple.JSONObject;
 import com.epic.framework.vendor.org.json.simple.JSONException;
+import com.epic.framework.vendor.org.json.simple.JSONValue;
+import com.epic.framework.vendor.org.json.simple.parser.ContentHandler;
+import com.epic.framework.vendor.org.json.simple.parser.JSONParser;
 
 public class Registry {
 	private static HashMap<String, EpicObject> registry = new HashMap<String, EpicObject>();
@@ -24,6 +27,7 @@ public class Registry {
 	}
 
 	public static void register(String name, EpicObject object) {
+		EpicLog.i("Registering '" + name + "'");
 		registry.put(name, object);
 	}
 
@@ -137,7 +141,9 @@ public class Registry {
 	}
 
 	public static void processConfig(EpicFile configFile) throws JSONException, IOException {
-		JSONObject config = (JSONObject)JSON.parse(configFile.openAsBufferedReader().readEntireStreamAsString());
+		InitRoutine.init();
+		String content = configFile.openAsBufferedReader().readEntireStreamAsString();
+		JSONObject config = (JSONObject)JSON.parse(content);
 		Set<String> keySet = config.keySet();
 		for(String key : keySet) {
 			Object value = config.get(key);

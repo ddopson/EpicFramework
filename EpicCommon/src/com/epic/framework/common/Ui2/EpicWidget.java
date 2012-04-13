@@ -1,13 +1,14 @@
 package com.epic.framework.common.Ui2;
 
+import com.epic.framework.common.EpicInflatableClass;
 import com.epic.framework.common.Ui.EpicCanvas;
 
+@EpicInflatableClass
 public abstract class EpicWidget extends EpicObject {
-	int x, y, width, height;
-	EpicAction onClick;
-	public abstract void onPaint(EpicCanvas canvas);
-	
-	public interface Clickable {
-		public void onClick(int x, int y);
-	}
+	public int x, y, width, height;
+	public EpicAction onClick;
+
+	public static int WidgetTypeNative = 1001;
+	public static int WidgetTypeVirtual = 1002;
+	public abstract int getWidgetType();
 }

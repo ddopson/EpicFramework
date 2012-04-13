@@ -8,7 +8,7 @@ import com.epic.framework.common.Ui.EpicScreen;
 import com.epic.framework.common.Ui2.InitRoutine;
 import com.epic.framework.common.Ui2.Registry;
 import com.epic.framework.implementation.DesktopMainUiV2;
-import com.epic.framework.vendor.org.json.JSONException;
+import com.epic.framework.vendor.org.json.simple.JSONException;
 
 public class Main {
 

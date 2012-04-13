@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 import com.epic.framework.common.EpicConfig;
 import com.epic.framework.common.Ui.EpicMenu.EpicMenuItem;
+import com.epic.framework.common.Ui2.InitRoutine;
+import com.epic.framework.common.Ui2.Registry;
 import com.epic.framework.common.types.Dimension;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
@@ -111,6 +113,10 @@ public class EpicPlatform {
 		return (System.currentTimeMillis() - timeAtScreenChange) / 1000.0f;
 	}
 
+	public static void Main(String[] args) {
+		EpicPlatformImplementation.Main(args);
+	}
+	
 	public static void initialize(int width, int height) {
 		if(EpicConfig.DEBUG_EPICSTOPWATCH) ArchPlatform.logMemoryStats();
 		if(DEBUG_EPICPLAT) EpicLog.d("EpicPlatform.initialize()");
