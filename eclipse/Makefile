@@ -6,6 +6,7 @@ PROJECTS  := $(shell $(UTEMPLATE) -d projects.js  -s %keys -m list | cut -d' ' -
 
 .PHONY: build
 build: $(PROJECTS)
+	@ln -sf  ../../examples/HelloResources/resources HelloResources/
 
 .PHONY: $(PROJECTS)
 $(PROJECTS):
