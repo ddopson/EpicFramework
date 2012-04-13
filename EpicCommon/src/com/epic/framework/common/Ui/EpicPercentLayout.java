@@ -3,10 +3,10 @@ package com.epic.framework.common.Ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.epic.framework.common.Ui2.EpicNativeWidget;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.common.util.EpicLog;
 import com.epic.framework.common.util.exceptions.EpicRuntimeException;
-import com.epic.framework.implementation.EpicNativeWidget;
 import com.epic.framework.implementation.EpicPlatformImplementation;
 
 import static com.epic.framework.common.EpicConfig.*;
