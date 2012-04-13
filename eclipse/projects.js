@@ -79,7 +79,8 @@ module.exports = {
       "resources": "PARENT-1-WORKSPACE_LOC/examples/HelloResources/resources"
     },
     deps: [
-      "../../build/EpicDesktop.jar"
+      { project: "EpicJson" },
+      { project: "Desktop" }
     ]
   },
 
