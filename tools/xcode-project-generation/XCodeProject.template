@@ -74,12 +74,12 @@
 
     /* Begin PBXBuildFile section */
 <%
-  
-// BUILDREFS 
+
+// BUILDREFS
 _.map(frameworks, function (fw) { %>
     <%= fw.bid %> /* <%= fw.name %> in Frameworks */ = {isa = PBXBuildFile; fileRef = <%= fw.fid %>; };<%
 });
-_.map(files, function (f) { 
+_.map(files, function (f) {
   if (f.bid) { %>
     <%= f.bid %> /* <%= f.name %> */ = {isa = PBXBuildFile; fileRef = <%= f.fid %>; };<%
   }
@@ -110,8 +110,8 @@ _.map(files, function (f) { %>
       isa = PBXFrameworksBuildPhase;
       buildActionMask = 2147483647;
       files = (<%
-      
-// BUILDFRAMS 
+
+// BUILDFRAMS
 _.map(frameworks, function (fw) { %>
         <%= fw.bid %> /* <%= fw.name %> */,<%
 });
@@ -128,7 +128,7 @@ _.map(frameworks, function (fw) { %>
       isa = PBXGroup;
       children = (<%
 
-// APPSRC 
+// APPSRC
 _.map(files, function (f) { %>
         <%= f.fid %> /* <%= f.name %> */,<%
 });
@@ -163,8 +163,8 @@ _.map(files, function (f) { %>
     13 /* Frameworks */ = {
       isa = PBXGroup;
       children = (<%
-  
-// FRAMEWORKS 
+
+// FRAMEWORKS
 _.map(frameworks, function (fw) { %>
         <%= fw.fid %> /* <%= fw.name %> */,<%
 });
@@ -226,7 +226,7 @@ _.map(frameworks, function (fw) { %>
       buildActionMask = 2147483647;
       files = (<%
 
-// RESOURCES_BUILD 
+// RESOURCES_BUILD
 _.map(resources, function (r) { %>
         <%= r.bid %> /* <%= r.name %> */,<%
 });
@@ -259,8 +259,8 @@ _.map(resources, function (r) { %>
       buildActionMask = 2147483647;
       files = (<%
 
-// SRC_BUILD 
-_.map(files, function (f) { 
+// SRC_BUILD
+_.map(files, function (f) {
   if (f.bid) { %>
         <%= f.bid %> /* <%= f.name %> */,<%
   }
