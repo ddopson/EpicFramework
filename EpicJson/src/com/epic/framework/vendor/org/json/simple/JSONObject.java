@@ -47,10 +47,12 @@ public class JSONObject extends HashMap<String, Object> {
 		}
 	}
 	
-	public int getInt(String key) {
+	public Integer getInt(String key) {
 		Object val = this.get(key);
 		if(val instanceof Number) {
 			return ((Number)val).intValue();
+		} else if (val == null){
+			return null;
 		} else {
 			// TODO: total freaking hack.  need to clean this up
 			throw new RuntimeException("not an integer:" + val.getClass());
