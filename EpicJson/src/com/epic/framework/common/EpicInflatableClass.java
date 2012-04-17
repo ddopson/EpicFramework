@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 public @interface EpicInflatableClass {
 	boolean inflatable() default true;
 	boolean ignoreSuperclass() default false;
-	Class<?> arguments() default EpicInflatableClass.class;
+	Class<?> inflationArguments() default EpicInflatableClass.class;
 }
