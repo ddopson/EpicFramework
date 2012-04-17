@@ -4,6 +4,8 @@ FRAMEWORK_DIR = $(realpath $(CURDIR)/../..)
 EPIC_RESOURCES = $(FRAMEWORK_DIR)/bin/epic-resources
 UTEMPLATE = $(FRAMEWORK_DIR)/bin/underscore-template
 
+
+JAVAC_PROCESSOR        := -processor com.epic.framework.build.EpicAnnotationProcessor
 java_src_files = $(shell find src gen -name '*.java')
 
 objc_resources = $(shell find $(FRAMEWORK_DIR)/EpicIos/objc-plugins -type d | perl -ne 'chomp; print "$$_/:"')
@@ -28,7 +30,7 @@ build/.make.prebuild: $(shell find resources)
 javac: build/.make.javac
 build/.make.javac: build/.make.prebuild $(java_src_files)
 	@mkdir -p build/classes
-	javac -d build/classes -cp $(FRAMEWORK_DIR)/build/EpicIos.jar $(java_src_files)
+	javac -d build/classes -cp $(FRAMEWORK_DIR)/build/EpicIos.jar $(JAVAC_PROCESSOR) $(java_src_files)
 	@touch build/.make.javac
 
 .PHONY: xmlvm

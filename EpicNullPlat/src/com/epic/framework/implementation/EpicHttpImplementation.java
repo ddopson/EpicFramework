@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import com.epic.framework.common.Ui2.EpicRestRequest;
+import com.epic.framework.common.Ui2.EpicRestRequest.RequestInstance;
 import com.epic.framework.common.util.EpicHttpRequest;
 import com.epic.framework.common.util.EpicHttpResponse;
 import com.epic.framework.common.util.EpicHttpResponseHandler;
@@ -19,6 +21,11 @@ public class EpicHttpImplementation {
 	}
 
 	public static void beginGet(EpicHttpRequest epicHttpRequest, EpicHttpResponseHandler handler) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void get(EpicRestRequest epicRestRequest, RequestInstance requestInstance) {
 		// TODO Auto-generated method stub
 		
 	}

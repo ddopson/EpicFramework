@@ -13,7 +13,14 @@ module.exports = {
 			width: 400,
 			height: 50,
 			text: "Play",
-			onClick: null
+			onClick: {
+				type: "com.epic.framework.common.Ui2.EpicRestRequest",
+				host: "ddopson.pro",
+				path: "api",
+				success: {
+					type: "com.example.HelloResources.FinishedApiAction"
+				}
+			}
 		}
 	]
 }

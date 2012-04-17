@@ -12,5 +12,6 @@ public class InitRoutine {
 		ClassEpicWidget.register();
 		ClassEpicBackgroundWidget.register();
 		ClassEpicNativeButtonWidget.register();
+		ClassEpicRestRequest.register();
 	}
 }

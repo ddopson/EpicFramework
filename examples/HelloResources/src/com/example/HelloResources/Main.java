@@ -23,6 +23,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException, JSONException, InterruptedException {
 		EpicImages.register();
+		ClassFinishedApiAction.register();
 		Registry.processConfig(EpicFiles.config);
 		EpicPlatform.Main(args);
 	}
