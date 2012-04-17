@@ -11,7 +11,7 @@ import com.epic.framework.implementation.EpicNativeButtonWidgetImplementation;
 @EpicInflatableClass()
 public class EpicNativeButtonWidget extends EpicNativeWidget {
 	
-	String text;
+	public String text;
 	
 	@EpicFieldInflation(ignore=true)
 	Object platformObject;
@@ -19,7 +19,7 @@ public class EpicNativeButtonWidget extends EpicNativeWidget {
 	@Override
 	public Object getNativeObject() {
 		if(platformObject == null) {
-			platformObject = EpicNativeButtonWidgetImplementation.createNativeButton(text);
+			platformObject = EpicNativeButtonWidgetImplementation.createNativeButton(this);
 			EpicFail.assertNotNull(platformObject);
 		}
 		return platformObject;
