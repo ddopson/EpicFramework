@@ -3,57 +3,78 @@ package <%=package%>;
 import com.epic.framework.vendor.org.json.simple.*;
 import com.epic.framework.common.Ui2.*;
 
-public class Class<%=name%> extends EpicClass {
-     public static final Class<%=name%> singleton = new Class<%=name%>();
+public class <%=shortGeneratedName%> extends EpicClass {
+     public static final <%=shortGeneratedName%> singleton = new <%=shortGeneratedName%>();
      
      @Override
      public String getName() {
-        return "<%=fullname%>"; 
+        return "<%=qualifiedName%>"; 
      }
      
      @Override
      public boolean isInstanceOf(EpicObject object) {
-        return (object instanceof <%=name%>); 
+        return (object instanceof <%=qualifiedName%>); 
      }
 
      @Override
-     public <%=name%>[] newArray(int length) {
-        return new <%=name%>[length];
+     public <%=qualifiedName%>[] newArray(int length) {
+        return new <%=qualifiedName%>[length];
      }
      
      @Override
      public EpicObject inflate(JSONObject data) throws JSONException {<%
 if (abstract) { %>
-          throw new com.epic.framework.common.util.exceptions.EpicObjectInflationException("Can't inflate abstract class <%=fullname%>");<%
+          throw new com.epic.framework.common.util.exceptions.EpicObjectInflationException("Can't inflate abstract class <%=qualifiedName%>");<%
 } else if (!inflatable) { %>
-          throw new com.epic.framework.common.util.exceptions.EpicObjectInflationException("Can't inflate non-inflatable class <%=fullname%>");<%
+          throw new com.epic.framework.common.util.exceptions.EpicObjectInflationException("Can't inflate non-inflatable class <%=qualifiedName%>");<%
 } else { %>
-          <%=name%> object = new <%=name%>();
+          <%= inflationArgumentsType %> object = new <%= inflationArgumentsType %>();
           
-          object.type = Class<%=name%>.singleton;<%
+          object.type = <%=shortGeneratedName%>.singleton;<%
  _.each(fields, function (field) {
-  if (field.type === "int") { %>
-          object.<%=field.name%> = data.getInt("<%=field.name%>");<%
-  } else if (field.type === "long") { %>
-          object.<%=field.name%> = data.getLong("<%=field.name%>");<%
-  } else if (field.type === "boolean") { %>
-          object.<%=field.name%> = data.getBoolean("<%=field.name%>");<%
-  } else if (field.type === "float") { %>
-          object.<%=field.name%> = data.getDouble("<%=field.name%>");<%
-  } else if (field.type === "double") { %>
-          object.<%=field.name%> = data.getDouble("<%=field.name%>");<%
-  } else if (field.type === "java.lang.String") { %>
-          object.<%=field.name%> = data.getString("<%=field.name%>");<%
-  } else { %>
+  if (field.isInflatable) { %>
           object.<%=field.name%> = (<%=field.type%>) Registry.inflateField(
               data,
               "<%=field.name%>",
               <%=field.type.replace(/[.]([^.]+)$/, ".Class$1")%>.singleton,
               EpicObject.FIELD_OPTIONAL);<%
+  } else if (field.type === "int" || field.type === 'java.lang.Integer') { %>
+          object.<%=field.name%> = data.getInt("<%=field.name%>");<%
+  } else if (field.type === "long" || field.type === 'java.lang.Long') { %>
+          object.<%=field.name%> = data.getLong("<%=field.name%>");<%
+  } else if (field.type === "boolean" || field.type === 'java.lang.Boolean') { %>
+          object.<%=field.name%> = data.getBoolean("<%=field.name%>");<%
+  } else if (field.type === "float" || field.type === 'java.lang.Float') { %>
+          object.<%=field.name%> = data.getDouble("<%=field.name%>");<%
+  } else if (field.type === "double" || field.type === 'java.lang.Double') { %>
+          object.<%=field.name%> = data.getDouble("<%=field.name%>");<%
+  } else if (field.type === "java.lang.String") { %>
+          object.<%=field.name%> = data.getString("<%=field.name%>");<%
+  } else if (field.type === "com.epic.framework.vendor.org.json.simple.JSONObject") { %>
+          object.<%=field.name%> = data.getJSONObject("<%=field.name%>");<%
+  } else if (field.type === "com.epic.framework.vendor.org.json.simple.JSONArray") { %>
+          object.<%=field.name%> = data.getJSONArray("<%=field.name%>");<%
+  } else if (toks = field.type.match(/^java.util.(?:Hash)?Map<java.lang.String,(.*)>$/)) {
+    var subtype = toks[1];
+  } else if (toks = field.type.match(/^java.util.(?:Hash)?Map<java.lang.String,(.*)>$/)) {
+    var subtype = toks[1];
+  } else {
+    console.error("Unhandled field of type '%s'", field.type);
+    process.exit(-1);
   }
- }); %>
+ }); 
+
+ if (inflationMode === 'simple') { %>
           return object;<%
-} %>
+ } else if (inflationMode === 'init') { %>
+          return <%= qualifiedName %>.initialize(object);<%
+ } else {
+  console.error("Unrecognized inflationMode: %s", inflationMode);
+  process.exit(-1);
+ }
+} 
+
+%>
      }
 
      public static void register() {

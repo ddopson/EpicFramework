@@ -9,10 +9,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Arrays;
 
@@ -20,10 +24,16 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.AnnotationValueVisitor;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
@@ -41,10 +51,10 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 	// Members: Options
 	private int DEBUG = 0;
 	private String fwDir;
-	
+
 	// Members: Processing State
 	private TypeElement currentElement;	
-	
+
 	// Members: Utils
 	private Elements ElementUtils;
 	private Types TypeUtils;
@@ -91,16 +101,16 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 		this.TypeUtils = processingEnv.getTypeUtils();
 		this.fwDir = findFrameworkDir();
 		this.processOptions(processingEnv.getOptions());
-		
+
 
 	};
 
 	private void processOptions(Map<String, String> options) {
 		if(options.containsKey("DEBUG")) {
-			this.DEBUG++;
+			this.DEBUG = 3;
 		}
 	}
-	
+
 	/**
 	 * This method recursively searches for the framework's root directory, signified by location of the 'package.json' file.
 	 * It begins with the location of the JAR or .class file containing this code, and searches the parent directory until 'package.json' is located.
@@ -116,7 +126,7 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 				return pathname.getName().equals("package.json");
 			}
 		};
-		
+
 		while(f.listFiles(filter).length == 0) {
 			f = f.getParentFile();
 			if (f == null) {
@@ -135,33 +145,102 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
 		Set<? extends Element> elements = env.getElementsAnnotatedWith(EpicInflatableClass.class);
 		for(Element el : elements) {
-			// System.out.println("Element: " + el.getSimpleName());
-			el.accept(new TrivialElementVisitor() {
-				public void visitType(TypeElement typeElement) {
-					EpicAnnotationProcessor.this.currentElement = typeElement;
-					processType(typeElement);
-				};
-			}, null);
+			if(el instanceof TypeElement) {
+				TypeElement typeElement = (TypeElement)el;
+				EpicAnnotationProcessor.this.currentElement = typeElement;
+				processType(typeElement);
+			}
 		}
 		return true;
 	}
+	private static AnnotationMirror getAnnotationMirror(TypeElement typeElement, String className) {
+		for(AnnotationMirror m : typeElement.getAnnotationMirrors()) {
+			if(m.getAnnotationType().toString().equals(className)) {
+				return m;
+			}
+		}
+		return null;
+	}
+
+	private static AnnotationValue getAnnotationValue(AnnotationMirror annotationMirror, String key) {
+		for(Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : annotationMirror.getElementValues().entrySet() ) {
+			if(entry.getKey().getSimpleName().toString().equals(key)) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
 	
+	private TypeElement getAnnotationValueAsType(AnnotationMirror annotationMirror, String key) {
+		AnnotationValue annotationValue = getAnnotationValue(annotationMirror, key);
+		if(annotationValue == null) {
+			return null;
+		}
+		TypeMirror typeMirror = (TypeMirror)annotationValue.getValue();
+		if(typeMirror == null) {
+			return null;
+		}
+		return (TypeElement)TypeUtils.asElement(typeMirror);
+	}
+
 	private void processType(TypeElement typeElement) {
+		if(! (typeElement.getEnclosingElement() instanceof PackageElement)) {
+			System.out.println("Skipping " + typeElement.toString() + "(" + typeElement.getEnclosingElement() + ")");
+			return;
+		}
 		final EpicClassDescription classDescription = new EpicClassDescription();
+		EpicInflatableClass annotation = typeElement.getAnnotation(EpicInflatableClass.class);
 		classDescription.qualifiedName = typeElement.getQualifiedName().toString();
 		classDescription.isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
-		classDescription.inflatable = typeElement.getAnnotation(EpicInflatableClass.class).inflatable() && ! classDescription.isAbstract;
 		classDescription.parent = typeElement.getSuperclass().toString();
-		addFields(classDescription, typeElement);
+
+		AnnotationMirror annotationMirror = getAnnotationMirror(typeElement, EpicInflatableClass.class.getCanonicalName());
+		TypeElement inflationArgsValue = getAnnotationValueAsType(annotationMirror, "inflationArguments");
+
+		if(inflationArgsValue == null || inflationArgsValue.getQualifiedName().toString().equals(EpicInflatableClass.class.getCanonicalName()) /* default case */) {
+			classDescription.inflatable = annotation.inflatable() && ! classDescription.isAbstract;
+			classDescription.inflationArgumentsType = classDescription.qualifiedName;
+			classDescription.fields = getFields(typeElement);
+			classDescription.inflationMode = "simple";
+		} else {
+			classDescription.inflatable = true;
+			classDescription.inflationArgumentsType = inflationArgsValue.getQualifiedName().toString();
+			classDescription.fields = getFields(inflationArgsValue);
+			classDescription.inflationMode = "init";
+		}
+
 		String generatedClass = generate(classDescription);
 		writeGeneratedClass(classDescription.getGeneratedClassName(), generatedClass);
 	}
 
-	private void addFields(final EpicClassDescription classDescription, TypeElement typeElement) {
+	private Collection<EpicFieldDescription> getFields(Class<?> clazz) {
+		ArrayList<EpicFieldDescription> fields = new ArrayList<EpicFieldDescription>();
+		Class<?> superclass = clazz.getSuperclass();
+		if(superclass != null && superclass.getAnnotation(EpicInflatableClass.class) != null) {
+			fields.addAll(getFields(superclass));
+		}
+		for(Field f : clazz.getFields()) {
+			if(java.lang.reflect.Modifier.isAbstract(f.getModifiers())) {
+				continue;
+			}
+			EpicFieldInflation annotation = f.getAnnotation(EpicFieldInflation.class);
+			if(annotation != null && annotation.ignore()) {
+				continue;
+			}
+			EpicFieldDescription fieldDescription = new EpicFieldDescription();
+			fieldDescription.name = f.getName().toString();
+			fieldDescription.type = f.getType().getCanonicalName();
+			fields.add(fieldDescription);
+		}
+		return fields;
+	}
+
+	private Collection<EpicFieldDescription> getFields(TypeElement typeElement) {
 		TypeMirror superclass = typeElement.getSuperclass();
-		
+		final ArrayList<EpicFieldDescription> fields = new ArrayList<EpicFieldDescription>();
+		EpicInflatableClass annotation = typeElement.getAnnotation(EpicInflatableClass.class);
 		// Handle Inheritance - if the superclass also supports EpicFieldInflation, then add the logic for the superclass's fields too
-		if (! typeElement.getAnnotation(EpicInflatableClass.class).ignoreSuperclass()) {
+		if (! (annotation != null && annotation.ignoreSuperclass())) {
 			Element superclassElement = TypeUtils.asElement(superclass);
 			if(superclassElement == null) {
 				if(DEBUG >=1 ) System.out.println("superclassElement is NULL. sc=" + superclass.toString());
@@ -171,7 +250,7 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 					@Override
 					public void visitType(TypeElement supertypeElement) {
 						if(supertypeElement.getAnnotation(EpicInflatableClass.class) != null) {
-							addFields(classDescription, supertypeElement);
+							fields.addAll(getFields(supertypeElement));
 						}
 					}
 				}, null);
@@ -191,13 +270,20 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 					EpicFieldDescription fieldDescription = new EpicFieldDescription();
 					fieldDescription.name = variableElement.getSimpleName().toString();
 					fieldDescription.type = variableElement.asType().toString();
-					classDescription.fields.add(fieldDescription);
+					Element variableTypeElement = TypeUtils.asElement(variableElement.asType());
+					if(variableTypeElement != null && variableTypeElement.getAnnotation(EpicInflatableClass.class) != null) {
+						fieldDescription.isInflatable = true;
+					} else {
+						fieldDescription.isInflatable = false;
+					}
+					fields.add(fieldDescription);
 				};
 
 			}, null);
 		}
+		return fields;
 	}
-	
+
 	public String generate(EpicClassDescription clazz) {
 		if(DEBUG >= 1) {
 			printNotice("Generating " + clazz.qualifiedName);
@@ -220,10 +306,9 @@ public class EpicAnnotationProcessor extends AbstractProcessor {
 				printNotice("CLI=bin/underscore-template -t EpicBuilder/resources/class.template -j " + metadata);
 			}
 			if (DEBUG >= 2) {
-				printNotice("Input Metadata: " + metadata.replaceAll("\n", "\\n"));
 				printNotice("Generated Class: " + result.replaceAll("\n", "\\n"));
 			}
-			
+
 			return result;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
