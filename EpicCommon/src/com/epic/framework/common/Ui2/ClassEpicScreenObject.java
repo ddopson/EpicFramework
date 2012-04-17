@@ -35,7 +35,7 @@ public class ClassEpicScreenObject extends EpicClass {
 			} else {
 				throw new EpicObjectInflationException("element " + i + " is not of type EpicWidget");
 			}
-		} else if(el == null || el == JSONObject.NULL) {
+		} else if(el == null) {
 			realArray[i] = null;
 		} else {
 			throw EpicFail.unhandled_case();
