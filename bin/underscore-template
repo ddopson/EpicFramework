@@ -31,29 +31,35 @@ if (! (program.template || program.data || program.json)) {
 }
 
 function compileTemplate(str) {
-  var c  = { 
+  var c  = {
     evaluate    : /<%([\s\S]+?)%>/g,
     interpolate : /<%=([\s\S]+?)%>/g,
     escape      : /<%-([\s\S]+?)%>/g
-  };  
-     
-  return 'var __p=[],print=function(){__p.push.apply(__p,arguments);};' +
-    'with(obj||{}){__p.push(\'' +
+  };
+
+  function fixcode(code) {
+    return unescape(code)
+      .replace(/\\n/g, '\n')
+      .replace(/\\'/g, '\'')
+      .replace(/ +$/, '');
+  }
+  return 'var _ = require(\'underscore\');var obj=require(\'./props\');var __p = [];\nvar print = function(){\n  __p.push.apply(__p, arguments);\n};' +
+    '\n\nwith(obj||{}){\n  __p.push(\'' +
     str.replace(/\\/g, '\\\\')
        .replace(/'/g, "\\'")
+       .replace(/\n/g, "\\n")
        .replace(c.escape || noMatch, function(match, code) {
-         return "',_.escape(" + unescape(code) + "),'";
-       })  
+         return "',\n    _.escape(" + fixcode(code) + "),\n    '";
+       })
        .replace(c.interpolate || noMatch, function(match, code) {
-         return "'," + unescape(code) + ",'";
-       })  
+         return "',\n    " + fixcode(code) + ",\n    '";
+       })
        .replace(c.evaluate || noMatch, function(match, code) {
-         return "');" + unescape(code).replace(/[\r\n\t]/g, ' ') + ";__p.push('";
-       })  
-       .replace(/\r/g, '\\r')
-       .replace(/\n/g, '\\n')
-       .replace(/\t/g, '\\t')
-       + "');} __p.join('');";
+         return "'\n  );\n    " + fixcode(code) + ";\n  __p.push(\n    '";
+       })
+       //.replace(/\r/g, '\\r')
+       //.replace(/\t/g, '\\t')
+       + "');\n}\nconsole.log(__p.join(''));\n\n" + _.template(str);
 }
 
 var template;
@@ -85,7 +91,7 @@ function processDataDir(dir, ns) {
       if (name === 'index') {
         // index files get exploded into the root object
         _.map(d, function (v, k) {
-          data[ns + k] = v; 
+          data[ns + k] = v;
         });
       } else {
         // non-index files become a single property in the root object
@@ -196,10 +202,10 @@ function processTemplate() {
     });
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////   
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   // GENERATE OUTPUT
-  ////////////////////////////////////////////////////////////////////////////////////////////////////   
-  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
   var output;
   if (template === null) {
     if (program.mode === 'inspect') {
@@ -222,7 +228,7 @@ function processTemplate() {
         output = _.template(template, data);
       }
     } catch (e) {
-      console.error("Error processing template '%s': %s", program.template, e.message);
+      console.error("Error processing template '%s': %s", program.template, e.stack);
       if(program.verbose) {
         console.error("Data: ", data);
       }
@@ -230,10 +236,10 @@ function processTemplate() {
     }
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////   
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   // WRITE OUTPUT
-  ////////////////////////////////////////////////////////////////////////////////////////////////////   
-  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
   if(program.output && program.output !== '-' && program.output !== '_') {
     try {
       fs.writeFileSync(program.output, output);
