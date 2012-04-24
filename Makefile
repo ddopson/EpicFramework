@@ -3,7 +3,7 @@
 ####################################################################################################
 
 .PHONY: all
-all: lint EpicBuilder.jar EpicDesktop.jar EpicIos.jar
+all: lint xmlvm EpicBuilder.jar EpicDesktop.jar EpicIos.jar
 
 dist: all
 	@echo "$(GREEN)General$(NOCOLOR) - Copying build artifacts to dist/"
@@ -65,6 +65,11 @@ node_modules: package.json
 lint:
 	@echo "$(GREEN)General$(NOCOLOR) - Validating Javascript"
 	@jshint  bin/underscore-template  bin/epic-resources jslib/*
+
+.PHONY: xmlvm
+xmlvm:
+	@echo "$(GREEN)General$(NOCOLOR) - Make xmlvm"
+	@make -C xmlvm
 
 ####################################################################################################
 ##  Epic{Json,Builder,Common}
