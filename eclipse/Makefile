@@ -18,7 +18,8 @@ $(PROJECTS):
 	@$(UTEMPLATE) -t template/dot_factorypath -d projects.js -s $@ -v -o $@/.factorypath
 	@$(UTEMPLATE) -t template/dot_settings/org.eclipse.jdt.apt.core.prefs -d projects.js -s $@ -v -o $@/.settings/org.eclipse.jdt.apt.core.prefs
 	@$(UTEMPLATE) -t template/dot_settings/org.eclipse.jdt.core.prefs -d projects.js -s $@ -v -o $@/.settings/org.eclipse.jdt.core.prefs
-
+	@echo "Copying Eclipse metadata (ie, settings)"
+	rsync -a dot_metadata/ .metadata/
 
 .PHONY: clean
 clean:

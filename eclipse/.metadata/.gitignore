@@ -1,9 +1,0 @@
-/*
-!/.plugins
-!/.gitignore
-
-/.plugins/*
-!/.plugins/org.eclipse.core.runtime
-!/.plugins/org.eclipse.ui.workbench
-
-/.plugins/org.eclipse.ui.workbench/workingsets.xml
