@@ -1,0 +1,47 @@
+package <%=package%>;
+
+import com.epic.framework.common.Ui2.Reference;
+
+public class EpicConfig {<%
+
+var c2 = {};
+_.map(config, function (v, k) {
+  var n = c2;
+  _.map(k.split('/'), function (tok) {
+    n = n[tok] ? n[tok] : (n[tok] = {});
+  });
+
+  if(_.isString(v)) {
+    n.type = 'String';
+  } else {
+    n.type = v.type;
+  }
+  n.path = k;
+});
+
+function process(node, indent) {
+
+  _.map(node, function (v, k) {
+    if(v.type) {
+
+%>
+<%= indent %>public static final Reference<<%= v.type %>> <%= k %> = new Reference<<%= v.type %>>("<%= v.path %>");<%
+
+    } else {
+
+%>
+<%= indent %>public static class <%= k %> {<%
+
+      process(v, indent + '\t');
+
+%>
+<%= indent %>}<%
+
+    }
+  });
+}
+
+process(c2, '\t');
+
+%>
+}

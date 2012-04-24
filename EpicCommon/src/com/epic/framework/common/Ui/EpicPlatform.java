@@ -51,6 +51,8 @@ public class EpicPlatform {
 	private static long lastInputTime = System.currentTimeMillis();
 	public static boolean userDragInputEnabled = true;
 	private static int timer_slow_factor = 1;
+	private static boolean invertWidgetOrder;
+
 
 	public static LinkedList<EpicNotification> notifications = new LinkedList<EpicNotification>();
 	public static LinkedList<EpicScreen> dialogs = new LinkedList<EpicScreen>();
@@ -155,7 +157,6 @@ public class EpicPlatform {
 	}
 	public static boolean isIos() {
 		return EpicPlatformConfig.platform == PLATFORM_IOS;
-
 	}
 
 	public static void changeScreen(EpicScreen screen) {
@@ -180,9 +181,9 @@ public class EpicPlatform {
 		currentScreen.onCreateUi(epicPercentLayout);
 		currentScreen.onShow();
 		repaintScreen();
+		
 		userDragInputEnabled = true;
-
-		EpicPlatform.repaintScreen();
+		epicPercentLayout.doTheLayout(truePlatformWidth, truePlatformHeight, invertWidgetOrder);
 		EpicSoundManager.resumeMusic();
 	}
 
@@ -603,6 +604,7 @@ public class EpicPlatform {
 				throw EpicFail.framework("EpicPlatform has NOT been initialized!!!");
 			}
 			setRenderBounds(width, height);
+			EpicPlatform.invertWidgetOrder = invertWidgetOrder;
 			epicPercentLayout.doTheLayout(width, height, invertWidgetOrder);
 		}
 	}

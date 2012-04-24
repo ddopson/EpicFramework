@@ -37,7 +37,7 @@ java_src_files_desktop := $(shell find EpicDesktop/src -name '*.java' -type file
 java_src_files_ios     := $(shell find EpicIos/src -name '*.java' -type file -follow)
 java_src_files_applet  := $(shell find EpicDesktop/src -name '*.java' -type file -follow)
 
-JAVAC_PROCESSOR        := -processor com.epic.framework.build.EpicAnnotationProcessor
+JAVAC_PROCESSOR        := -processor com.epic.framework.build.EpicAnnotationProcessor 
 
 CP_JSON  := build/classes_json
 CP_BLD   := build/classes_builder
@@ -126,8 +126,8 @@ build/EpicDesktop.jar: build/.make.EpicDesktop build/.make.EpicCommon build/.mak
 	@echo "$(GREEN)EpicDesktop.jar$(NOCOLOR) - Merging dependencies into build/jar_desktop"
 	@mkdir -p build/jar_desktop
 	cd build/jar_desktop && for j in $(CURDIR)/EpicDesktop/lib/*.jar; do jar xf $$j; done
-	rsync -a {EpicJson,EpicCommon,EpicDesktop}/src/  build/jar_desktop/
-	rsync -a $(CP_JSON)/ $(CP_COMM)/ $(CP_DESK)/     build/jar_desktop/
+	rsync -a {EpicJson,EpicBuilder,EpicCommon,EpicDesktop}/src/  build/jar_desktop/
+	rsync -a $(CP_JSON)/ $(CP_BLD)/ $(CP_COMM)/ $(CP_DESK)/     build/jar_desktop/
 	@echo "$(GREEN)EpicDesktop.jar$(NOCOLOR) - Combining $$(find build/jar_desktop -type f | wc -l) files into build/EpicDesktop.jar"
 	jar cf build/EpicDesktop.jar -C build/jar_desktop .
 
@@ -141,6 +141,7 @@ build/.make.EpicIos: $(java_src_files_ios)
 	@mkdir -p $(CP_IOS)
 	@echo "$(GREEN)EpicIos$(NOCOLOR) - Compiling $(words $(java_src_files_ios)) source files ..."
 	javac -d $(CP_IOS) -cp xmlvm/xmlvm.jar:$(CP_JSON):$(CP_BLD):$(CP_COMM):$(call classpathify,EpicIos/lib/*.jar) $(JAVAC_PROCESSOR) $(java_src_files_ios)
+	xmlvm --in=$(CP_JSON) --in=$(CP_BLD) --in=$(CP_COMM) --out=build/xmlvm --target=iphone --enable-ref-counting --app-name=EpicFramework
 	@touch build/.make.EpicIos
 
 .PHONY: EpicIos.jar

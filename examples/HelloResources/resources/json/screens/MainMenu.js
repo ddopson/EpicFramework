@@ -11,7 +11,7 @@ module.exports = {
 			x: 40,
 			y: 40,
 			width: 400,
-			height: 50,
+			height: 60,
 			text: "Play",
 			onClick: {
 				type: "com.epic.framework.common.Ui2.EpicRestRequest",
