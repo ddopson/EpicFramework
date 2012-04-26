@@ -6,6 +6,10 @@
   "dependencies": {
     "commander":  "*",
     "underscore": "*",
+    "underscore-cli": "*",
     "imagemagick": "*"
+  },
+  "dev-dependencies": {
+    "jshint": "*"
   }
 }
