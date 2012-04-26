@@ -1,6 +1,7 @@
 package com.epic.framework.common.Ui2;
 
 import com.epic.framework.common.Ui2.NativeWidgets.ClassEpicNativeButtonWidget;
+import com.epic.framework.common.Ui2.NativeWidgets.ClassEpicNativeLabelWidget;
 import com.epic.framework.common.Ui2.NativeWidgets.ClassEpicNativeTextFieldWidget;
 import com.epic.framework.common.Ui2.VirtualWidgets.ClassEpicBackgroundWidget;
 import com.epic.framework.vendor.org.json.simple.JSONException;
@@ -15,5 +16,6 @@ public class InitRoutine {
 		ClassEpicNativeButtonWidget.register();
 		ClassEpicNativeTextFieldWidget.register();
 		ClassEpicRestRequest.register();
+		ClassEpicNativeLabelWidget.register();
 	}
 }
