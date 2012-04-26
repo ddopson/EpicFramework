@@ -2,8 +2,9 @@
 FRAMEWORK_DIR = $(realpath $(CURDIR)/../..)
 
 EPIC_RESOURCES = $(FRAMEWORK_DIR)/bin/epic-resources
-UTEMPLATE = $(FRAMEWORK_DIR)/bin/underscore-template
-UNDERSCORE = $(shell which underscore)
+UTEMPLATE      = $(FRAMEWORK_DIR)/bin/underscore-template
+UNDERSCORE     = $(FRAMEWORK_DIR)/bin/underscore
+XMLVM          = $(FRAMEWORK_DIR)/bin/xmlvm
 
 JAVAC_PROCESSOR        := -processor com.epic.framework.build.EpicAnnotationProcessor
 java_src_files = $(shell find src gen -name '*.java')
@@ -21,10 +22,10 @@ prebuild: build/.make.prebuild
 build/.make.prebuild: $(shell find resources)
 	@echo "Preprocessing Resources"
 	@mkdir -p build gen/com/epic/resources/ resources/files
-	@$(UTEMPLATE) -d resources/json -m json > resources/files/config.json
-	@$(UNDERSCORE) -i resources/files/config.json process '{package: "com.epic.resources", config: data}' | $(UNDERSCORE) template /workspace/EpicFramework/EpicBuilder/resources/EpicConfig.template -o gen/com/epic/resources/EpicConfig.java
-	@$(EPIC_RESOURCES) -s resources | $(UTEMPLATE)  -t $(FRAMEWORK_DIR)/EpicBuilder/resources/EpicImages.template -d _ > gen/com/epic/resources/EpicImages.java
-	@$(EPIC_RESOURCES) -s resources | $(UTEMPLATE)  -t $(FRAMEWORK_DIR)/EpicBuilder/resources/EpicFiles.template -d _ > gen/com/epic/resources/EpicFiles.java
+	$(UTEMPLATE) -d resources/json -m json > resources/files/config.json
+	$(UNDERSCORE) -i resources/files/config.json process '{package: "com.epic.resources", config: data}' | $(UNDERSCORE) template /workspace/EpicFramework/EpicBuilder/resources/EpicConfig.template -o gen/com/epic/resources/EpicConfig.java
+	$(EPIC_RESOURCES) -s resources | $(UTEMPLATE)  -t $(FRAMEWORK_DIR)/EpicBuilder/resources/EpicImages.template -d _ > gen/com/epic/resources/EpicImages.java
+	$(EPIC_RESOURCES) -s resources | $(UTEMPLATE)  -t $(FRAMEWORK_DIR)/EpicBuilder/resources/EpicFiles.template -d _ > gen/com/epic/resources/EpicFiles.java
 	@touch build/.make.prebuild
 
 .PHONY: javac
@@ -38,7 +39,7 @@ build/.make.javac: build/.make.prebuild $(java_src_files)
 xmlvm: javac build/.make.xmlvm
 build/.make.xmlvm: build/.make.javac
 	@#xmlvm --in=build/classes/ --out=build/xmlvm --target=xmlvm --enable-ref-counting --app-name=HelloResources --in=$(FRAMEWORK_DIR)/build/classes_ios/  --in=$(FRAMEWORK_DIR)/build/classes_common --in=$(FRAMEWORK_DIR)/build/classes_json --resource=resources/images/:resources/files/
-	xmlvm --in=build/classes/ --out=build/xcode --target=iphone --enable-ref-counting --app-name=HelloResources --in=$(FRAMEWORK_DIR)/build/classes_ios/  --in=$(FRAMEWORK_DIR)/build/classes_common --in=$(FRAMEWORK_DIR)/build/classes_json --resource=resources/images/:resources/files/:$(objc_resources) --lib=SystemConfiguration.framework --lib=StoreKit.framework
+	$(XMLVM) --in=build/classes/ --out=build/xcode --target=iphone --enable-ref-counting --app-name=HelloResources --in=$(FRAMEWORK_DIR)/build/classes_ios/  --in=$(FRAMEWORK_DIR)/build/classes_common --in=$(FRAMEWORK_DIR)/build/classes_json --resource=resources/images/:resources/files/:$(objc_resources) --lib=SystemConfiguration.framework --lib=StoreKit.framework
 	cp $(FRAMEWORK_DIR)/EpicIos/objc-overrides/* build/xcode/build/xcode/src/app
 	@touch build/.make.xmlvm
 
