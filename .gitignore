@@ -3,3 +3,4 @@ npm-debug.log
 /build
 /dist
 /.metadata/*
+xmlvm/

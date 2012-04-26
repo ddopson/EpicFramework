@@ -17,6 +17,10 @@ public class EpicNativeLabelWidget extends EpicNativeWidget {
 		this.text = text;
 	}
 	
+	public EpicNativeLabelWidget() {
+		this.text = "";
+	}
+	
 	public void setText(String text) {
 		this.text = text;
 	}
