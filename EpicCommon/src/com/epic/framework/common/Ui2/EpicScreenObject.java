@@ -37,7 +37,7 @@ public class EpicScreenObject extends EpicScreen {
 			if(widgets[i].getWidgetType() == EpicWidget.WidgetTypeNative) {
 				EpicLog.i("Adding Native Widget");
 				EpicNativeWidget casted = (EpicNativeWidget)widgets[i];
-				bgLayout.addChild(casted.x, casted.y, casted.width, casted.height, casted);
+				bgLayout.addChild(casted.x, casted.y, casted.x + casted.width, casted.y + casted.height, casted);
 			}
 		}
 	}
