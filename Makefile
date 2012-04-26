@@ -23,11 +23,11 @@ clean:
 classpathify = $(subst $(eval) ,:,$(wildcard $1))
 logger       = echo "$(GREEN)$1$(NOCOLOR) -$2"
 
-
 ####################################################################################################
 ##  Variables
 ####################################################################################################
 
+XMLVM = bin/xmlvm
 
 java_src_files_json    := $(shell find EpicJson/src -name '*.java' -type file -follow)
 java_src_files_builder := $(shell find EpicBuilder/src -name '*.java' -type file -follow)
@@ -146,7 +146,7 @@ build/.make.EpicIos: $(java_src_files_ios)
 	@mkdir -p $(CP_IOS)
 	@echo "$(GREEN)EpicIos$(NOCOLOR) - Compiling $(words $(java_src_files_ios)) source files ..."
 	javac -d $(CP_IOS) -cp xmlvm/xmlvm.jar:$(CP_JSON):$(CP_BLD):$(CP_COMM):$(call classpathify,EpicIos/lib/*.jar) $(JAVAC_PROCESSOR) $(java_src_files_ios)
-	xmlvm --in=$(CP_JSON) --in=$(CP_BLD) --in=$(CP_COMM) --out=build/xmlvm --target=iphone --enable-ref-counting --app-name=EpicFramework
+	$(XMLVM) --in=$(CP_JSON) --in=$(CP_BLD) --in=$(CP_COMM) --out=build/xmlvm --target=iphone --enable-ref-counting --app-name=EpicFramework
 	@touch build/.make.EpicIos
 
 .PHONY: EpicIos.jar
