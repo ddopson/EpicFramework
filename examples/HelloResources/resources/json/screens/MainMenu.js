@@ -21,6 +21,15 @@ module.exports = {
 					type: "com.example.HelloResources.FinishedApiAction"
 				}
 			}
+		},
+		{
+			type: "com.epic.framework.common.Ui2.NativeWidgets.EpicNativeTextFieldWidget",
+			name: "named/thethingy",
+			x: 40,
+			y: 100,
+			width: 400,
+			height: 140,
 		}
+
 	]
 }
