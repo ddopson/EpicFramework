@@ -5,6 +5,7 @@ EPIC_RESOURCES = $(FRAMEWORK_DIR)/bin/epic-resources
 UTEMPLATE      = $(FRAMEWORK_DIR)/bin/underscore-template
 UNDERSCORE     = $(FRAMEWORK_DIR)/bin/underscore
 XMLVM          = $(FRAMEWORK_DIR)/bin/xmlvm
+IOS_SIM        = $(FRAMEWORK_DIR)/bin/ios-sim
 
 JAVAC_PROCESSOR        := -processor com.epic.framework.build.EpicAnnotationProcessor
 java_src_files = $(shell find src gen -name '*.java')
@@ -64,6 +65,6 @@ clean:
 .PHONY: run
 run:
 	@echo > stderr.log
-	@ios-sim launch build/xcode/dist/build/Debug-iphonesimulator/HelloResources.app --stderr stderr.log --family iphone --setenv NSZombieEnabled=YES --setenv NSDebugEnabled=YES &
+	@$(IOS_SIM) launch build/xcode/dist/build/Debug-iphonesimulator/HelloResources.app --stderr stderr.log --family iphone --setenv NSZombieEnabled=YES --setenv NSDebugEnabled=YES &
 	@osascript -e "tell application \"iPhone Simulator\" to activate"
 	@tail -n10000 -f stderr.log
