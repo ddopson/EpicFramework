@@ -92,8 +92,8 @@ public class EpicPercentLayout {
 			}			
 		}
 		else {
-			for(LayoutChild child : children) {
-				doTheLayout(width, height, child);
+			for(int i = children.size() - 1; i >= 0; i--) {
+				doTheLayout(width, height, children.get(i));
 			}
 		}
 		firstLayout = false;
