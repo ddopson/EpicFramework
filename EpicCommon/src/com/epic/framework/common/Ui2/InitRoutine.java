@@ -1,9 +1,11 @@
 package com.epic.framework.common.Ui2;
 
+import com.epic.framework.common.Ui.ClassEpicImageFromUrl;
 import com.epic.framework.common.Ui2.NativeWidgets.ClassEpicNativeButtonWidget;
 import com.epic.framework.common.Ui2.NativeWidgets.ClassEpicNativeLabelWidget;
 import com.epic.framework.common.Ui2.NativeWidgets.ClassEpicNativeTextFieldWidget;
 import com.epic.framework.common.Ui2.VirtualWidgets.ClassEpicBackgroundWidget;
+import com.epic.framework.common.Ui2.VirtualWidgets.ClassEpicImageWidget;
 import com.epic.framework.vendor.org.json.simple.JSONException;
 
 public class InitRoutine {
@@ -17,5 +19,7 @@ public class InitRoutine {
 		ClassEpicNativeTextFieldWidget.register();
 		ClassEpicRestRequest.register();
 		ClassEpicNativeLabelWidget.register();
+		ClassEpicImageWidget.register();
+		ClassEpicImageFromUrl.register();
 	}
 }

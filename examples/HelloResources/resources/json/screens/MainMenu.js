@@ -28,7 +28,18 @@ module.exports = {
 			x: 40,
 			y: 100,
 			width: 400,
-			height: 140,
+			height: 140
+		},
+		{
+			type: "com.epic.framework.common.Ui2.VirtualWidgets.EpicImageWidget",
+			image: {
+				type: "com.epic.framework.common.Ui.EpicImageFromUrl",
+				url: "http://ddopson.pro/tattoo.png"
+			},
+			x: 300,
+			y: 200,
+			width: 400,
+			height: 140
 		}
 
 	]

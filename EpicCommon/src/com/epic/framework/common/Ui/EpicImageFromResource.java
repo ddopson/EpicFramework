@@ -34,10 +34,6 @@ public class EpicImageFromResource extends EpicImageInstance {
 		return image;
 	}
 
-
-	public int lastRender = -1;
-	EpicImageInstance[] instances;
-
 	public String getFilename() {
 		if(this.plat == null) {
 			return this.name + "." + this.extension;

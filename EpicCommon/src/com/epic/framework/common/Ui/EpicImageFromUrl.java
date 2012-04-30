@@ -1,19 +1,28 @@
 package com.epic.framework.common.Ui;
 
+import com.epic.framework.common.EpicFieldInflation;
 import com.epic.framework.common.EpicInflatableClass;
 import com.epic.framework.common.util.EpicFail;
 import com.epic.framework.implementation.EpicBitmapImplementation;
 
-@EpicInflatableClass(inflatable=false)
+@EpicInflatableClass(ignoreSuperclass=true, inflationArguments=EpicImageFromUrl.class)
 public class EpicImageFromUrl extends EpicImage {
-	String url;
+	public String url;
 	
+	@EpicFieldInflation(ignore=true)
+	public EpicImageInstance defaultInstance;
+
+	public static EpicImageFromUrl initialize(EpicImageFromUrl args) {
+		return new EpicImageFromUrl(args.url);
+	}
+	
+	public EpicImageFromUrl () {
+		super("");
+	}
 	public EpicImageFromUrl(String url) {
 		super(url);
 		this.url = url;
 	}
-
-	public EpicImageInstance defaultInstance;
 
 	@Override
 	public EpicImageInstance getInstance(int desiredWidth, int desiredHeight) {
@@ -24,7 +33,10 @@ public class EpicImageFromUrl extends EpicImage {
 		if(defaultInstance.width == desiredWidth && defaultInstance.height == desiredHeight) {
 			instance = defaultInstance; 
 		} else {
-			throw EpicFail.not_implemented();
+			instance = _lookupInstance(defaultInstance, desiredWidth, desiredHeight);
+			if(instance.platformObject == null) {
+				instance.platformObject = EpicBitmapImplementation.scaleImage(defaultInstance, instance);
+			}
 		}
 		
 		return instance;

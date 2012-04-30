@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -11,7 +13,9 @@ import com.epic.framework.common.Ui.EpicImage;
 import com.epic.framework.common.Ui.EpicImageFromResource;
 import com.epic.framework.common.Ui.EpicImageFromUrl;
 import com.epic.framework.common.Ui.EpicImageInstance;
+import com.epic.framework.common.Ui2.EpicRestRequest;
 import com.epic.framework.common.util.EpicFail;
+import com.epic.framework.common.util.EpicLog;
 
 
 public class EpicBitmapImplementation {
@@ -49,9 +53,34 @@ public class EpicBitmapImplementation {
 	}
 
 	public static EpicImageInstance loadImageFromUrl(EpicImageFromUrl image) {
-		return null;
+		EpicLog.i("Loading " + image);
+		BufferedImage bitmap;
+		try {
+			bitmap = ImageIO.read(new URL(image.url));
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		EpicImageInstance i = new EpicImageInstance(image, true, bitmap.getWidth(), bitmap.getHeight(), 0, 0, 0, 0);
+		i.platformObject = bitmap;
+		return i;
 	}
 
+	
+	public static Object scaleImage(EpicImageInstance source, EpicImageInstance dest) {
+		BufferedImage original = (BufferedImage)source.platformObject;
+		if(original.getWidth() != dest.iwidth || original.getHeight() != dest.iheight) {
+			BufferedImage scaled = new BufferedImage(dest.iwidth, dest.iheight, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = scaled.createGraphics();
+			graphics.drawImage(original, 0, 0, dest.iwidth, dest.iheight, null);
+			graphics.dispose();
+			return scaled;
+		}
+		else {
+			return original;
+		}
+	}
 	
 //	public static EpicBitmapImplementation fromPixels(int[] bits, int width, int height, String name) {
 //		BufferedImage bitmap = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
