@@ -21,6 +21,15 @@
   CGSize scale = CGContextConvertSizeToDeviceSpace (screenContext, CGSizeMake(1.0f, 1.0f));
   float xscale = scale.width;
 
+  
+  // hack for iPad3
+  /*xscale = 1.0f;
+  scale = CGSizeMake(1.0f, 1.0f);
+  pwidth = width;
+  pheight = height;
+*/
+  opaque = false;
+
   // Allocate the pixel array
   //NSLog(@"Allocating Array for %d x %d pixels (log = %d x %d)", pwidth, pheight, width, height);
   size_t bitmapDataSize = pwidth * pheight * 4;

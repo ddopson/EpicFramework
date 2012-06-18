@@ -304,4 +304,11 @@ public class EpicCanvas {
 		return text_top - top;
 	}
 
+	public void blitFullscreenBitmap(EpicBitmap image) {
+		int width = EpicPlatform.renderWidth;
+		int height = EpicPlatform.renderHeight;
+		EpicBitmapInstance b = image.getInstance(width, height);
+		EpicCanvasImplementation.drawBitmapImpl(graphicsObject, b.platformObject, 0, 0, BLIT, 0, 0, width, height, false);
+	}
+
 }

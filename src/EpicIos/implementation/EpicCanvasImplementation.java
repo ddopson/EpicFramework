@@ -59,14 +59,15 @@ public class EpicCanvasImplementation {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public static boolean hack = false;
+	
 	public static void drawBitmapImpl(Object graphicsObject, Object bitmapObject, int x, int y, int alpha, int sx, int sy, int sw, int sh, boolean isCropped) {
 		CGContext c = (CGContext) graphicsObject;
 		UIImage uiimg = (UIImage) bitmapObject;
 
-		if(hack) {
-			CGSize size = uiimg.getSize();
-			EpicLog.i("drawBitmapImpl(" + StringHelper.namedArgList("x", x, "y", y, "alpha", alpha, "sx", sx, "sy", sy, "sw", sw, "sh", sh, "i.w", (int)size.width, "i.h", (int)size.height) + ")");
-		}
+//		if(hack) {
+//			CGSize size = uiimg.getSize();
+//			EpicLog.i("drawBitmapImpl(" + StringHelper.namedArgList("x", x, "y", y, "alpha", alpha, "sx", sx, "sy", sy, "sw", sw, "sh", sh, "i.w", (int)size.width, "i.h", (int)size.height) + ")");
+//		}
 
 		if(isCropped) EpicCanvasImplementationNative.setCrop(c, x, y, sw, sh);
 		EpicCanvasImplementationNative.drawImage(c, uiimg, x-sx, y-sy, alpha);
