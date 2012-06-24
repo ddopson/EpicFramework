@@ -18,7 +18,7 @@ public class EpicCanvas {
 	public static final int BLIT = -1;
 	public static boolean debugRendering = false;
 
-	Object graphicsObject;
+	public Object graphicsObject;
 
 	private static final int BUFFER_SIZE = 8192;
 	private static final char[] buffer = new char[BUFFER_SIZE];
