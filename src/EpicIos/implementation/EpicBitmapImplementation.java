@@ -11,6 +11,7 @@ import com.epic.framework.common.util.EpicLog;
 
 public class EpicBitmapImplementation {
 
+	static int i = 0;
 	public static Object loadBitmap(EpicBitmapInstance eb) {
 		// DDOPSON-2012-01-01 - we should always "scale" the bitmap into a buffer, else it might be decompressed on every render
 		// see http://developer.apple.com/library/ios/#qa/qa1708/_index.html
@@ -22,7 +23,9 @@ public class EpicBitmapImplementation {
 		EpicFail.assertNotNull(scaled, "scaled");
 //		EpicLog.i("Image: " + epicBitmap.name);
 //		EpicCanvasImplementationNative.inspectImage(src);
-//		EpicCanvasImplementationNative.inspectImage(scaled);
+		if (i++ < 10) {
+			EpicCanvasImplementationNative.inspectImage(scaled);
+		}
 		return scaled;
 	}
 
