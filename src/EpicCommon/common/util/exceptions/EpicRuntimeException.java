@@ -11,7 +11,7 @@ public class EpicRuntimeException extends EpicRuntimeExceptionImplementation {
 		super(className, msg, cause);
 		this.className = className;
 		this.message = msg;
-		EpicLog.e("EpicFail: new " + className + ": " + message);
+		EpicLog.e("EpicFail: creating new " + className + ": " + message);
 		EpicLog.logStack();
 	}
 }
