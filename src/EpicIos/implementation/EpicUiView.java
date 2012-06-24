@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 
+import org.xmlvm.iphone.UIScreen;
 import org.xmlvm.iphone.CGPoint;
 import org.xmlvm.iphone.CGRect;
+import org.xmlvm.iphone.NSLog;
 import org.xmlvm.iphone.UIEvent;
 import org.xmlvm.iphone.UIFont;
 import org.xmlvm.iphone.UIGraphics;
@@ -24,6 +26,7 @@ public class EpicUiView extends UIView implements EpicPlatformInterface {
 	public EpicUiView(CGRect rect) {
 		super(rect);
 		this.setOpaque(true);
+		this.setClearsContextBeforeDrawing(false);
 		CGRect bounds = this.getBounds();
 		EpicPlatform.initialize(this, (int)bounds.size.width, (int)bounds.size.height, null, null);
 		EpicPlatformImplementationNative.setupDebugHandlers();
