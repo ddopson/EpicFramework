@@ -139,45 +139,61 @@ public class EpicCanvas {
 	////////////////////////////////////////////////////////////////////////////////
 
 	public static boolean hack = false;
-	final void _drawBitmapSubsetWithGlobalAlpha(EpicBitmap image, int left, int top, int width, int height, int alpha, int lcrop, int tcrop, int rcrop, int bcrop) {
+	public final void _drawBitmapSubsetWithGlobalAlpha(EpicBitmap image, int left, int top, int width, int height, int alpha, int lcrop, int tcrop, int rcrop, int bcrop) {
+		if(hack) {
+			EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
+		}
 		if(alpha == 0) {
 			return; // invisible
 		}
 		EpicFail.assertNotNull(image);
-		if((tcrop + bcrop) == height || (lcrop + rcrop) == width) {
-			return;
-		}
-		if((tcrop + bcrop) > height || (lcrop + rcrop) > width) {
-			throw EpicFail.invalid_argument(StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop));
-		}
-		if(hack) {
-			EpicLog.v("EpicCanvas._drawBitmapSubsetWithGlobalAlpha(" + StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop) + ")");
-		}
+
+		// The stuff we gotta calculate
 		EpicBitmapInstance b = image.getInstance(width, height);
+		int sx, sy, sw, sh, dlp, dtp, drp, dbp;
+		boolean isCropped = (tcrop | bcrop | lcrop | rcrop) != 0;
 
-		boolean isCropped = lcrop > 0 || tcrop > 0 || rcrop > 0 || bcrop > 0;
-		int sx = max(lcrop - b.lpad, 0);
-		int sy = max(tcrop - b.tpad, 0);
-		int dlp = max(lcrop, b.lpad);
-		int dtp = max(tcrop, b.tpad);
-		int drp = max(rcrop, b.rpad);
-		int dbp = max(bcrop, b.bpad);
+		if (isCropped) {
+			if((tcrop + bcrop) == height || (lcrop + rcrop) == width) {
+				return;
+			}
+			if((tcrop + bcrop) > height || (lcrop + rcrop) > width) {
+				throw EpicFail.invalid_argument(StringHelper.namedArgList("image", image.name, "left", left, "top", top, "width", width, "height", height, "alpha", alpha, "lcrop", lcrop, "rcrop", rcrop, "bcrop", bcrop, "tcrop", tcrop));
+			}
 
-		int sw = width - dlp - drp;
-		int sh = height - dtp - dbp;
-		if(sw < 0 || sh < 0) {
-			// DDOPSON-2010-10-15
-			// crop and pad play together well until you crop into the opposing pad
-			// so there is a legit case where the sh pops out as negative
-			// so suppose that 1/3 of the image is transparent both top and bottom
-			// draw the whole thing and the render window will be .333 to .666
-			// if you "crop" 1/4 of the bottom, no big deal, you cropped transparency, renders same as if you drew the whole thing
-			// if you crop 1/2 of the bottom, then the render window is adjusted to be from .333-0.5
-			// BUT, if you crop 4/5, then the render window is from .333 - 0.25.  that's a negative window
-			// really, nothing should render here as you are only drawing transparent pixels, so just returning is correct
-			return;
+			sx = max(lcrop - b.lpad, 0);
+			sy = max(tcrop - b.tpad, 0);
+			dlp = max(lcrop, b.lpad);
+			dtp = max(tcrop, b.tpad);
+			drp = max(rcrop, b.rpad);
+			dbp = max(bcrop, b.bpad);
+			sw = width - dlp - drp;
+			sh = height - dtp - dbp;
+			
+			if(sw < 0 || sh < 0) {
+				// DDOPSON-2010-10-15
+				// crop and pad play together well until you crop into the opposing pad
+				// so there is a legit case where the sh pops out as negative
+				// so suppose that 1/3 of the image is transparent both top and bottom
+				// draw the whole thing and the render window will be .333 to .666
+				// if you "crop" 1/4 of the bottom, no big deal, you cropped transparency, renders same as if you drew the whole thing
+				// if you crop 1/2 of the bottom, then the render window is adjusted to be from .333-0.5
+				// BUT, if you crop 4/5, then the render window is from .333 - 0.25.  that's a negative window
+				// really, nothing should render here as you are only drawing transparent pixels, so just returning is correct
+				return;
+			}
+		} else {
+			sx = 0;
+			sy = 0;
+			dlp = b.lpad;
+			dtp = b.tpad;
+			drp = b.rpad;
+			dbp = b.bpad;
+			sw = width - dlp - drp;
+			sh = height - dtp - dbp;
 		}
-		EpicStopwatch.reportPixelsPushed(image, width, height, sw * sh);
+		
+//		EpicStopwatch.reportPixelsPushed(image, width, height, sw * sh);
 		EpicCanvasImplementation.drawBitmapImpl(graphicsObject, b.platformObject, left + dlp, top + dtp, alpha, sx, sy, sw, sh, isCropped);
 		if(debugRendering) {
 			EpicCanvasImplementation.drawBorder(graphicsObject, left + sx, top + sy, sw, sh, EpicColor.RED, 1);

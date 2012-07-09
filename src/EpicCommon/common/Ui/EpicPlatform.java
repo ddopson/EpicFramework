@@ -28,8 +28,8 @@ public class EpicPlatform {
 	public static final boolean RMODE_LETTERBOX = false;
 	public static final int letterboxWidth = -99;
 	public static final int letterboxHeight = -99;
-	static int renderWidth = -99;
-	static int renderHeight = -99;
+	public static int renderWidth = -99;
+	public static int renderHeight = -99;
 	static int truePlatformWidth = -99;
 	static int truePlatformHeight = -99;
 
